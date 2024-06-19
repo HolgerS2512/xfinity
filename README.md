@@ -1,5 +1,7 @@
 # Documentation
 
+## Installation
+
 - Install Laravel v9.5.2
 
 ```shell
@@ -49,9 +51,41 @@ php artisan migrate
 php artisan passport:install
 ````
 
-- Save values
+- Save values in ENV
 
 ```shell
 Client_1=zZ8SVE8bQokaS0BsukhY5rissc1tZnzlbP5QA0aM
 Client_2=xd4BUYVpr73ubcbWCD4GJlDvQDuu3jgTfQuX0Nga
 ```
+
+- Edit User Model
+
+```php
+use Laravel\Passport\HasApiTokens;
+```
+
+- Configuration auth in config/auth.php
+
+```php
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+
+    'api' => [
+        'driver' => 'passport',
+        'provider' => 'users',
+    ],
+],
+```
+
+
+
+
+
+
+
+## Deploy
+
+- [Follow documentation -> passport](https://laravel.com/docs/9.x/passport#deploying-passport)
