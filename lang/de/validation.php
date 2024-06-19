@@ -153,7 +153,7 @@ return [
     "prohibits" => ":Attribute verbietet die Angabe von :other.",
     "regex" => ":Attribute Format ist ungültig.",
     "relatable" => ":Attribute kann nicht mit dieser Ressource verbunden werden.",
-    "required" => ":Attribute muss ausgefüllt werden.",
+    "required" => "Dies ist ein Pflichtfeld.",
     "required_array_keys" => "Dieses Feld muss Einträge enthalten für: :values.",
     "required_if" => ":Attribute muss ausgefüllt werden, wenn :other den Wert :value hat.",
     "required_if_accepted" => ":Attribute muss ausgefüllt werden, wenn :other gewählt ist.",

@@ -49,13 +49,14 @@ php artisan migrate
 - Install Passport
 ````shell
 php artisan passport:install
+php artisan passport:client --personal
 ````
 
 - Save values in ENV
 
 ```shell
-Client_1=zZ8SVE8bQokaS0BsukhY5rissc1tZnzlbP5QA0aM
-Client_2=xd4BUYVpr73ubcbWCD4GJlDvQDuu3jgTfQuX0Nga
+PASSPORT_PERSONAL_ACCESS_CLIENT_ID=1
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=oQ7MH4ZbNiIgjWS0IbLPQr4gek2HKE4Ii8bvt32f
 ```
 
 - Edit User Model

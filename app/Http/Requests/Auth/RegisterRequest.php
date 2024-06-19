@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class LoginRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,10 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
+            'firstname' => 'required|string|max:60|min:2',
+            'lastname' => 'required|string|max:40|min:2',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:6|max:255',
+            'password' => 'required|string|min:8|max:255|confirmed'
         ];
     }
 
