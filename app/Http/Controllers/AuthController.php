@@ -24,13 +24,14 @@ class AuthController extends Controller
             $user = User::create($input);
             $token = $user->createToken('xFinity_ACCESS_TOKEN')->accessToken;
 
+            // EMAIL
+
             return response()->json([
                 'status' => true,
-                'message' => __('messages.register'),
+                'message' => __('auth.register'),
                 'token' => $token,
                 'user' => $user,
             ], 200);
-
         } catch (Exception $e) {
             return response([
                 'status' => false,
@@ -53,7 +54,7 @@ class AuthController extends Controller
 
                     return response()->json([
                         'status' => true,
-                        'message' => __('messages.login'),
+                        'message' => __('auth.login'),
                         'token' => $token,
                         'user' => $user,
                     ], 200);
@@ -64,6 +65,29 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => __('passwords.user'),
             ], 422);
+        } catch (Exception $e) {
+            return response([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
+     * Laravel Passport User Logout  API Function
+     */
+
+    public function logout(Request $request)
+    {
+        try {
+            $token = $request->user()->token();
+            $token->revoke();
+    
+            return response()->json([
+                'status' => true,
+                'message' => __('auth.logout'),
+            ], 200);
+            
         } catch (Exception $e) {
             return response([
                 'status' => false,

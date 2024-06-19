@@ -13,5 +13,6 @@ return [
 
     'login' => 'Anmeldung Erfolgreich',
     'register' => 'Bitte überprüfen Sie Ihre E-Mail und folgen Sie den Anweisungen, um Ihre E-Mail-Adresse zu zertifizieren. Wenn Sie weitere Fragen haben, stehe ich Ihnen gerne zur Verfügung.',
+    'email_verify' => 'Herzlichen Glückwunsch! Sie haben Ihren Account erfolgreich zertifiziert.',
 
 ];
