@@ -45,22 +45,22 @@ Route::prefix('admin')->group(function () {
 
 Route::post('/register',[AuthController::class, 'register']);
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/email/verify/{id}/{code}', [AuthController::class, 'verifyEmail']);
 
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/email/verify', function () {
-        return view('auth.verify-email');
-    });
-});
+
+// Route::middleware(['auth:api'])->group(function () {
+// });
 
 Route::middleware(['auth:api', 'signed'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
 });
 
 Route::middleware(['auth:api', 'verified'])->group(function () {
-    Route::get('/Dashboard', function () {
+    Route::get('/dashboard', function () {
         return 'Projects Fetch Successfully!';
     });
+
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
 

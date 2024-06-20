@@ -13,6 +13,12 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * Nullabled updated_at column by new instance.
+     *
+     */
+    const UPDATED_AT = null;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

@@ -19,6 +19,7 @@ return [
 
     'login' => 'Successfully Login',
     'register' => 'Please check your email and follow the instructions to certify your email address. If you have any further questions, I am happy to help.',
+    'email_exists' => 'This email address is already stored in our system. If this account does not belong to you, please contact our customer service.',
     'email_verify' => 'Congratulations! You have successfully certified your account.',
     'logout' => 'You have been successfully logged out!',
 
