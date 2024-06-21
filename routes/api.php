@@ -45,17 +45,13 @@ Route::prefix('admin')->group(function () {
 
 Route::post('/register',[AuthController::class, 'register']);
 
-Route::post('/email/verify/{id}/{code}', [AuthController::class, 'verifyEmail']);
-
-
-// Route::middleware(['auth:api'])->group(function () {
-// });
-
-Route::middleware(['auth:api', 'signed'])->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout']);
-});
+Route::post('/email/verify/{code}', [AuthController::class, 'verifyEmail'])
+    ->middleware(['throttle:3,1'])
+    ->name('verify');
 
 Route::middleware(['auth:api', 'verified'])->group(function () {
+    Route::get('/logout', [AuthController::class, 'logout']);
+
     Route::get('/dashboard', function () {
         return 'Projects Fetch Successfully!';
     });
@@ -66,6 +62,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
 // -> https://xfinity-software/demo_shop
 
+
+// Route::middleware(['auth:api'])->group(function () {
+// });
 
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;
  

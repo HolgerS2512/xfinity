@@ -19,7 +19,7 @@ class VerifyEmailMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $id, public $url, public $urlCode, public $accessToken, public $logo)
+    public function __construct(public $url, public $accessToken, public $logo)
     {
         //
     }
@@ -47,9 +47,7 @@ class VerifyEmailMail extends Mailable
         return new Content(
             view: 'mail.verify',
             with: [
-                'id' => $this->id,
                 'url' => $this->url,
-                'urlCode' => $this->urlCode,
                 'token' => $this->accessToken,
                 'logo' => $this->logo,
             ],

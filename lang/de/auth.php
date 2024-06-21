@@ -14,19 +14,26 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
-    'password' => 'The provided password is incorrect.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'password' => 'Dieses Passwort ist falsch. Sollten Sie Ihr Passwort verloren haben, wenden Sie sich bitte an unseren Kundendienst.',
+    'throttle' => 'Zu viele Versuche. Sie können im Moment nicht auf diese Seite zugreifen. Bitte versuche es später noch mal.',
+    'unauthenticated' => 'Unauthorisierter Zugriff! Bitte melden Sie sich erst an, wenn Sie diese Aktion durchführen möchten.',
+    'unauth_mail' => 'Unerlaubter Zugriff! Bitte verifizieren Sie erst Ihre E-Mail-Adresse, bevor Sie diese Aktion durchführen können.',
+
+    'auth_url' => 'Dieser Link ist nicht korrekt. Bitte versuchen Sie es noch einmal oder rufen Sie den Link aus der E-Mail erneut auf.',
+    'auth_user_exist' => 'Ein Konto mit diesen Daten existiert bereits. Bitte überprüfen Sie Ihre Eingaben.',
+    'auth_pin' => 'Ihr zugesendeter PIN-Code ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben.',
+    'auth_token' => 'Leider ist Ihr Verifizierungstoken ist abgelaufen. Bitte registrieren Sie sich erneut.',
 
     'login' => 'Anmeldung Erfolgreich',
     'register' => 'Bitte überprüfen Sie Ihre E-Mail und folgen Sie den Anweisungen, um Ihre E-Mail-Adresse zu zertifizieren. Wenn Sie weitere Fragen haben, stehe ich Ihnen gerne zur Verfügung.',
     'email_exists' => 'Diese E-Mail-Adresse ist bereits in unserem System hinterlegt. Sollte dieses Konto nicht Ihnen gehören, wenden Sie sich bitte an unseren Kundenservice.',
-    'email_verify' => 'Herzlichen Glückwunsch! Sie haben Ihren Account erfolgreich zertifiziert.',
+    'email_verify' => 'Herzlichen Glückwunsch! Sie haben Ihren Account erfolgreich verifiziert.',
+    'email_verified' => 'Ihre E-Mail-Adresse ist nicht verifiziert.',
     'logout' => 'Sie haben sich erfolgreich abgemeldet!',
 
-    'verify_subject' => 'Account Verifizierung | Automatisch generierte E-Mail',
-    'verify_text' => 'Verifizierieren Sie Ihren Account. Innerhalb der nächsten 15 Minuten erlischt Ihr Zugang:',
-    'verify_pin' => 'Ihr persönlicher Pinncode lautet:',
+    'verify_subject' => 'Account-Verifizierung | Automatisch generierte E-Mail',
+    'verify_text' => 'Verifizieren Sie Ihren Account. Innerhalb der nächsten 15 Minuten erlischt Ihr Zugang.',
+    'verify_pin' => 'Ihr persönlicher PIN-Code lautet:',
     'verify_address' => 'Verifizierungsadresse:',
-    'verify_warn' => 'Wenn Sie kein Konto möchten oder keine Registrierung angefordert haben, können Sie diese E-Mail ignorieren und löschen.',
-
+    'verify_warn' => 'Wenn Sie kein Konto wünschen oder keine Registrierung angefordert haben, können Sie diese E-Mail ignorieren und löschen.',
 ];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Auth\VerifyEmailRequest;
 use App\Mail\Auth\VerifyEmailMail;
 use App\Models\User;
 use App\Models\Auth\VerifyEmailToken;
@@ -11,10 +12,8 @@ use Exception;
 use App\Traits\Api\HasApiUrlCodeTrait;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Notifications\VerifyEmail;
-use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -59,7 +58,7 @@ class AuthController extends Controller
                 if ($verify) {
 
                     $logo = $this->base64Logo();
-                    Mail::to($user->email)->send(new VerifyEmailMail($verify->id, url('email/verify/'), $urlCode, $accessToken, $logo));
+                    Mail::to($user->email)->send(new VerifyEmailMail(route('verify', [$urlCode]), $accessToken, $logo));
 
                     return response()->json([
                         'token' => $token,
@@ -87,6 +86,73 @@ class AuthController extends Controller
     }
 
     /**
+     * Laravel Passport User Verify Email API Function
+     * 
+     */
+    public function verifyEmail(VerifyEmailRequest $request, $code)
+    {
+        try {
+
+            $tokenColl = DB::table('verify_email_tokens')->where('url', $code);
+            $expireToken = $tokenColl->first();
+
+            if (!$expireToken) {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => __('auth.auth_url'),
+                ], 401);
+            }
+
+            $user = User::findOrFail($expireToken->user_id);
+
+            if (!$user) {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => __('auth.auth_user_exist'),
+                ], 401);
+            }
+
+            if ((int) $request->pin !== $expireToken->token) {
+
+                return response()->json([
+                    'status' => false,
+                    'message' => __('auth.auth_pin'),
+                ], 401);
+            }
+
+            if (Carbon::now()->diffInMinutes($expireToken->created_at) > 10) {
+                $user->delete();
+                $tokenColl->delete();
+
+                return response()->json([
+                    'status' => false,
+                    'message' => __('auth.auth_token'),
+                ], 401);
+            }
+
+            $tokenColl->delete();
+
+            $user->update([
+                'email_verified_at' => Carbon::now(),
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => __('auth.email_verify'),
+            ], 200);
+
+        } catch (Exception $e) {
+
+            return response([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+    }
+
+    /**
      * Laravel Passport User Login  API Function
      * 
      */
@@ -94,6 +160,13 @@ class AuthController extends Controller
     {
         try {
             $user = User::where('email', $request->input('email'))->first();
+
+            if (Carbon::now()->diffInMinutes($user->email_verified_at) === 0) {
+                return response()->json([
+                    'status' => true,
+                    'message' => __('auth.unauth_mail'),
+                ], 401);
+            }
 
             if ($user) {
                 if (Hash::check($request->password, $user->password)) {
@@ -112,43 +185,6 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => __('passwords.user'),
             ], 422);
-        } catch (Exception $e) {
-            return response([
-                'status' => false,
-                'message' => $e->getMessage(),
-            ], 400);
-        }
-    }
-
-    /**
-     * Laravel Passport User Logout  API Function
-     * 
-     */
-    public function verifyEmail(Request $request, $id, $code)
-    {
-        try {
-            // php artisan make:request Auth/VerifyEmailRequest
-
-            return response()->json([
-                'request' => $request->all(),
-            ]);
-            
-
-            // return response()->json([
-            //     'check' => Carbon::now()->diffInMinutes() > 10
-            // ]);
-
-            // VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            //     return (new MailMessage)
-            //         ->subject()
-            //         ->line(__('auth.verify_line'))
-            //         ->action(__('auth.verify_action'), $url);
-            // });
-
-            return response()->json([
-                'status' => true,
-                'message' => __('auth.logout'),
-            ], 200);
         } catch (Exception $e) {
             return response([
                 'status' => false,

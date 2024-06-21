@@ -231,7 +231,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
     <!--[if !mso]>-->
     <td class=t10 style="width:350px;">
     <!--<![endif]-->
-    <p class=t9 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:500;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;direction:ltr;color:#666666;text-align:center;mso-line-height-rule:exactly;mso-text-raise:3px;">{{  __('auth.verify_address') }}<br /><a href="{{ $url }}/{{ $id }}/{{ $urlCode }}">{{ $url }}/{{ $id }}/{{ $urlCode }}</a></p></td>
+    <p class=t9 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:500;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;direction:ltr;color:#666666;text-align:center;mso-line-height-rule:exactly;mso-text-raise:3px;">{{  __('auth.verify_address') }}<br /><a href="{{ $url }}">{{ $url }}</a></p></td>
     </tr></table>
 
 <table class=t19 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;Margin-top:60px;">
