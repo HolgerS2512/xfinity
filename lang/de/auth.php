@@ -27,6 +27,7 @@ return [
     'login' => 'Anmeldung Erfolgreich',
     'register' => 'Bitte überprüfen Sie Ihre E-Mail und folgen Sie den Anweisungen, um Ihre E-Mail-Adresse zu zertifizieren. Wenn Sie weitere Fragen haben, stehe ich Ihnen gerne zur Verfügung.',
     'email_exists' => 'Diese E-Mail-Adresse ist bereits in unserem System hinterlegt. Sollte dieses Konto nicht Ihnen gehören, wenden Sie sich bitte an unseren Kundenservice.',
+    'email_not_exists' => 'Diese E-Mail-Adresse ist nicht in unserem System hinterlegt. Sollten Ihre Kontodaten verloren gegangen sein, wenden Sie sich bitte an unseren Kundenservice.',
     'email_verify' => 'Herzlichen Glückwunsch! Sie haben Ihren Account erfolgreich verifiziert.',
     'email_verified' => 'Ihre E-Mail-Adresse ist nicht verifiziert.',
     'logout' => 'Sie haben sich erfolgreich abgemeldet!',
@@ -36,4 +37,16 @@ return [
     'verify_pin' => 'Ihr persönlicher PIN-Code lautet:',
     'verify_address' => 'Verifizierungsadresse:',
     'verify_warn' => 'Wenn Sie kein Konto wünschen oder keine Registrierung angefordert haben, können Sie diese E-Mail ignorieren und löschen.',
+
+    'pwd_not_match' => 'Das eingegebene Passwort ist nicht korrekt.',
+    'pwd_change' => 'Bitte überprüfen Sie Ihre E-Mails und tragen Sie den entsprechenden PIN-Code ein, um die Aktion erfolgreich abzuschließen.',
+    'pwd_new' => 'Sie haben Ihr Passwort erfolgreich aktualisiert.',
+    'pwd_third_match' => 'Ihr neues Passwort darf nicht mit dem alten Passwort übereinstimmen. Bitte vergeben Sie ein neues Passwort.',
+    'pwd_forget' => '',
+    'pwd_reset' => 'Sie haben Ihr Passwort erfolgreich zurückgesetzt.',
+    'token_not_match' => 'Ihr PIN-Code stimmt nicht überein. Bitte überprüfen Sie Ihre Eingaben.',
+
+    'change_subject' => 'Passwortänderung | Automatisch generierte E-Mail',
+    'change_text' => 'Verifizieren Sie Ihr Konto, um Ihr neues Passwort zu aktivieren.',
+    'change_warn' => 'Wenn Sie keine Passwortänderung angefordert haben, sollten Sie diese E-Mail ignorieren und löschen. Sollte dies häufiger vorkommen, melden Sie es bitte dem Kundendienst. Gegebenenfalls sind Änderungen Ihrer Login-Daten empfehlenswert, um den Schutz zu erhöhen und das Risiko von Angriffen Dritter zu minimieren.',
 ];

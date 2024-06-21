@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\VerifyEmailRequest;
@@ -10,8 +12,8 @@ use App\Models\User;
 use App\Models\Auth\VerifyEmailToken;
 use Exception;
 use App\Traits\Api\HasApiUrlCodeTrait;
+use App\Traits\Favicon\Base64Trait;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -57,13 +59,8 @@ class AuthController extends Controller
 
                 if ($verify) {
 
-                    $logo = $this->base64Logo();
+                    $logo = Base64Trait::getEmailLogo();
                     Mail::to($user->email)->send(new VerifyEmailMail(route('verify', [$urlCode]), $accessToken, $logo));
-
-                    return response()->json([
-                        'token' => $token,
-                        'url' => $urlCode,
-                    ], 200);
 
                     return response()->json([
                         'status' => true,
@@ -213,14 +210,5 @@ class AuthController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
-    }
-
-    /**
-     * Returned the logo as base64 string.
-     * 
-     */
-    public function base64Logo()
-    {
-        return 'data:image/' . 'png' . ';base64,' . base64_encode(file_get_contents(public_path('favicons/logo.png')));
     }
 }

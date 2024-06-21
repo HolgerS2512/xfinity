@@ -27,6 +27,7 @@ return [
     'login' => 'Successfully Login',
     'register' => 'Please check your email and follow the instructions to certify your email address. If you have any further questions, I am happy to help.',
     'email_exists' => 'This email address is already stored in our system. If this account does not belong to you, please contact our customer service.',
+    'email_not_exists' => 'This email address is not stored in our system. If your account details are lost, please contact our customer service.',
     'email_verify' => 'Congratulations! You have successfully certified your account.',
     'email_verified' => 'Your email address is not verified.',
     'logout' => 'You have been successfully logged out!',
@@ -36,5 +37,8 @@ return [
     'verify_pin' => 'Your personal PIN code is:',
     'verify_address' => 'Verification address:',
     'verify_warn' => 'If you do not want an account or have not requested registration, you can ignore and delete this email.',
+
+    'forget_pwd' => '',
+    'reset_pwd' => 'You have successfully reset your password.',
 
 ];
