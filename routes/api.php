@@ -24,14 +24,13 @@ Route::middleware(['throttle:3,1'])->group(function () {
 
     Route::post('/login', [AuthController::class, 'login']);
 
-    Route::get('/login', function () {
+    Route::get('/*', function () {
         return response()->json([
             'status' => false,
             'message' => __('auth.unauthenticated'),
-        ], 404);
+        ], 403);
     })->name('login');
 });
-
 
 // Route::controller(OrderController::class)->group(function () {
 //     Route::get('/orders/{id}', 'show');
@@ -57,11 +56,11 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::post('/update/password', [PasswordController::class, 'update']);
 
     Route::get('/dashboard', function () {
-        return 'Projects Fetch Successfully!';
+        return 'Projects Dashboard Successfully!';
     });
 
     Route::get('/account', function () {
-        return 'Projects Fetch Successfully!';
+        return 'Projects Account Successfully!';
     });
 });
 
