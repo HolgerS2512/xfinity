@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('password_resets', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
-            $table->string('token');
+            $table->integer('token', 5);
+            $table->string('url', 50)->nullable();
             $table->timestamp('created_at')->nullable();
         });
     }

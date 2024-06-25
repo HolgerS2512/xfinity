@@ -29,7 +29,7 @@ class RegisterRequest extends FormRequest
             'firstname' => 'required|string|max:60|min:2',
             'lastname' => 'required|string|max:40|min:2',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8|max:255|confirmed'
+            'password' => 'required|string|min:8|max:255|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
         ];
     }
 
@@ -38,6 +38,6 @@ class RegisterRequest extends FormRequest
         throw new HttpResponseException(response()->json([
             'status'    => false,
             'message'   => $validator->errors()
-        ]));
+        ], 400));
     }
 }

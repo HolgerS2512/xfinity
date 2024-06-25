@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ForgetPasswordMail extends Mailable
+class RegisterSuccessMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,7 +19,7 @@ class ForgetPasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $url, public $accessToken, public $logo)
+    public function __construct(public $logo)
     {
         //
     }
@@ -33,7 +33,7 @@ class ForgetPasswordMail extends Mailable
     {
         return new Envelope(
             from: new Address('support@xFinity-software.com', 'Support'),
-            subject: __('auth.forget_subject'),
+            subject: __('auth.register_completed'),
         );
     }
 
@@ -45,10 +45,8 @@ class ForgetPasswordMail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'mail.forget_password',
+            view: 'mail.welcome',
             with: [
-                'token' => $this->accessToken,
-                'url' => $this->url,
                 'logo' => $this->logo,
             ],
         );

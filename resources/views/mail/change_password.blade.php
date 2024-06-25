@@ -272,7 +272,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t28 style="width:350px;">
 <!--<![endif]-->
-<p class=t27 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">xFinity Software UG<br />Weißdornstraße 19<br />01257 Dresden<br /><br />{{ url('/') }}<br />+49 1748 895 181</p></td>
+<p class=t27 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.name') }}<br />{{ __('company.street') }} {{ __('company.hsn') }}<br />{{ __('company.zip') }} {{ __('company.city') }}<br /><br />{{ url('/') }}<br />{{ __('company.email') }}<br />{{ __('company.mobile') }}</p></td>
 </tr></table>
 </td></tr><tr><td><div class=t30 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
 <!--[if mso]>
@@ -288,7 +288,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t32 style="width:350px;">
 <!--<![endif]-->
-<p class=t31 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">xFinity Software All rights reserved</p></td>
+<p class=t31 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.rights') }}</p></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table>
