@@ -23,6 +23,13 @@ Route::middleware(['throttle:3,1'])->group(function () {
         ->name('reset_password');
 
     Route::post('/login', [AuthController::class, 'login']);
+
+    Route::get('/login', function () {
+        return response()->json([
+            'status' => false,
+            'message' => __('auth.unauthenticated'),
+        ], 404);
+    })->name('login');
 });
 
 
@@ -50,6 +57,10 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::post('/update/password', [PasswordController::class, 'update']);
 
     Route::get('/dashboard', function () {
+        return 'Projects Fetch Successfully!';
+    });
+
+    Route::get('/account', function () {
         return 'Projects Fetch Successfully!';
     });
 });

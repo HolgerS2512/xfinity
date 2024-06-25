@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AuthController extends Controller
 {
@@ -97,7 +98,7 @@ class AuthController extends Controller
             ], 500);
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
@@ -172,7 +173,7 @@ class AuthController extends Controller
 
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
@@ -192,7 +193,7 @@ class AuthController extends Controller
 
             if (Carbon::now()->diffInMinutes($user->email_verified_at) === 0) {
                 return response()->json([
-                    'status' => true,
+                    'status' => false,
                     'message' => __('auth.unauth_mail'),
                 ], 408);
             }
@@ -216,7 +217,8 @@ class AuthController extends Controller
                 'message' => __('passwords.user'),
             ], 422);
         } catch (Exception $e) {
-            return response([
+
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);

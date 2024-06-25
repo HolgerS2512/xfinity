@@ -118,7 +118,7 @@ class PasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
@@ -204,7 +204,7 @@ class PasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
@@ -261,7 +261,7 @@ class PasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
@@ -333,7 +333,7 @@ class PasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
 
-            return response([
+            return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
             ], 500);
