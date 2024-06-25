@@ -66,7 +66,7 @@ class PasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => (object) ['password' => [__('auth.pwd_third_match')]],
+                    'message' => (object) ['password' => [__('passwords.third_match')]],
                 ], 401);
             }
 
@@ -75,7 +75,7 @@ class PasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.pwd_not_match'),
+                    'message' => __('passwords.not_match'),
                 ], 401);
             }
 
@@ -114,7 +114,7 @@ class PasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.pwd_change'),
+                'message' => __('passwords.change'),
             ], 200);
         } catch (Exception $e) {
 
@@ -152,7 +152,7 @@ class PasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => (object) ['password' => [__('auth.pwd_third_match')]],
+                    'message' => (object) ['password' => [__('passwords.third_match')]],
                 ], 401);
             }
 
@@ -161,7 +161,7 @@ class PasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.pwd_not_match'),
+                    'message' => __('passwords.not_match'),
                 ], 401);
             }
 
@@ -200,7 +200,7 @@ class PasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.pwd_new'),
+                'message' => __('passwords.reset'),
             ], 200);
         } catch (Exception $e) {
 
@@ -256,7 +256,7 @@ class PasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.pwd_forget'),
+                'message' => __('passwords.forget'),
                 'url' => $urlCode,
             ], 200);
         } catch (Exception $e) {
@@ -329,7 +329,7 @@ class PasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.pwd_reset'),
+                'message' => __('passwords.updated'),
             ], 200);
         } catch (Exception $e) {
 

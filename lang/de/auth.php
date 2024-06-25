@@ -47,12 +47,6 @@ return [
     'verify_address' => 'Verifizierungsadresse:',
     'verify_warn' => 'Wenn Sie kein Konto wünschen oder keine Registrierung angefordert haben, können Sie diese E-Mail ignorieren und löschen. Sollte dies wiederholt vorkommen, kontaktieren Sie umgehend den Kundendienst.',
 
-    'pwd_not_match' => 'Das eingegebene Passwort ist nicht korrekt.',
-    'pwd_change' => 'Bitte überprüfen Sie Ihre E-Mails und tragen Sie den entsprechenden PIN-Code ein, um die Aktion erfolgreich abzuschließen.',
-    'pwd_new' => 'Sie haben Ihr Passwort erfolgreich aktualisiert. Bitte melden Sie sich erneut an.',
-    'pwd_third_match' => 'Ihr neues Passwort darf nicht mit dem alten Passwort übereinstimmen. Bitte vergeben Sie ein neues Passwort.',
-    'pwd_forget' => 'Bitte überprüfen Sie Ihre E-Mails und folgen Sie den Anweisungen, um die Aktion erfolgreich abzuschließen.',
-    'pwd_reset' => 'Sie haben Ihr Passwort erfolgreich zurückgesetzt.',
     'token_not_match' => 'Ihr PIN-Code stimmt nicht überein. Bitte überprüfen Sie Ihre Eingaben.',
 
     'change_subject' => 'Passwortänderung | Automatisch generierte E-Mail',

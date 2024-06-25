@@ -47,12 +47,6 @@ return [
     'verify_address' => 'Verification address:',
     'verify_warn' => 'If you do not want an account or have not requested registration, you can ignore and delete this email. If this happens repeatedly, contact customer service immediately.',
 
-    'pwd_not_match' => 'The password entered is incorrect.',
-    'pwd_change' => 'Please check your emails and enter the corresponding PIN code to successfully complete the action.',
-    'pwd_new' => 'You have successfully updated your password. Please log in again.',
-    'pwd_third_match' => 'Your new password must not be the same as your old password. Please choose a new password.',
-    'pwd_forget' => 'Please check your emails and follow the instructions to successfully complete the action.',
-    'pwd_reset' => 'You have successfully reset your password.',
     'token_not_match' => 'Your PIN code does not match. Please check your entries.',
 
     'change_subject' => 'Password change | Automatically generated email',
