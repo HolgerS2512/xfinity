@@ -2,6 +2,7 @@
 
 namespace App\Mail\Auth;
 
+use App\Mail\CustomMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class VerifyEmailMail extends Mailable
+class VerifyEmailMail extends CustomMail
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +20,9 @@ class VerifyEmailMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $url, public $accessToken, public $logo)
+    public function __construct(public $url, public $accessToken)
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -32,8 +33,8 @@ class VerifyEmailMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('support@xFinity-software.com', 'Support'),
-            subject: __('auth.verify_subject'),
+            from: new Address('support@xFinity-software.com', 'xFinity Software'),
+            subject: __('mail.greeting'),
         );
     }
 
@@ -49,7 +50,7 @@ class VerifyEmailMail extends Mailable
             with: [
                 'url' => $this->url,
                 'token' => $this->accessToken,
-                'logo' => $this->logo,
+                'logo' => $this->logoBase64,
             ],
         );
     }

@@ -2,16 +2,22 @@
 
 namespace App\Models\Auth;
 
-class PersonalAccessUrlCodeFactory
+class PersonalAccessCodeFactory
 {
     /**
      * The current access url code for authentication.
      *
-     * @var $urlCode
+     * @var string $url
      */
-    public $urlCode;
+    public $url;
 
-    
+    /**
+     * The current access url code for authentication.
+     *
+     * @var int $token
+     */
+    public $token;
+
     /**
      * Set @var $urlCode.
      *
@@ -31,6 +37,8 @@ class PersonalAccessUrlCodeFactory
             $result = implode([$result, str_replace($chars, '', password_hash(implode($array), PASSWORD_BCRYPT))]);
         }
 
-        $this->urlCode = substr($result, 7, $length);
+        $this->url = substr($result, 7, $length);
+
+        $this->token = rand(10000, 100000);
     }
 }

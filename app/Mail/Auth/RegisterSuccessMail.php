@@ -2,6 +2,7 @@
 
 namespace App\Mail\Auth;
 
+use App\Mail\CustomMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class RegisterSuccessMail extends Mailable
+class RegisterSuccessMail extends CustomMail
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +20,9 @@ class RegisterSuccessMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $logo)
+    public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -32,8 +33,8 @@ class RegisterSuccessMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('support@xFinity-software.com', 'Support'),
-            subject: __('auth.register_completed'),
+            from: new Address('support@xFinity-software.com', 'xFinity Software'),
+            subject: __('mail.register_success'),
         );
     }
 
@@ -47,7 +48,7 @@ class RegisterSuccessMail extends Mailable
         return new Content(
             view: 'mail.welcome',
             with: [
-                'logo' => $this->logo,
+                'logo' => $this->logoBase64,
             ],
         );
     }

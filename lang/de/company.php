@@ -18,9 +18,16 @@ return [
   'hsn' => '19',
   'zip' => '01257',
   'city' => 'Dresden',
+  'country' => 'Deutschland',
+
   'mobile' => '+49 1748 895 181',
+  'tel' => '+491748895181',
   'email' => 'kontakt@xFinity.de',
-  'web' => 'xFinity Software UG',
-  'rights' => 'xFinity Software All rights reserved',
+  'web' => 'xFinity-Software.com',
+
+  'rights' => 'xFinity Software Alle Rechte vorbehalten',
+
+  'one_row_address' => 'xFinity Software UG, Weißdornstraße 19, 01257 Dresden',
+  'privacy' => 'Datenschutzrichtlinie',
 
 ];

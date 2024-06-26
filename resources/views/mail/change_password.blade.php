@@ -1,7 +1,11 @@
+<!--
+* This email was built using Tabular.
+* For more information, visit https://tabular.email
+-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
 <head>
-<title>{{ __('auth.change_subject') }}</title>
+<title></title>
 <meta charset="UTF-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <!--[if !mso]>-->
@@ -107,16 +111,16 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 </style>
 <style type="text/css">
 @media (min-width: 481px) {
-h1,img,p{margin:0;Margin:0}img,p{font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h1{font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2,h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;font-weight:400;font-style:normal;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{line-height:30px;font-size:24px}h3{line-height:26px;font-size:20px}.t25,.t38{width:600px!important}
+h1,img,p{margin:0;Margin:0}.t18,.t4{mso-text-raise:2px!important}.t18,.t27{font-weight:500!important}img,p{font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h1{font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2,h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;font-weight:400;font-style:normal;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{line-height:30px;font-size:24px}h3{line-height:26px;font-size:20px}.t35,.t66{width:600px!important}.t62{padding-bottom:40px!important}.t37,.t41,.t47,.t51,.t54{font-size:12px!important}.t23,.t40{mso-line-height-alt:20px!important;line-height:20px!important}.t5{mso-line-height-alt:55px!important;line-height:55px!important}.t8{mso-line-height-alt:20px!important;line-height:20px!important;display:block!important}.t4{line-height:30px!important}.t2{width:40px!important}.t26{mso-line-height-alt:80px!important;line-height:80px!important}.t22{color:#bbb!important}.t10,.t19,.t28{mso-line-height-alt:0!important;line-height:0!important;display:none!important}.t18{line-height:20px!important;font-size:15px!important}.t61{mso-line-height-alt:60px!important;line-height:60px!important}.t27,.t29{line-height:20px!important}.t59{border-radius:14px!important;overflow:hidden!important}.t44,.t57{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif!important;font-size:12px!important}.t29{padding-top:0!important;padding-bottom:80px!important;border-top:0!important}.t27{font-size:16px!important}.t14{mso-line-height-alt:40px!important;line-height:40px!important}
 }
 </style>
-<style type="text/css" media="screen and (min-width:481px)">.moz-text-html img,.moz-text-html p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html .t25,.moz-text-html .t38{width:600px!important}</style>
+<style type="text/css" media="screen and (min-width:481px)">.moz-text-html img,.moz-text-html p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}.moz-text-html .t66{width:600px!important}.moz-text-html .t62{padding-bottom:40px!important}.moz-text-html .t41{font-size:12px!important}.moz-text-html .t40{mso-line-height-alt:20px!important;line-height:20px!important}.moz-text-html .t37{font-size:12px!important}.moz-text-html .t35{width:600px!important}.moz-text-html .t5{mso-line-height-alt:55px!important;line-height:55px!important}.moz-text-html .t8{mso-line-height-alt:20px!important;line-height:20px!important;display:block!important}.moz-text-html .t4{line-height:30px!important;mso-text-raise:2px!important}.moz-text-html .t2{width:40px!important}.moz-text-html .t23{mso-line-height-alt:20px!important;line-height:20px!important}.moz-text-html .t26{mso-line-height-alt:80px!important;line-height:80px!important}.moz-text-html .t22{color:#bbb!important}.moz-text-html .t10,.moz-text-html .t19{mso-line-height-alt:0!important;line-height:0!important;display:none!important}.moz-text-html .t18{line-height:20px!important;font-weight:500!important;font-size:15px!important;mso-text-raise:2px!important}.moz-text-html .t61{mso-line-height-alt:60px!important;line-height:60px!important}.moz-text-html .t59{border-radius:14px!important;overflow:hidden!important}.moz-text-html .t57{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif!important;font-size:12px!important}.moz-text-html .t47{font-size:12px!important}.moz-text-html .t44{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif!important;font-size:12px!important}.moz-text-html .t51,.moz-text-html .t54{font-size:12px!important}.moz-text-html .t28{mso-line-height-alt:0!important;line-height:0!important;display:none!important}.moz-text-html .t29{padding-top:0!important;padding-bottom:80px!important;border-top:0!important;line-height:20px!important}.moz-text-html .t27{line-height:20px!important;font-weight:500!important;font-size:16px!important}.moz-text-html .t14{mso-line-height-alt:40px!important;line-height:40px!important}</style>
 <!--[if !mso]>-->
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&amp;family=Fira+Sans:wght@400&amp;display=swap" rel="stylesheet" type="text/css" />
 <!--<![endif]-->
 <!--[if mso]>
 <style type="text/css">
-img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}
+img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:22px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h1{margin:0;Margin:0;font-family:Roboto,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:28px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h2{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}h3{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;letter-spacing:0;direction:ltr;color:#333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px}td.t62{padding-bottom:40px !important}p.t41{font-size:12px !important}div.t40{mso-line-height-alt:20px !important;line-height:20px !important}p.t37{font-size:12px !important}div.t5{mso-line-height-alt:55px !important;line-height:55px !important}div.t8{mso-line-height-alt:20px !important;line-height:20px !important;display:block !important}h1.t4{line-height:30px !important;mso-text-raise:2px !important}div.t23{mso-line-height-alt:20px !important;line-height:20px !important}div.t26{mso-line-height-alt:80px !important;line-height:80px !important}p.t22{color:#bbb !important}div.t10,div.t19{mso-line-height-alt:0 !important;line-height:0 !important;display:none !important}p.t18{line-height:20px !important;font-weight:500 !important;font-size:15px !important;mso-text-raise:2px !important}div.t61{mso-line-height-alt:60px !important;line-height:60px !important}td.t59{border-radius:14px !important;overflow:hidden !important}a.t57{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif !important;font-size:12px !important}p.t47{font-size:12px !important}p.t44{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif !important;font-size:12px !important}p.t51,p.t54{font-size:12px !important}div.t28{mso-line-height-alt:0 !important;line-height:0 !important;display:none !important}td.t29{padding-top:0 !important;padding-bottom:80px !important;border-top:0 !important;line-height:20px !important}a.t27{line-height:20px !important;font-weight:500 !important;font-size:16px !important}div.t14{mso-line-height-alt:40px !important;line-height:40px !important}
 </style>
 <![endif]-->
 <!--[if mso]>
@@ -128,167 +132,108 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 </xml>
 <![endif]-->
 </head>
-<body id=body class=t42 style="min-width:100%;Margin:0px;padding:0px;background-color:#F0F0F0;"><div class=t41 style="background-color:#F0F0F0;"><table role=presentation width=100% cellpadding=0 cellspacing=0 border=0 align=center><tr><td class=t40 style="font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#F0F0F0;" valign=top align=center>
-<!--[if mso]>
-<v:background xmlns:v="urn:schemas-microsoft-com:vml" fill="true" stroke="false">
-<v:fill color=#F0F0F0/>
-</v:background>
-<![endif]-->
-<table role=presentation width=100% cellpadding=0 cellspacing=0 border=0 align=center id=innerTable><tr><td>
-<!--[if mso]>
-<table class=t26 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
-<table class=t26 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
+<body id=body class=t70 style="min-width:100%;Margin:0px;padding:0px;background-color:#FFFFFF;"><div class=t69 style="background-color:#FFFFFF;"><table role=presentation width=100% cellpadding=0 cellspacing=0 border=0 align=center><tr><td class=t68 style="font-size:0;line-height:0;mso-line-height-rule:exactly;background-color:#FFFFFF;" valign=top align=center><table role=presentation width=100% cellpadding=0 cellspacing=0 border=0 align=center id=innerTable><tr><td align=center>
+<table class=t36 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=600 class=t25 style="background-color:#FFFFFF;">
+<td width=600 class=t35 style="background-color:#FFFFFF;">
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t25 style="background-color:#FFFFFF;width:480px;">
+<td class=t35 style="background-color:#FFFFFF;width:480px;">
 <!--<![endif]-->
-<div class=t24 style="display:inline-table;width:100%;text-align:center;vertical-align:top;">
+<div class=t34 style="display:inline-table;width:100%;text-align:center;vertical-align:top;">
 <!--[if mso]>
 <table role=presentation cellpadding=0 cellspacing=0 align=center valign=top width=600><tr><td width=600 valign=top><![endif]-->
-<div class=t23 style="display:inline-table;text-align:initial;vertical-align:inherit;width:100%;max-width:600px;">
-<table role=presentation width=100% cellpadding=0 cellspacing=0 class=t22><tr>
-<td class=t21><table role=presentation width=100% cellpadding=0 cellspacing=0><tr><td><div class=t1 style="mso-line-height-rule:exactly;mso-line-height-alt:125px;line-height:125px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t3 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
+<div class=t33 style="display:inline-table;text-align:initial;vertical-align:inherit;width:100%;max-width:600px;">
+<table role=presentation width=100% cellpadding=0 cellspacing=0 class=t32 style="width:100%!important;"><tr>
+<td class=t31><table role=presentation width=100% cellpadding=0 cellspacing=0 style="width:100%!important;"><tr><td><div class=t1 style="mso-line-height-rule:exactly;mso-line-height-alt:40px;line-height:40px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
 <table class=t3 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
 <tr>
 <!--[if mso]>
 <td width=40 class=t2>
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t2 style="width:60px;">
+<td class=t2 style="width:52px;">
 <!--<![endif]-->
-<div style="font-size:0px;"><img class=t0 style="display:block;border:0;height:auto;width:100%;Margin:0;max-width:100%;" width=60 height=60 alt="" src="{{ $logo }}"/></div></td>
+<div style="font-size:0px;"><img class=t0 style="display:block;border:0;height:auto;width:100%;Margin:0;max-width:100%;" width=40 height=39.34375 alt="" src="{{ $logo }}"/></div></td>
 </tr></table>
-</td></tr><tr><td><div class=t5 style="mso-line-height-rule:exactly;mso-line-height-alt:55px;line-height:55px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t7 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
+</td></tr><tr><td><div class=t5 style="mso-line-height-rule:exactly;mso-line-height-alt:57px;line-height:57px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
 <table class=t7 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
 <tr>
 <!--[if mso]>
-<td width=315 class=t6>
+<td width=320 class=t6>
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t6 style="max-width:315px;width:90%;">
+<td class=t6 style="width:320px;">
 <!--<![endif]-->
-<h1 class=t4 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:36px;font-weight:700;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:center;mso-line-height-rule:exactly;mso-text-raise:1px;">{{ __('auth.change_text') }}</h1></td>
+<h1 class=t4 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.password') }}</h1></td>
 </tr></table>
-</td></tr><tr><td><div class=t8 style="mso-line-height-rule:exactly;mso-line-height-alt:30px;line-height:30px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t11 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
+</td></tr><tr><td><div class=t8 style="mso-line-height-rule:exactly;font-size:1px;display:none;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->
-<table class=t11 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr><td><div class=t10 style="mso-line-height-rule:exactly;mso-line-height-alt:17px;line-height:17px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
 <!--<![endif]-->
+<tr><td align=center>
+<table class=t12 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=350 class=t10>
+<td width=320 class=t11>
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t10 style="width:350px;">
+<td class=t11 style="width:320px;">
 <!--<![endif]-->
-<p class=t9 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:30px;font-weight:500;font-style:normal;font-size:20px;text-decoration:none;text-transform:none;direction:ltr;color:#666666;text-align:center;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('auth.verify_pin') }}</p></td>
+<p class=t9 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:16px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:1px;">{{ __('mail.pin') }}</p></td>
 </tr></table>
-</td></tr><tr><td><div class=t13 style="mso-line-height-rule:exactly;mso-line-height-alt:40px;line-height:40px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t15 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
-<table class=t15 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
+</td></tr><tr><td><div class=t14 style="mso-line-height-rule:exactly;mso-line-height-alt:57px;line-height:57px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
+<table class=t16 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=308 class=t14 style="background-color:#0055FF;overflow:hidden;text-align:center;line-height:58px;mso-line-height-rule:exactly;mso-text-raise:11px;border-radius:14px 14px 14px 14px;">
+<td width=320 class=t15 style="border-bottom:1px solid #BBBBBB;border-top:1px solid #BBBBBB;text-align:center;line-height:40px;mso-line-height-rule:exactly;mso-text-raise:1px;padding:40px 0 40px 0;">
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t14 style="background-color:#0055FF;overflow:hidden;width:308px;text-align:center;line-height:58px;mso-line-height-rule:exactly;mso-text-raise:11px;border-radius:14px 14px 14px 14px;">
+<td class=t15 style="border-bottom:1px solid #BBBBBB;border-top:1px solid #BBBBBB;width:320px;text-align:center;line-height:40px;mso-line-height-rule:exactly;mso-text-raise:1px;padding:40px 0 40px 0;">
 <!--<![endif]-->
-<div class=t12 style="display:block;margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:58px;font-weight:600;font-style:normal;font-size:16px;text-decoration:none;direction:ltr;color:#FFFFFF;text-align:center;mso-line-height-rule:exactly;mso-text-raise:11px;">{{ $token }}</div></td>
+<span class=t13 style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:40px;font-weight:400;font-style:normal;font-size:36px;text-decoration:none;direction:ltr;color:#333;text-align:center;mso-line-height-rule:exactly;mso-text-raise:1px;">{{ $token }}</span></td>
 </tr></table>
-</td></tr><tr><td><div class=t16 style="mso-line-height-rule:exactly;mso-line-height-alt:60px;line-height:60px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t19 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
+</td></tr><tr><td><div class=t17 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
+<!--[if !mso]>-->
+<tr><td><div class=t19 style="mso-line-height-rule:exactly;mso-line-height-alt:17px;line-height:17px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
+<!--<![endif]-->
+<tr><td align=center>
+<table class=t21 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=350 class=t18>
+<td width=320 class=t20>
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t18 style="width:350px;padding: 0 20px;">
+<td class=t20 style="width:320px;">
 <!--<![endif]-->
-<p class=t17 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:25px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('auth.change_warn') }}</p></td>
+<p class=t18 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.expired_15') }}</p></td>
 </tr></table>
-</td></tr><tr><td><div class=t20 style="mso-line-height-rule:exactly;mso-line-height-alt:125px;line-height:125px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr></table></td>
-</tr></table>
-</div>
-<!--[if mso]>
-</td>
-</tr></table>
-<![endif]-->
-</div></td>
-</tr></table>
-</td></tr><tr><td>
-<!--[if mso]>
-<table class=t39 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
-<table class=t39 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
+</td></tr><tr><td><div class=t23 style="mso-line-height-rule:exactly;mso-line-height-alt:37px;line-height:37px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
+<table class=t25 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=600 class=t38>
+<td width=320 class=t24>
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t38 style="width:480px;">
+<td class=t24 style="width:320px;">
 <!--<![endif]-->
-<div class=t37 style="display:inline-table;width:100%;text-align:center;vertical-align:top;">
-<!--[if mso]>
-<table role=presentation cellpadding=0 cellspacing=0 align=center valign=top width=600><tr><td width=600 valign=top><![endif]-->
-<div class=t36 style="display:inline-table;text-align:initial;vertical-align:inherit;width:100%;max-width:600px;">
-<table role=presentation width=100% cellpadding=0 cellspacing=0 class=t35><tr>
-<td class=t34 style="padding:40px 0 40px 0;"><table role=presentation width=100% cellpadding=0 cellspacing=0><tr><td>
-<!--[if mso]>
-<table class=t29 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
-<!--[if !mso]>-->
-<table class=t29 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
-<!--<![endif]-->
-<tr>
-<!--[if mso]>
-<td width=350 class=t28>
-<![endif]-->
-<!--[if !mso]>-->
-<td class=t28 style="width:350px;">
-<!--<![endif]-->
-<p class=t27 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.name') }}<br />{{ __('company.street') }} {{ __('company.hsn') }}<br />{{ __('company.zip') }} {{ __('company.city') }}<br /><br />{{ url('/') }}<br />{{ __('company.email') }}<br />{{ __('company.mobile') }}</p></td>
+<p class=t22 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:16px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#666666;text-align:left;mso-line-height-rule:exactly;mso-text-raise:1px;">{{ __('mail.code_ignore') }}</p></td>
 </tr></table>
-</td></tr><tr><td><div class=t30 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td>
-<!--[if mso]>
-<table class=t33 role=presentation cellpadding=0 cellspacing=0 align=center>
-<![endif]-->
+</td></tr><tr><td><div class=t26 style="mso-line-height-rule:exactly;mso-line-height-alt:54px;line-height:54px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->
-<table class=t33 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr><td><div class=t28 style="mso-line-height-rule:exactly;mso-line-height-alt:53px;line-height:53px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
 <!--<![endif]-->
+<tr><td align=center>
+<table class=t30 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
 <tr>
 <!--[if mso]>
-<td width=350 class=t32>
+<td width=320 class=t29 style="border-bottom:1px solid #BBBBBB;border-top:1px solid #BBBBBB;text-align:left;line-height:26px;mso-line-height-rule:exactly;mso-text-raise:1px;padding:36px 0 36px 0;">
 <![endif]-->
 <!--[if !mso]>-->
-<td class=t32 style="width:350px;">
+<td class=t29 style="border-bottom:1px solid #BBBBBB;border-top:1px solid #BBBBBB;width:320px;text-align:left;line-height:26px;mso-line-height-rule:exactly;mso-text-raise:1px;padding:36px 0 36px 0;">
 <!--<![endif]-->
-<p class=t31 style="margin:0;Margin:0;font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:19px;font-weight:400;font-style:normal;font-size:12px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:center;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.rights') }}</p></td>
+<a class=t27 target="_blank" href="https://www.{{ __('company.web') }}" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:26px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:1px;" target=_blank>{{ __('company.web') }}</a></td>
 </tr></table>
 </td></tr></table></td>
 </tr></table>
@@ -299,5 +244,105 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <![endif]-->
 </div></td>
 </tr></table>
-</td></tr></table></td></tr></table></div></body>
+</td></tr><tr><td align=center>
+<table class=t67 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=600 class=t66>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t66 style="width:480px;">
+<!--<![endif]-->
+<div class=t65 style="display:inline-table;width:100%;text-align:center;vertical-align:top;">
+<!--[if mso]>
+<table role=presentation cellpadding=0 cellspacing=0 align=center valign=top width=600><tr><td width=600 valign=top><![endif]-->
+<div class=t64 style="display:inline-table;text-align:initial;vertical-align:inherit;width:100%;max-width:600px;">
+<table role=presentation width=100% cellpadding=0 cellspacing=0 class=t63 style="width:100%!important;"><tr>
+<td class=t62 style="padding:40px 0 120px 0;"><table role=presentation width=100% cellpadding=0 cellspacing=0 style="width:100%!important;"><tr><td align=center>
+<table class=t39 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t38>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t38 style="width:320px;">
+<!--<![endif]-->
+<p class=t37 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">&copy; {{ Illuminate\Support\Carbon::now()->format('Y') }} {{ __('company.rights') }}</p></td>
+</tr></table>
+</td></tr><tr><td><div class=t40 style="mso-line-height-rule:exactly;mso-line-height-alt:16px;line-height:16px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
+<table class=t43 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t42>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t42 style="width:320px;">
+<!--<![endif]-->
+<p class=t41 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.one_row_address') }}</p></td>
+</tr></table>
+</td></tr><tr><td align=center>
+<table class=t46 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t45>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t45 style="width:320px;">
+<!--<![endif]-->
+<p class=t44 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.country') }}</p></td>
+</tr></table>
+</td></tr><tr><td><div class=t48 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
+<table class=t50 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+{{-- <!--[if mso]> --}}
+{{-- <td width=320 class=t49> --}}
+{{-- <![endif]--> --}}
+{{-- <!--[if !mso]>--> --}}
+{{-- <td class=t49 style="width:320px;"> --}}
+{{-- <!--<![endif]--> --}}
+{{-- <p class=t47 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.web') }}</p></td> --}}
+{{-- </tr></table> --}}
+</td></tr><tr><td align=center>
+<table class=t53 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t52>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t52 style="width:320px;">
+<!--<![endif]-->
+<a class=t51 href="mailto:{{ __('company.email') }}" target="_blank" style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.email') }}</a></td>
+</tr></table>
+</td></tr><tr><td align=center>
+<table class=t56 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t55>
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t55 style="width:320px;">
+<!--<![endif]-->
+<a class=t54 target="_blank" href="tel:{{ __('company.tel') }}" style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('company.mobile') }}</a></td>
+</tr></table>
+</td></tr><tr><td><div class=t58 style="mso-line-height-rule:exactly;mso-line-height-alt:40px;line-height:40px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
+<table class=t60 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
+<tr>
+<!--[if mso]>
+<td width=320 class=t59 style="text-align:left;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;">
+<![endif]-->
+<!--[if !mso]>-->
+<td class=t59 style="width:320px;text-align:left;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;">
+<!--<![endif]-->
+<a class=t57 href="{{ route('privacy_policy') }}" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;" target=_blank>{{ __('company.privacy') }}</a></td>
+</tr></table>
+</td></tr><tr><td><div class=t61 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr></table></td>
+</tr></table>
+</div>
+<!--[if mso]>
+</td>
+</tr></table>
+<![endif]-->
+</div></td>
+</tr></table>
+</td></tr></table></td></tr></table></div><style type="text/css">.t70{}.t69{}.t68{}.t66{width:600px!important;}.t62{padding-bottom:40px!important;}.t41{font-size:12px!important;}.t40{mso-line-height-alt:20px!important;line-height:20px!important;}.t37{font-size:12px!important;}.t35{width:600px!important;}.t5{mso-line-height-alt:55px!important;line-height:55px!important;}.t8{mso-line-height-alt:20px!important;line-height:20px!important;display:block!important;}.t4{line-height:30px!important;mso-text-raise:2px!important;}.t2{width:40px!important;}.t23{mso-line-height-alt:20px!important;line-height:20px!important;}.t26{mso-line-height-alt:80px!important;line-height:80px!important;}.t22{color:#BBBBBB!important;}.t10{mso-line-height-alt:0!important;line-height:0!important;display:none!important;}.t19{mso-line-height-alt:0!important;line-height:0!important;display:none!important;}.t18{line-height:20px!important;font-weight:500!important;font-size:15px!important;mso-text-raise:2px!important;}.t61{mso-line-height-alt:60px!important;line-height:60px!important;}.t59{border-top-left-radius:14px!important;border-top-right-radius:14px!important;border-bottom-right-radius:14px!important;border-bottom-left-radius:14px!important;overflow:hidden!important;}.t57{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif!important;font-size:12px!important;}.t47{font-size:12px!important;}.t44{font-family:Fira Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif!important;font-size:12px!important;}.t54{font-size:12px!important;}.t51{font-size:12px!important;}.t28{mso-line-height-alt:0!important;line-height:0!important;display:none!important;}.t29{padding-top:0px!important;padding-bottom:80px!important;border-top:0!important;line-height:20px!important;}.t27{line-height:20px!important;font-weight:500!important;font-size:16px!important;}.t14{mso-line-height-alt:40px!important;line-height:40px!important;}</style></body>
 </html>

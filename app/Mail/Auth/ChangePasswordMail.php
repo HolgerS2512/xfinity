@@ -2,6 +2,7 @@
 
 namespace App\Mail\Auth;
 
+use App\Mail\CustomMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ChangePasswordMail extends Mailable
+class ChangePasswordMail extends CustomMail
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +20,9 @@ class ChangePasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $token, public $logo)
+    public function __construct(public $token)
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -32,8 +33,8 @@ class ChangePasswordMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('support@xFinity-software.com', 'Support'),
-            subject: __('auth.change_subject'),
+            from: new Address('support@xFinity-software.com', 'xFinity Software'),
+            subject: __('mail.greeting'),
         );
     }
 
@@ -48,7 +49,7 @@ class ChangePasswordMail extends Mailable
             view: 'mail.change_password',
             with: [
                 'token' => $this->token,
-                'logo' => $this->logo,
+                'logo' => $this->logoBase64,
             ],
         );
     }

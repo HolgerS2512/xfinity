@@ -8,10 +8,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use App\Traits\Favicon\Base64Trait;
 
-class GreetingMail extends Mailable
+class CustomMail extends Mailable
 {
     use Queueable, SerializesModels;
+
+    /**
+     * Logo as base64 string.
+     *
+     * @var string
+     */
+    public $logoBase64;
 
     /**
      * Create a new message instance.
@@ -20,7 +28,7 @@ class GreetingMail extends Mailable
      */
     public function __construct()
     {
-        //
+        $this->logoBase64 = Base64Trait::getEmailLogo();
     }
 
     /**
@@ -31,7 +39,7 @@ class GreetingMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Greeting Mail',
+            subject: 'Custom Mail',
         );
     }
 

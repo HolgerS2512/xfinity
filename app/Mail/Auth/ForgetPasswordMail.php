@@ -2,6 +2,7 @@
 
 namespace App\Mail\Auth;
 
+use App\Mail\CustomMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -10,7 +11,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-class ForgetPasswordMail extends Mailable
+class ForgetPasswordMail extends CustomMail
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +20,9 @@ class ForgetPasswordMail extends Mailable
      *
      * @return void
      */
-    public function __construct(public $url, public $accessToken, public $logo)
+    public function __construct(public $url, public $accessToken)
     {
-        //
+        parent::__construct();
     }
 
     /**
@@ -32,8 +33,8 @@ class ForgetPasswordMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            from: new Address('support@xFinity-software.com', 'Support'),
-            subject: __('auth.forget_subject'),
+            from: new Address('support@xFinity-software.com', 'xFinity Software'),
+            subject: __('mail.greeting'),
         );
     }
 
@@ -49,7 +50,7 @@ class ForgetPasswordMail extends Mailable
             with: [
                 'token' => $this->accessToken,
                 'url' => $this->url,
-                'logo' => $this->logo,
+                'logo' => $this->logoBase64,
             ],
         );
     }
