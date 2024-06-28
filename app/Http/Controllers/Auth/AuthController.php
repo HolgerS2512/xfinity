@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LookupRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use Exception;
@@ -17,9 +18,37 @@ final class AuthController extends Controller
     use Logout;
 
     /**
+     * User Look up API Function. Decides on registration or login form.
+     * 
+     * @param \App\Http\Requests\Auth\LookupRequest $request
+     */
+    public function lookup(LookupRequest $request)
+    {
+        try {
+            // Check if user not exist.
+            if (User::where('email', $request->email)->doesntExist()) {
+
+                return response()->json([
+                    'route' => 'register',
+                ], 200);
+            }
+
+            return response()->json([
+                'route' => 'login',
+            ], 200);
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
      * Laravel Passport User Login  API Function
      * 
-     * @param \App\Mail\Auth\LoginRequest $request
+     * @param \App\Http\Requests\Auth\LoginRequest $request
      */
     public function login(LoginRequest $request)
     {

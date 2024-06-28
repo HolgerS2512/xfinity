@@ -22,6 +22,8 @@ Route::get('privacy_policy', fn() => view('welcome'))->name('privacy_policy');
 */
 
 Route::middleware(['throttle:3,1'])->group(function () {
+    
+    Route::post('/lookup_account', [AuthController::class, 'lookup']);
 
     Route::post('/register', [RegisterController::class, 'register']);
 
