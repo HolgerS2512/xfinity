@@ -68,7 +68,7 @@ final class ForgetPasswordController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage(),
+                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -140,7 +140,7 @@ final class ForgetPasswordController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage(),
+                'message' => __('error.500'),
             ], 500);
         }
     }

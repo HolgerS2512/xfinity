@@ -35,12 +35,13 @@ final class AuthController extends Controller
 
             return response()->json([
                 'route' => 'login',
+                'email' => $request->email,
             ], 200);
         } catch (Exception $e) {
 
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage(),
+                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -86,7 +87,7 @@ final class AuthController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => $e->getMessage(),
+                'message' =>  __('error.500'),
             ], 500);
         }
     }
