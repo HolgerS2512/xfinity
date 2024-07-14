@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
@@ -40,12 +41,11 @@ Route::middleware(['throttle:3,1'])->group(function () {
     Route::get('/*', [AuthController::class, 'unauthenticated'])->name('login');
 });
 
-// Route::controller(RegisterController::class)->group(function () {
+Route::middleware(['throttle:1,1'])->group(function () {
 
-//     Route::post('/register', 'register');
+    Route::post('/update/verify/token', [PinController::class, 'update']);
+});
 
-//     Route::post('/email/verify/{url}', 'verifyEmail')->name('verify_email');
-// });
 
 // Route::prefix('admin')->group(function () {
 //     Route::get('/users', function () {
@@ -109,6 +109,6 @@ Route::middleware(['auth:api'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::get('test/mails', function () {
-    \Illuminate\Support\Facades\Mail::to('test@test.de')->send(new App\Mail\Auth\RegisterSuccessMail('https://test-url-test', 168752));
-});
+// Route::get('test/mails', function () {
+//     \Illuminate\Support\Facades\Mail::to('test@test.de')->send(new App\Mail\Auth\RegisterSuccessMail('https://test-url-test', 168752));
+// });

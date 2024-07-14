@@ -122,9 +122,10 @@ final class RegisterController extends Controller
                 ], 401);
             }
 
-            // Check if auth token expires date doesnt greater then 15 minutes.
+            // Check if auth token expires date doesnt greater then 15 minutes and delete greater then 1 day.
             if (Carbon::now()->diffInMinutes($expireToken->created_at) > 15) {
-                $user->delete();
+                DB::table('verify_email_tokens')->where('expires_at', '<', Carbon::now()->subHours(12))->delete();
+
                 $tokenColl->delete();
 
                 return response()->json([
