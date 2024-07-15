@@ -38,19 +38,19 @@ class PinController extends Controller
             // Find User via token.
             $token = VerifyEmailToken::where('url', $url)->first();
 
-            // Check if token created_at greater then 15 minutes.
-            if (Carbon::now()->diffInMinutes($token->created_at) > 15) {
-                DB::table('verify_email_tokens')->where('created_at', '<', Carbon::now()->subHours(12))->delete();
-
-                return response()->json([
-                    'status' => false,
-                    'message' => __('auth.new_auth_token'),
-                ], 408);
-            }
-
             $user = User::find($token->user_id);
 
             if ($user) {
+                // Check if token created_at greater then 15 minutes.
+                if (Carbon::now()->diffInMinutes($token->created_at) > 15) {
+                    DB::table('verify_email_tokens')->where('created_at', '<', Carbon::now()->subHours(12))->delete();
+
+                    return response()->json([
+                        'status' => false,
+                        'message' => __('auth.new_auth_token'),
+                        'email' => $user->email,
+                    ], 408);
+                }
 
                 return response()->json([
                     'status' => true,
