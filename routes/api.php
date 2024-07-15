@@ -48,10 +48,10 @@ Route::middleware(['throttle:3,1'])->group(function () {
     Route::get('/*', [AuthController::class, 'unauthenticated'])->name('login');
 });
 
-Route::middleware(['throttle:1,1'])->group(function () {
+// Route::middleware(['throttle:1,1'])->group(function () {
 
     Route::post('/update/verify/token', [PinController::class, 'update']);
-});
+// });
 
 
 // Route::prefix('admin')->group(function () {

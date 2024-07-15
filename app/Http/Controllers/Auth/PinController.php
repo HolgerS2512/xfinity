@@ -39,7 +39,7 @@ class PinController extends Controller
             $token = VerifyEmailToken::where('url', $url)->first();
 
             // Check if token created_at greater then 15 minutes.
-            if (Carbon::now()->diffInMinutes($token->created_at) > 15 || Carbon::now()->diffInMinutes($token->updated_at) > 15) {
+            if (Carbon::now()->diffInMinutes($token->created_at) > 15) {
                 DB::table('verify_email_tokens')->where('created_at', '<', Carbon::now()->subHours(12))->delete();
 
                 return response()->json([
