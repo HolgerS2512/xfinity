@@ -27,6 +27,7 @@ return [
     'auth_user_exist' => 'An account with these details already exists. Please check your entries.',
     'auth_pin' => 'Unfortunately, the PIN code you received is incorrect. Please check your entries.',
     'auth_token' => 'Unfortunately, your verification token has expired. Please register again.',
+    'new_auth_token' => 'Unfortunately, your verification token has expired. Please request a new one.',
     'auth_url' => 'Unfortunately, your data does not match. Please start the process again.',
 
     'login' => 'Successfully Login',

@@ -16,11 +16,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('privacy_policy', fn() => view('welcome'))->name('privacy_policy');
 
+Route::get('imprint', fn() => view('welcome'))->name('imprint');
+
 /*
 |--------------------------------------------------------------------------
 | API Throttle Routes
 |--------------------------------------------------------------------------
 */
+
+Route::middleware(['throttle:12,1'])->group(function () {
+
+    Route::get('/email/verify/{url}', [PinController::class, 'index']);
+});
 
 Route::middleware(['throttle:3,1'])->group(function () {
     
@@ -65,6 +72,8 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
     Route::post('/update/password', [ChangePasswordController::class, 'update']);
 
+    Route::get('/logout', [AuthController::class, 'logout']);
+
     // User Account actions
     Route::controller(UserController::class)->group(function () {
 
@@ -78,19 +87,6 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
 
 // -> https://xfinity-software/demo_shop
-
-/*
-|--------------------------------------------------------------------------
-| API Logout Route
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth:api'])->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout']);
-});
-
-
-
 
 
 // use Illuminate\Foundation\Auth\EmailVerificationRequest;

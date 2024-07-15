@@ -27,6 +27,7 @@ return [
     'auth_user_exist' => 'Ein Konto mit diesen Daten existiert bereits. Bitte überprüfen Sie Ihre Eingaben.',
     'auth_pin' => 'Ihr zugesendeter PIN-Code ist leider nicht korrekt. Bitte überprüfen Sie Ihre Eingaben.',
     'auth_token' => 'Leider ist Ihr Verifizierungstoken abgelaufen. Bitte starten Sie den Prozess erneut.',
+    'new_auth_token' => 'Leider ist Ihr Verifizierungstoken abgelaufen. Bitte fordern Sie einen neuen an.',
     'auth_url' => 'Leider stimmen Ihre Daten nicht überein. Bitte starten Sie den Prozess erneut.',
 
     'login' => 'Anmeldung Erfolgreich',
