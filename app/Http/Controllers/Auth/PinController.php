@@ -31,7 +31,7 @@ class PinController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_not_exists'),
+                    'message' => __('auth.auth_token'),
                 ], 401);
             }
 
@@ -77,7 +77,7 @@ class PinController extends Controller
      * @param \App\Http\Requests\Auth\PinRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(PinRequest $request)
+    public function store(PinRequest $request)
     {
         try {
             // Check if user doesnt exist.
