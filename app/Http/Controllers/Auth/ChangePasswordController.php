@@ -75,7 +75,7 @@ final class ChangePasswordController extends Controller
             Mail::to($request->user()->email)->send(new ChangePasswordMail($token));
 
             // Search and check is column exist. Inserted or updated "password_resets" table.
-            $resetToken = DB::table('password_resets')->where('email', $request->email)->get();
+            $resetToken = DB::table('password_resets')->where('email', $request->user()->email)->get();
 
             $values = [
                 'email' => $request->user()->email,
@@ -113,7 +113,7 @@ final class ChangePasswordController extends Controller
                 'pin' => 'required|integer|max:100000|min:10',
                 'current_password' => 'required|min:8|max:255',
                 'password' => 'required|string|min:8|max:255|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'password_confirmation' => 'required|string|min:8|max:255|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+                'password_confirmation' => 'required|string|min:8|max:255|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
             ]);
 
             if ($credentials->fails()) {
@@ -167,13 +167,27 @@ final class ChangePasswordController extends Controller
             DB::table('password_resets')->delete($dbToken->id);
 
             // Updated user password.
-            $user = User::where('email', $request->user()->email)->first();
+            $user = User::where('email', $request->user()->email);
+
             $user->update([
                 'password' => Hash::make($request->password),
                 'updated_at' => Carbon::now(),
             ]);
 
-            $this->logout($request);
+            $token = $request->user()->token();
+
+            // Delete current user token
+            DB::table('oauth_access_tokens')->delete($token->id);
+
+            // Delete expired token (older then 3 Months)
+            DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
+
+            // Delete old current user tokens
+            $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
+
+            for ($i = 1; $i < count($tokens); $i++) {
+                DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
+            }
 
             return response()->json([
                 'status' => true,

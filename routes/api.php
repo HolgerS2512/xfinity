@@ -24,33 +24,31 @@ Route::get('imprint', fn() => view('welcome'))->name('imprint');
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['throttle:12,1'])->group(function () {
-
-    Route::get('/email/verify/{url}', [PinController::class, 'index']);
-});
-
 Route::middleware(['throttle:3,1'])->group(function () {
     
+    // Login & Register methods
     Route::post('/lookup_account', [AuthController::class, 'lookup']);
 
     Route::post('/register', [RegisterController::class, 'register']);
 
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // verify token methods
+    Route::get('/email/verify/{url}', [PinController::class, 'index']);
+
+    Route::post('/update/verify/token', [PinController::class, 'store']);
+
     Route::post('/email/verify/{url}', [RegisterController::class, 'verifyEmail'])
         ->name('verify_email');
 
+    // Forget password methods
     Route::post('/forget/password', [ForgetPasswordController::class, 'edit']);
 
     Route::post('/reset/password/{url}', [ForgetPasswordController::class, 'update'])
         ->name('reset_password');
 
-    Route::post('/login', [AuthController::class, 'login']);
-
-    Route::get('/*', [AuthController::class, 'unauthenticated'])->name('login');
-});
-
-Route::middleware(['throttle:3,1'])->group(function () {
-
-    Route::post('/update/verify/token', [PinController::class, 'store']);
+    // Unauthenticated method
+    Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
 });
 
 

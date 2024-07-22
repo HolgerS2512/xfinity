@@ -11,12 +11,9 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use App\Traits\Auth\Logout;
 
 final class AuthController extends Controller
 {
-    use Logout;
-
     /**
      * User Look up API Function. Decides on registration or login form.
      * 
@@ -68,7 +65,7 @@ final class AuthController extends Controller
                 // Check passwords match, set access token and login app.
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
-                    $token = $user->createToken('xFinity_ACCESS_TOKEN')->accessToken;
+                    $token = $user->createToken('xFs_at')->accessToken;
 
                     return response()->json([
                         'status' => true,
@@ -102,5 +99,41 @@ final class AuthController extends Controller
             'status' => false,
             'message' => __('auth.unauthenticated'),
         ], 403);
+    }
+
+    /**
+     * Laravel Passport User Logout  API Function
+     * 
+     */
+    public function logout(Request $request)
+    {
+        try {
+            $token = $request->user()->token();
+
+            // Delete current user token
+            DB::table('oauth_access_tokens')->delete($token->id);
+
+            // Delete expired token (older then 3 Months)
+            DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
+
+            // Delete old current user tokens
+            $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
+
+            for ($i = 1; $i < count($tokens); $i++) {
+                DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
+            }
+
+            return response()->json([
+                'status' => true,
+                'message' => __('auth.logout'),
+            ], 204);
+            // http status 204 -> No Content -> no response!
+        } catch (Exception $e) {
+
+            return response([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

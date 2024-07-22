@@ -104,7 +104,7 @@ final class ForgetPasswordController extends Controller
             }
 
             // Check if user exist.
-            if (User::where('email', $dbToken->email)->doesntExist()) {
+            if (User::where('email', $dbToken->email)->doesntExist() || $dbToken->email !== $request->email) {
 
                 return response()->json([
                     'status' => false,
@@ -131,6 +131,9 @@ final class ForgetPasswordController extends Controller
 
             // Delete token via id.
             DB::table('password_resets')->delete($dbToken->id);
+
+            // Delete all expired at tokens
+            DB::table('password_resets')->where('created_at', '<', Carbon::now()->subDays(1))->delete();
 
             return response()->json([
                 'status' => true,
