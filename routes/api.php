@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\PinController;
@@ -26,12 +27,10 @@ Route::get('imprint', fn() => view('welcome'))->name('imprint');
 
 Route::middleware(['throttle:3,1'])->group(function () {
     
-    // Login & Register methods
+    // Look Up & Register methods
     Route::post('/lookup_account', [AuthController::class, 'lookup']);
 
     Route::post('/register', [RegisterController::class, 'register']);
-
-    Route::post('/login', [AuthController::class, 'login']);
 
     // verify token methods
     Route::get('/email/verify/{url}', [PinController::class, 'index']);
@@ -51,6 +50,27 @@ Route::middleware(['throttle:3,1'])->group(function () {
     Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
 });
 
+/*
+|--------------------------------------------------------------------------
+| API Authentificate, Throttle & Verified Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth:api', 'verified', 'throttle:12,1'])->group(function () {
+
+    // Login Route
+    Route::post('/login', [AuthController::class, 'login']);
+
+    // Change Email & Password Routes
+    Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
+
+    Route::post('/update/password', [ChangePasswordController::class, 'update']);
+
+    Route::post('/edit/email', [ChangeEmailController::class, 'edit']);
+
+    Route::post('/update/email', [ChangeEmailController::class, 'update']);
+});
+
 
 // Route::prefix('admin')->group(function () {
 //     Route::get('/users', function () {
@@ -66,10 +86,6 @@ Route::middleware(['throttle:3,1'])->group(function () {
 
 Route::middleware(['auth:api', 'verified'])->group(function () {
 
-    Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
-
-    Route::post('/update/password', [ChangePasswordController::class, 'update']);
-
     Route::get('/logout', [AuthController::class, 'logout']);
 
     // User Account actions
@@ -82,6 +98,8 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
         Route::get('/account/orders', 'orders');
     });
 });
+
+
 
 
 // -> https://xfinity-software/demo_shop

@@ -123,6 +123,8 @@ final class AuthController extends Controller
                 DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
             }
 
+            $request->session()->regenerate();
+
             return response()->json([
                 'status' => true,
                 'message' => __('auth.logout'),

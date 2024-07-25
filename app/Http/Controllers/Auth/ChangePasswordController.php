@@ -34,7 +34,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->errors(),
+                    'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -120,7 +120,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->errors(),
+                    'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -191,7 +191,7 @@ final class ChangePasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('passwords.reset'),
+                'message' => __('passwords.updated'),
             ], 200);
         } catch (Exception $e) {
 

@@ -24,6 +24,7 @@ return [
     'login' => 'Der Code für dein Account',
     'verify' => 'Der Code für deine Kontoverifizierung',
     'password' => 'Der Code für deine Passwortänderung',
+    'email' => 'Der Code für die Änderung deiner E-Mail-Adresse',
 
     // Register success
     'register_success' => 'Herzlich Willkommen bei xFinity Software',
