@@ -25,6 +25,12 @@ Route::get('imprint', fn() => view('welcome'))->name('imprint');
 |--------------------------------------------------------------------------
 */
 
+Route::middleware(['throttle:9,1'])->group(function () {
+    
+    // Login Route
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
 Route::middleware(['throttle:3,1'])->group(function () {
     
     // Look Up & Register methods
@@ -56,12 +62,12 @@ Route::middleware(['throttle:3,1'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:api', 'verified', 'throttle:12,1'])->group(function () {
+Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
 
-    // Login Route
-    Route::post('/login', [AuthController::class, 'login']);
+    // Change Personal Data Routes
+    Route::post('/update/user/personal/data', [UserController::class, 'update']);
 
-    // Change Email & Password Routes
+    // Change password & email
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
 
     Route::post('/update/password', [ChangePasswordController::class, 'update']);

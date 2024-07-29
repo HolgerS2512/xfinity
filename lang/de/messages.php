@@ -16,4 +16,6 @@ return [
     'email_verify' => 'Herzlichen Glückwunsch! Sie haben Ihren Account erfolgreich zertifiziert.',
 
     'throttleRequestException' => 'Die Anforderungssignatur konnte nicht generiert werden. Route nicht verfügbar.',
+
+    'data_updated' => 'Sie haben Ihre Nutzerdaten erfolgreich geändert.',
 ];

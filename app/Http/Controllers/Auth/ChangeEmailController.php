@@ -66,7 +66,7 @@ final class ChangeEmailController extends Controller
             DB::table('email_resets')->where('created_at', '<', Carbon::now()->subHour(1))->delete();
 
             // Send email.
-            // Mail::to($request->user()->email)->send(new ChangeEmailMail($token));
+            Mail::to($request->user()->email)->send(new ChangeEmailMail($token));
 
             // Search and check is column exist. Inserted or updated "email_resets" table.
             $resetToken = DB::table('email_resets')->where('email', $request->user()->email)->get();
