@@ -15,7 +15,7 @@ return [
 
     'failed' => 'Diese Anmeldeinformationen stimmen nicht mit unseren Aufzeichnungen überein.',
     'password' => 'Dieses Passwort ist falsch. Sollten Sie Ihr Passwort verloren haben, wenden Sie sich bitte an unseren Kundendienst.',
-    'throttle' => 'Zu viele Versuche. Sie können im Moment nicht auf diese Seite zugreifen. Bitte versuche es später noch mal.',
+    'throttle' => 'Zu viele Versuche. Sie können im Moment nicht auf diese Ressource zugreifen. Bitte versuche es später noch mal.',
     'unauthenticated' => 'Unauthorisierter Zugriff! Bitte melden Sie sich erst an, wenn Sie diese Aktion durchführen möchten.',
     'unauth_mail' => 'Unerlaubter Zugriff! Bitte verifizieren Sie erst Ihre E-Mail-Adresse, bevor Sie diese Aktion durchführen können.',
     

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,9 +16,13 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('privacy_policy', fn() => view('welcome'))->name('privacy_policy');
+// Route::get('privacy_policy', fn() => view('welcome'))->name('privacy_policy');
 
-Route::get('imprint', fn() => view('welcome'))->name('imprint');
+// Route::get('imprint', fn() => view('welcome'))->name('imprint');
+
+Route::get('/{page}', [PageController::class])
+    ->name('page')
+    ->where('pages', 'privacy_policy|imprint');
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +54,7 @@ Route::middleware(['throttle:3,1'])->group(function () {
     // Forget password methods
     Route::post('/forget/password', [ForgetPasswordController::class, 'edit']);
 
-    Route::post('/reset/password/{url}', [ForgetPasswordController::class, 'update'])
+    Route::put('/reset/password/{url}', [ForgetPasswordController::class, 'update'])
         ->name('reset_password');
 
     // Unauthenticated method
@@ -65,16 +70,17 @@ Route::middleware(['throttle:3,1'])->group(function () {
 Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
 
     // Change Personal Data Routes
-    Route::post('/update/user/personal/data', [UserController::class, 'update']);
+    Route::put('/update/user/personal/data', [UserController::class, 'update']);
 
-    // Change password & email
+    // Change Password
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
 
-    Route::post('/update/password', [ChangePasswordController::class, 'update']);
+    Route::put('/update/password', [ChangePasswordController::class, 'update']);
 
+    // Change Email
     Route::post('/edit/email', [ChangeEmailController::class, 'edit']);
 
-    Route::post('/update/email', [ChangeEmailController::class, 'update']);
+    Route::put('/update/email', [ChangeEmailController::class, 'update']);
 });
 
 
