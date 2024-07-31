@@ -44,8 +44,7 @@ class ContactController extends Controller
             if ($request->phone) $values['phone'] = $request->phone;
             if ($request->salutation) $values['salutation'] = $request->salutation;
 
-            $contact = new Contact($values);
-            $contact->save();
+            $saveInDB = Contact::insert($values);
 
             // Preparation mail values.
             // $mailV = [...$request->all()];
@@ -57,8 +56,8 @@ class ContactController extends Controller
             // Mail::to($request->email)->send(new FeedbackMail);
 
             return response()->json([
-                'status' => true,
-                'message' => __("messages.contact"),
+                'status' => $saveInDB,
+                'message' => $saveInDB ? __("messages.contact") : __('error.500'),
             ], 200);
         } catch (Exception $e) {
 
