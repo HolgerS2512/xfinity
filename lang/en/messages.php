@@ -19,5 +19,6 @@ return [
     'throttleRequestException' => 'Die Anforderungssignatur konnte nicht generiert werden. Route nicht verfügbar.',
 
     'data_updated' => 'You have successfully changed your user data.',
+    'contact' => 'Your message has been sent successfully.',
 
 ];

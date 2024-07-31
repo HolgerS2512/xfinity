@@ -20,6 +20,11 @@ return [
     'code_ignore' => 'If you have already received this code or no longer need it, ignore this email.',
     'verify_link' => 'Link to your verification address:',
 
+    // Contact
+    'contact' => 'Contact request',
+    'contact_request' => 'We have received your contact request and will process it as soon as possible.',
+    'contact_system' => 'System email: User request',
+
     // Greeting text
     'login' => 'The code for your member profile',
     'register' => 'The code for your account verification',

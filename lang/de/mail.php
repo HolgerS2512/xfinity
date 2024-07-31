@@ -20,6 +20,11 @@ return [
     'code_ignore' => 'Wenn du diesen Code bereits erhalten hast oder ihn nicht mehr benötigst, ignoriere diese E-Mail.',
     'verify_link' => 'Link zu Ihrer Verifizierungsadresse:',
 
+    // Contact
+    'contact' => 'Kontaktanfrage',
+    'contact_request' => 'Ihre Kontaktanfrage ist bei uns eingegangen und wird so bald wie möglich bearbeitet.',
+    'contact_system' => 'System-E-Mail: Nutzeranfrage',
+
     // Greeting text
     'login' => 'Der Code für dein Account',
     'verify' => 'Der Code für deine Kontoverifizierung',

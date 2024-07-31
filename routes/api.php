@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -20,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
 
-Route::get('/{page}', [PageController::class])
-    ->name('page')
-    ->where('pages', 'privacy_policy|imprint');
+// Route::get('/{page}', [PageController::class])
+//     ->name('page')
+//     ->where('pages', 'privacy_policy|imprint');
 
 /*
 |--------------------------------------------------------------------------
@@ -31,13 +32,13 @@ Route::get('/{page}', [PageController::class])
 */
 
 Route::middleware(['throttle:9,1'])->group(function () {
-    
+
     // Login Route
     Route::post('/login', [AuthController::class, 'login']);
 });
 
 Route::middleware(['throttle:3,1'])->group(function () {
-    
+
     // Look Up & Register methods
     Route::post('/lookup_account', [AuthController::class, 'lookup']);
 
@@ -56,6 +57,9 @@ Route::middleware(['throttle:3,1'])->group(function () {
 
     Route::put('/reset/password/{url}', [ForgetPasswordController::class, 'update'])
         ->name('reset_password');
+
+    // Contact Route
+    Route::post('contact', [ContactController::class, 'create']);
 
     // Unauthenticated method
     Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
@@ -83,13 +87,6 @@ Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
     Route::put('/update/email', [ChangeEmailController::class, 'update']);
 });
 
-
-// Route::prefix('admin')->group(function () {
-//     Route::get('/users', function () {
-//         // Matches The "/admin/users" URL
-//     });
-// });
-
 /*
 |--------------------------------------------------------------------------
 | API Authentificate & Verified Routes
@@ -111,8 +108,19 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     });
 });
 
+/*
+|--------------------------------------------------------------------------
+| API Contact Routes
+|--------------------------------------------------------------------------
+*/
 
 
+
+// Route::prefix('admin')->group(function () {
+//     Route::get('/users', function () {
+//         // Matches The "/admin/users" URL
+//     });
+// });
 
 // -> https://xfinity-software/demo_shop
 
