@@ -15,7 +15,7 @@ use App\Mail\Auth\VerifyEmailMail;
 use App\Models\Auth\VerifyEmailToken;
 use Illuminate\Support\Facades\Request;
 
-class PinController extends Controller
+final class PinController extends Controller
 {
     /**
      * Laravel new verify token API Function

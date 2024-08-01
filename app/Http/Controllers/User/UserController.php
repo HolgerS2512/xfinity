@@ -12,9 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 final class UserController extends Controller
 {
+    /**
+     * Laravel get the authentification user values API Function
+     * 
+     * @return \Illuminate\Http\Response
+     */
     public function profile()
     {
-
         try {
             return Auth::user();
         } catch (Exception $e) {
@@ -29,6 +33,7 @@ final class UserController extends Controller
     /**
      * Laravel Passport User Change Password  API Function
      * 
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {

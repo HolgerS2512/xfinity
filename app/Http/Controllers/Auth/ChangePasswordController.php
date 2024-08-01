@@ -19,6 +19,7 @@ final class ChangePasswordController extends Controller
     /**
      * Laravel Passport User Change Password  API Function
      * 
+     * @return \Illuminate\Http\Response
      */
     public function edit(Request $request)
     {
@@ -104,6 +105,7 @@ final class ChangePasswordController extends Controller
     /**
      * Laravel Passport User Change Password  API Function
      * 
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {

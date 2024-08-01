@@ -20,5 +20,23 @@ class Contact extends Model
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'salutation',
+        'firstname',
+        'lastname',
+        'email',
+        'phone',
+        'message',
+        'task',
+        'updated_at',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $casts = [
+        'task' => 'boolean',
+    ];
 }

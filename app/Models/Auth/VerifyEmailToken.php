@@ -17,7 +17,12 @@ class VerifyEmailToken extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'token',
+        'url',
+        'updated_at',
+    ];
 
     /**
      * The attributes that should be cast.

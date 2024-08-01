@@ -18,6 +18,7 @@ final class AuthController extends Controller
      * User Look up API Function. Decides on registration or login form.
      * 
      * @param \App\Http\Requests\Auth\LookupRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function lookup(LookupRequest $request)
     {
@@ -47,6 +48,7 @@ final class AuthController extends Controller
      * Laravel Passport User Login  API Function
      * 
      * @param \App\Http\Requests\Auth\LoginRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function login(LoginRequest $request)
     {
@@ -92,6 +94,7 @@ final class AuthController extends Controller
     /**
      * Laravel Passport User is not Login API Function
      * 
+     * @return \Illuminate\Http\Response
      */
     public function unauthenticated()
     {
@@ -104,6 +107,7 @@ final class AuthController extends Controller
     /**
      * Laravel Passport User Logout  API Function
      * 
+     * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)
     {

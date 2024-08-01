@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Admin;
 
 use App\Http\Requests\JsonResponseRequest;
 
-class LookupRequest extends JsonResponseRequest
+class StoreSubcategoryRequest extends JsonResponseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,8 @@ class LookupRequest extends JsonResponseRequest
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'category_id' => 'required|integer|exists:categories,id',
+            'name' => 'required|string|max:60|min:3',
         ];
     }
 }

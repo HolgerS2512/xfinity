@@ -166,7 +166,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t6 style="width:320px;">
 <!--<![endif]-->
-<h1 class=t4 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.contact_request') }}</h1></td>
+<h1 class=t4 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;" tabindex="1" aria-label="{{ __('mail.contact_request') }}">{{ __('mail.contact_request') }}</h1></td>
 </tr></table>
 </td></tr><tr><td><div class=t8 style="mso-line-height-rule:exactly;font-size:1px;display:none;">&nbsp;&nbsp;</div></td></tr><tr><td><div class=t10 style="mso-line-height-rule:exactly;mso-line-height-alt:57px;line-height:57px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
 <table class=t12 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
@@ -177,7 +177,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t11 style="width:320px;">
 <!--<![endif]-->
-<h1 class=t9 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.register_success_text') }}</h1></td>
+<h1 class=t9 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;" tabindex="1" aria-label="{{ __('mail.register_success_text') }}">{{ __('mail.register_success_text') }}</h1></td>
 </tr></table>
 </td></tr><tr><td><div class=t13 style="mso-line-height-rule:exactly;font-size:1px;display:none;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->
@@ -192,7 +192,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t16 style="width:320px;">
 <!--<![endif]-->
-<a class=t14 href="mailto:{{ __('company.email') }}" target=_blank style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">{{ __('mail.register_success_mailto') }}{{ __('company.email') }}</a></td>
+<a class=t14 href="mailto:{{ __('company.email') }}" target=_blank style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;" tabindex="1" aria-label="{{ __('mail.register_success_mailto') }}{{ __('company.email') }}">{{ __('mail.register_success_mailto') }}{{ __('company.email') }}</a></td>
 </tr></table>
 </td></tr><tr><td><div class=t18 style="mso-line-height-rule:exactly;mso-line-height-alt:10px;line-height:10px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->

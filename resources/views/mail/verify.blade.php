@@ -166,7 +166,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t6 style="width:320px;">
 <!--<![endif]-->
-<h1 class=t4 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.verify') }}</h1></td>
+<h1 class=t4 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:34px;font-weight:400;font-style:normal;font-size:24px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;" tabindex="1" aria-label="{{ __('mail.verify') }}">{{ __('mail.verify') }}</h1></td>
 </tr></table>
 </td></tr><tr><td><div class=t8 style="mso-line-height-rule:exactly;font-size:1px;display:none;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->
@@ -181,7 +181,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t11 style="width:320px;">
 <!--<![endif]-->
-<p class=t9 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:25px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">{{ __('mail.pin') }}</p></td>
+<p class=t9 style="margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:25px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#000000;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;" tabindex="1" aria-label="{{ __('mail.pin') }}">{{ __('mail.pin') }}</p></td>
 </tr></table>
 </td></tr><tr><td><div class=t14 style="mso-line-height-rule:exactly;mso-line-height-alt:47px;line-height:47px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr><tr><td align=center>
 <table class=t16 role=presentation cellpadding=0 cellspacing=0 style="Margin-left:auto;Margin-right:auto;">
@@ -192,7 +192,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t15 style="border-bottom:1px solid #BBBBBB;border-top:1px solid #BBBBBB;width:320px;text-align:center;line-height:40px;mso-line-height-rule:exactly;mso-text-raise:1px;padding:30px 0 30px 0;">
 <!--<![endif]-->
-<span class=t13 style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:40px;font-weight:400;font-style:normal;font-size:36px;text-decoration:none;direction:ltr;color:#333;text-align:center;mso-line-height-rule:exactly;mso-text-raise:1px;">{{ $token }}</span></td>
+<span class=t13 style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:40px;font-weight:400;font-style:normal;font-size:36px;text-decoration:none;direction:ltr;color:#333;text-align:center;mso-line-height-rule:exactly;mso-text-raise:1px;" tabindex="1" aria-label="{{ $token }}">{{ $token }}</span></td>
 </tr></table>
 </td></tr><tr><td><div class=t17 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr>
 <!--[if !mso]>-->

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class PageController extends Controller
+final class PageController extends Controller
 {
     /**
      * Handle the incoming request.

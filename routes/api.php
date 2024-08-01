@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\SubcategoryController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -110,11 +112,24 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| API Contact Routes
+| API App Routes
 |--------------------------------------------------------------------------
 */
 
+Route::get('/all/categories', [CategoryController::class, 'allActive']);
 
+/*
+|--------------------------------------------------------------------------
+| API Admin Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin')->group(function () {
+
+    Route::apiResource('category', CategoryController::class);
+
+    Route::apiResource('subcategory', SubcategoryController::class);
+});
 
 // Route::prefix('admin')->group(function () {
 //     Route::get('/users', function () {

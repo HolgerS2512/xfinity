@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('contacts', function (Blueprint $table) {
+        Schema::create('subcategories', function (Blueprint $table) {
             $table->id();
-            $table->char('salutation', 1)->nullable();
-            $table->string('firstname', 60);
-            $table->string('lastname', 40);
-            $table->string('email');
-            $table->string('phone')->nullable();
-            $table->text('message');
-            $table->tinyInteger('task')->default(1);
+            $table
+                ->foreignId('category_id')
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('ranking');
+            $table->string('name');
+            $table->tinyInteger('active')->default(0);
+            $table->tinyInteger('popular')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
@@ -34,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contacts');
+        Schema::dropIfExists('subcategories');
     }
 };

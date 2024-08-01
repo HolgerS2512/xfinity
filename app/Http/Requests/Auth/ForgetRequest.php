@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\JsonResponseRequest;
 
-class ForgetRequest extends FormRequest
+class ForgetRequest extends JsonResponseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,13 +16,5 @@ class ForgetRequest extends FormRequest
         return [
             'email' => 'required|email',
         ];
-    }
-
-    public function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'status'    => false,
-            'message'   => $validator->errors()
-        ], 400));
     }
 }

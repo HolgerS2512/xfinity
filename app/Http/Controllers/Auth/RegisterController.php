@@ -22,6 +22,7 @@ final class RegisterController extends Controller
      * Laravel Passport User Registration  API Function
      * 
      * @param \App\Http\Requests\Auth\RegisterRequest $request
+     * @return \Illuminate\Http\Response
      */
     public function register(RegisterRequest $request)
     {
@@ -86,6 +87,7 @@ final class RegisterController extends Controller
      * 
      * @param \App\Http\Requests\Auth\VerifyEmailRequest $request
      * @param string $url
+     * @return \Illuminate\Http\Response
      */
     public function verifyEmail(VerifyEmailRequest $request, $url)
     {
