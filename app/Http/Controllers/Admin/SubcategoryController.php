@@ -95,6 +95,15 @@ class SubcategoryController extends Controller
         // Update Category
         $status = $subcat->update(array_merge(['updated_at' => Carbon::now()], $values));
 
+        // Delete excess Tupels
+        self::syncTableUniqueExcess([
+            'table' => 'subcategories',
+            'column' => 'name'
+        ], [
+            'table' => 'translations',
+            'column' => 'hash'
+        ]);
+
         return response()->json([
             'status' => $status,
         ], 200);

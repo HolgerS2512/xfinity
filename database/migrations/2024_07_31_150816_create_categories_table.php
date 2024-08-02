@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->integer('ranking');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->tinyInteger('active')->default(0);
             $table->tinyInteger('popular')->default(0);
             $table->timestamp('created_at')->useCurrent();

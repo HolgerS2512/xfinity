@@ -147,6 +147,15 @@ final class CategoryController extends Controller
             // Update Category
             $status = $category->update(array_merge(['updated_at' => Carbon::now()], $values));
 
+            // Delete excess Tupels
+            self::syncTableUniqueExcess([
+                'table' => 'categories',
+                'column' => 'name'
+            ], [
+                'table' => 'translations',
+                'column' => 'hash'
+            ]);
+
             return response()->json([
                 'status' => $status,
             ], 200);

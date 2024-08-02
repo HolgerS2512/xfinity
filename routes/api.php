@@ -152,10 +152,15 @@ Route::prefix('admin')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| Test Mail Route
+| Test Routes
 |--------------------------------------------------------------------------
 */
 
 // Route::get('test/mails', function () {
 //     \Illuminate\Support\Facades\Mail::to('test@test.de')->send(new App\Mail\Auth\RegisterSuccessMail('https://test-url-test', 168752));
+// });
+
+// Route::get('test', function () {
+//     \Illuminate\Support\Facades\App::setLocale('en');
+//     return __('shop.0');
 // });
