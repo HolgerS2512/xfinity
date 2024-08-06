@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\AesCryptographer;
 use App\Models\User;
 use Carbon\Carbon;
 use Exception;
@@ -20,7 +21,15 @@ final class UserController extends Controller
     public function profile()
     {
         try {
-            return Auth::user();
+            $user = Auth::user();
+            unset($user->id, $user->created_at, $user->updated_at, $user->email_verified_at);
+
+            $AC = new AesCryptographer(env('CRYPTO_KEY'));
+
+            $encrypted = $AC->encrypt($user);
+
+            return $encrypted;
+
         } catch (Exception $e) {
 
             return response()->json([

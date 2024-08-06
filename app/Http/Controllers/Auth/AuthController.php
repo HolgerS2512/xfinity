@@ -11,9 +11,18 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cookie;
+
 
 final class AuthController extends Controller
 {
+    /**
+     * The name of the custom authentication cookie used in the application.
+     *
+     * @var string
+     */
+    private string $cookieName = 'xFs_at';
+
     /**
      * User Look up API Function. Decides on registration or login form.
      * 
@@ -67,14 +76,16 @@ final class AuthController extends Controller
                 // Check passwords match, set access token and login app.
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
-                    $token = $user->createToken('xFs_at')->accessToken;
+                    $token = $user->createToken($this->cookieName)->accessToken;
+                    // 60 * 24 * 10  - 10 Days
+                    $cookie = Cookie::make($this->cookieName, $token, (60 * 24 * 10));
 
                     return response()->json([
                         'status' => true,
                         'message' => __('auth.login'),
                         'token' => $token,
                         'user' => $user,
-                    ], 200);
+                    ], 200)->cookie($cookie);
                 }
             }
 
@@ -126,6 +137,8 @@ final class AuthController extends Controller
             for ($i = 1; $i < count($tokens); $i++) {
                 DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
             }
+
+            Cookie::queue(Cookie::forget($this->cookieName));
 
             $request->session()->regenerate();
 

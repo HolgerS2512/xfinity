@@ -9,8 +9,10 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CookieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\User\UserController;
+use App\Models\VersionManager;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -104,6 +106,8 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
         Route::get('/account/profile', 'profile');
 
+        Route::get('/account/profile', 'profile');
+
         Route::get('/account/address', 'address');
 
         Route::get('/account/orders', 'orders');
@@ -115,6 +119,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 | API App Routes
 |--------------------------------------------------------------------------
 */
+
 
 Route::get('/all/categories', [CategoryController::class, 'allActive']);
 

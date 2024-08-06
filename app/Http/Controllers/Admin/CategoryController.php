@@ -6,12 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\VersionManager;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\URL;
 
 final class CategoryController extends Controller
 {
+    /**
+     * The name of the custom authentication cookie used in the application.
+     *
+     * @var string
+     */
+    private string $cookieName = 'L_CD';
+
+    /**
+     * The "id" of the custom id cookie.
+     *
+     * @var string
+     */
+    private string $versionId = 'QMwMbD9y2Brej92G20240805192529';
+
     /**
      * Display a listing of the resource.
      *
@@ -20,14 +37,33 @@ final class CategoryController extends Controller
     public function allActive()
     {
         try {
-            $data = Category::where('active', true)->with(['subcategories' => function ($query) {
-                $query->where('active', true);
-            }])->get();
+            // Get all categories and subcatgeroies
+            $data = Category::where('active', true)
+                ->select('id', 'name')
+                ->with([
+                    'subcategories' => function ($query) {
+                        $query->where('active', true)->select('id', 'name', 'category_id');
+                    }
+                ])->get();
+
+            // Get the versions hash
+            $vm = VersionManager::findOrFail($this->versionId);
+
+            // Set cookie for frontend hash (30 Days)
+            $cookie = Cookie::make(
+                $this->cookieName,
+                $vm->hash,
+                (60 * 24 * 30),
+                '/',
+                str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
+                false,
+                false,
+            );
 
             return response()->json([
                 'status' => true,
                 'data' => $data,
-            ], 200);
+            ], 200)->cookie($cookie);
         } catch (Exception $e) {
 
             return response()->json([
