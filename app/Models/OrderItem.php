@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Repos\OrderRepository;
 
-class OrderItem extends Model
+class OrderItem extends OrderRepository
 {
-    use HasFactory;
 }

@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Repos\WishlistRepository;
 
-class WishlistItem extends Model
+class WishlistItem extends WishlistRepository
 {
-    use HasFactory;
 }

@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use App\Models\Repos\CategoryRepository;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Subcategory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends CategoryRepository
+class MainCategory extends CategoryRepository
 {
     /**
      * The attributes that are mass assignable.
@@ -14,6 +13,7 @@ class Category extends CategoryRepository
      * @var array<int, string>
      */
     protected $fillable = [
+        'subcategory_id',
         'ranking',
         'name',
         'active',
@@ -22,12 +22,12 @@ class Category extends CategoryRepository
     ];
 
     /**
-     * Get the subcategory for this Category.
+     * Get the Category for this Subategory.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function subcategories(): HasMany
+    public function subcategory(): BelongsTo
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->belongsTo(Subcategory::class);
     }
 }

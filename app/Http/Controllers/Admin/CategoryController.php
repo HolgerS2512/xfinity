@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\Repos\CategoryRepositoryController;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\Translation;
 use App\Models\VersionManager;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 
-final class CategoryController extends Controller
+final class CategoryController extends CategoryRepositoryController
 {
     /**
      * The name of the custom authentication cookie used in the application.
@@ -42,7 +44,14 @@ final class CategoryController extends Controller
                 ->select('id', 'name')
                 ->with([
                     'subcategories' => function ($query) {
-                        $query->where('active', true)->select('id', 'name', 'category_id');
+                        $query->where('active', true)
+                            ->select('id', 'name', 'category_id')
+                            ->with([
+                                'maincategories' => function ($query) {
+                                    $query->where('active', true)
+                                        ->select('id', 'name', 'subcategory_id');
+                                }
+                            ]);
                     }
                 ])->get();
 
@@ -163,38 +172,51 @@ final class CategoryController extends Controller
             // Find this instance 
             $category = Category::findOrFail($id);
 
+            // Update Translation
+            if ($request->name) {
+                $categoryDB = DB::table('categories')->where('id', $id)->first();
+                $statusName = self::updateTranslation($categoryDB->name, $request->name);
+            }
+
             // Update ranking other categories
-            $allCategories = Category::whereNot('id', $id)->get();
-            $i = 1;
-            foreach ($allCategories as $cate) {
-                if ($i === (int) $request->new_ranking) ++$i;
-                $cate->update([
-                    'ranking' => $i,
-                    'updated_at' => Carbon::now(),
-                ]);
-                ++$i;
+            if ($request->new_ranking) {
+
+                $allCategories = Category::whereNot('id', $id)->get();
+                $i = 1;
+                foreach ($allCategories as $cate) {
+                    if ($i === (int) $request->new_ranking) ++$i;
+                    $cate->update([
+                        'ranking' => $i,
+                        'updated_at' => Carbon::now(),
+                    ]);
+                    ++$i;
+                }
             }
 
             // Preparation request values
             $values = $request->all();
-            $values['ranking'] = $values['new_ranking'];
-            unset($values['new_ranking']);
+
+            if ($request->new_ranking) {
+                $values['ranking'] = $values['new_ranking'];
+            }
+
+            // Deletes unnecessary vars
+            unset($values['new_ranking'], $values['name']);
 
             // Update Category
             $status = $category->update(array_merge(['updated_at' => Carbon::now()], $values));
 
-            // Delete excess Tupels
-            self::syncTableUniqueExcess([
-                'table' => 'categories',
-                'column' => 'name'
-            ], [
-                'table' => 'translations',
-                'column' => 'hash'
-            ]);
+            if ($request->name) {
+                return response()->json([
+                    'status' => $status && $statusName,
+                    'message' => ($status && $statusName ? '' : __('error.500')),
+                ], ($status && $statusName ? 200 : 500));
+            }
 
             return response()->json([
                 'status' => $status,
-            ], 200);
+                'message' => ($status ? '' : __('error.500')),
+            ], ($status ? 200 : 500));
         } catch (Exception $e) {
 
             return response()->json([
@@ -213,12 +235,11 @@ final class CategoryController extends Controller
     public function destroy($id)
     {
         try {
-            $data = Category::findOrFail($id);
-            $data->delete();
+            $status = Category::findOrFail($id);
+            $status->delete();
 
             return response()->json([
-                'status' => true,
-                'data' => $data,
+                'status' => $status,
             ], 200);
         } catch (Exception $e) {
 

@@ -3,13 +3,11 @@
 namespace App\Models;
 
 use App\Models\Repos\CategoryRepository;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Subcategory extends CategoryRepository
 {
-    use HasFactory;
-
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +21,16 @@ class Subcategory extends CategoryRepository
         'popular',
         'updated_at',
     ];
+
+    /**
+     * Get the subcategory for this Category.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function maincategories(): HasMany
+    {
+        return $this->hasMany(MainCategory::class);
+    }
 
     /**
      * Get the Category for this Subategory.

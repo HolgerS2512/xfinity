@@ -16,6 +16,8 @@ class UpdateCategoryRequest extends JsonResponseRequest
         return [
             'new_ranking' => 'integer|min:1',
             'name' => 'string|max:60|min:3',
+            'active' => 'boolean',
+            'popular' => 'boolean',
         ];
     }
 }

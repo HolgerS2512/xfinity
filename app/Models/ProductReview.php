@@ -2,10 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Repos\ProductRepository;
 
-class ProductReview extends Model
+class ProductReview extends ProductRepository
 {
-    use HasFactory;
 }

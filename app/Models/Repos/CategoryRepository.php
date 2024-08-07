@@ -3,16 +3,13 @@
 namespace App\Models\Repos;
 
 use App\Models\Translation;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Log;
 
-class CategoryRepository extends Model
+class CategoryRepository extends ModelRepository
 {
-    use HasFactory;
-
     /**
      * Nullabled updated_at column by new instance.
      *
@@ -33,9 +30,9 @@ class CategoryRepository extends Model
         });
 
         // Listen to the "updating" event
-        static::updating(function ($thisInstance) {
-            $thisInstance->name = static::hashedTranslation($thisInstance->name);
-        });
+        // static::updating(function ($thisInstance) {
+            //
+        // });
 
         // This model always sorts by ranking
         static::addGlobalScope('orderByRanking', function (Builder $builder) {
@@ -88,27 +85,24 @@ class CategoryRepository extends Model
             throw $th;
         }
     }
-
-
-
-
-    /**
-     * Returned a transform string.
-     * 
-     * @param string $string
-     * @param string default $char = '_'
-     * @return string $result
-     */
-    // public static function transformString($string, $char = '_')
-    // {
-    //     // Removes special characters
-    //     $result = str_replace('&', 'and', $string);
-    //     $result = preg_replace('/[^A-Za-z0-9-]+/', $char, $result);
-    //     // All to lower case
-    //     $result = strtolower($result);
-    //     // Removing leading and trailing hyphens
-    //     $result = trim($result, $char);
-
-    //     return $result;
-    // }
 }
+
+/**
+ * Returned a transform string.
+ * 
+ * @param string $string
+ * @param string default $char = '_'
+ * @return string $result
+ */
+// public static function transformString($string, $char = '_')
+// {
+//     // Removes special characters
+//     $result = str_replace('&', 'and', $string);
+//     $result = preg_replace('/[^A-Za-z0-9-]+/', $char, $result);
+//     // All to lower case
+//     $result = strtolower($result);
+//     // Removing leading and trailing hyphens
+//     $result = trim($result, $char);
+
+//     return $result;
+// }

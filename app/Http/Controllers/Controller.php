@@ -36,3 +36,12 @@ class Controller extends BaseController
         DB::table($tableB['table'])->whereIn($tableB['column'], $excessEntries->pluck($tableB['column']))->delete();
     }
 }
+
+            // Delete excess Tupels
+            // self::syncTableUniqueExcess([
+            //     'table' => 'categories',
+            //     'column' => 'name'
+            // ], [
+            //     'table' => 'translations',
+            //     'column' => 'hash'
+            // ]);
