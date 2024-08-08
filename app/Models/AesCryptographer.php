@@ -9,7 +9,6 @@ final class AesCryptographer
 
     public function __construct($key)
     {
-        // Schlüssel auf 32 Bytes für AES-256 bringen
         $this->key = substr(hash('sha256', $key, true), 0, 32);
     }
 
@@ -18,22 +17,15 @@ final class AesCryptographer
         $ivLength = openssl_cipher_iv_length($this->method);
         $iv = openssl_random_pseudo_bytes($ivLength);
         $encrypted = openssl_encrypt($data, $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
-
-        // Kombiniere IV und verschlüsselten Text und kodieren als Base64
         return base64_encode($iv . $encrypted);
     }
 
     public function decrypt($encryptedData)
     {
-        // Base64-dekodieren
         $data = base64_decode($encryptedData);
         $ivLength = openssl_cipher_iv_length($this->method);
-
-        // IV und verschlüsselten Text trennen
         $iv = substr($data, 0, $ivLength);
         $encrypted = substr($data, $ivLength);
-
-        // Entschlüsseln
         return openssl_decrypt($encrypted, $this->method, $this->key, OPENSSL_RAW_DATA, $iv);
     }
 }

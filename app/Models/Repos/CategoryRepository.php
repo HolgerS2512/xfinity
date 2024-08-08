@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\Log;
 class CategoryRepository extends ModelRepository
 {
     /**
-     * Nullabled updated_at column by new instance.
-     *
-     */
-    const UPDATED_AT = null;
-
-    /**
      * Eloquent Event Listener
      *
      */

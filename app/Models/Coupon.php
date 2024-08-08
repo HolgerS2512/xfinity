@@ -2,10 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Repos\ModelRepository;
 
-class Coupon extends Model
+class Coupon extends ModelRepository
 {
-    use HasFactory;
+    //
 }

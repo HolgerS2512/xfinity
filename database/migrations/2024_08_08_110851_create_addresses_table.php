@@ -13,18 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
+            $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->decimal('price', 8, 2);
-            $table->tinyInteger('tax')->default(19);
-            $table->string('currency', 3)->default('EUR');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('price_type')->default('Regular');
+            $table->enum('address_type', ['billing', 'shipping'])->default('billing'); // Address type (e.g., 'billing', 'shipping')
+            $table->string('street', 80);
+            $table->string('house_number', 40);
+            $table->string('city', 80);
+            $table->string('state', 50)->nullable();
+            $table->string('zip', 20);
+            $table->string('country', 2);
+            $table->tinyInteger('active')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
@@ -37,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('addresses');
     }
 };

@@ -4,18 +4,9 @@ namespace App\Models\Repos;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class TranslationRepository extends Model
+class TranslationRepository extends ModelRepository
 {
-    use HasFactory;
-
-    /**
-     * Nullabled updated_at column by new instance.
-     *
-     */
-    const UPDATED_AT = null;
-
     /**
      * Indicates that the primary key for the table is the 'hash' column
      *
@@ -48,10 +39,5 @@ class TranslationRepository extends Model
     protected static function boot()
     {
         parent::boot();
-
-        // Listen to the "updating" event
-        static::updating(function ($thisInstance) {
-            $thisInstance->updated_at = Carbon::now();
-        });
     }
 }

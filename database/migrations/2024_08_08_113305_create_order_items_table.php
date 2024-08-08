@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('price', 8, 2);
             $table->tinyInteger('tax')->default(19);
-            $table->string('currency', 3);
+            $table->string('currency', 3)->default('EUR');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });

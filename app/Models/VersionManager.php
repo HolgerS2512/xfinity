@@ -16,6 +16,24 @@ class VersionManager extends Model
     const UPDATED_AT = null;
 
     /**
+     * Indicates that the primary key for the table is the 'hash' column
+     *
+     */
+    protected $primaryKey = 'hash';
+
+    /**
+     * Disables auto-incrementing since the primary key is not an integer
+     *
+     */
+    public $incrementing = false;
+
+    /**
+     * Specifies the type of the primary key as a string
+     *
+     */
+    protected $keyType = 'string';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>

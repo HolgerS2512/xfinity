@@ -2,8 +2,15 @@
 
 namespace App\Models;
 
+use App\Scopes\WithAddressScope;
+use App\Scopes\WithOrderScope;
+use App\Scopes\WithReviewScope;
+use App\Scopes\WithWishlistScope;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -17,6 +24,18 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      */
     const UPDATED_AT = null;
+
+    /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'wishlist',
+        'orders',
+        'reviews',
+        'addresses',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -52,4 +71,118 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Eloquent Event Listener
+     * This method is called after the model is instantiated.
+     *
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Add the global scope to always load the `price` relationship
+        static::addGlobalScope(new WithWishlistScope);
+        static::addGlobalScope(new WithOrderScope);
+        static::addGlobalScope(new WithReviewScope);
+        static::addGlobalScope(new WithAddressScope);
+    }
+
+    /**
+     * Accessor to get the wishlist attribute from the related `WishlistItem` model.
+     * Get all items in the user's wishlist.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getWishlistAttribute()
+    {
+        // Retrieve the wishlist and then get its items
+        $wishlist = $this->getOrCreateWishlist();
+        return $wishlist->items;
+    }
+
+    /**
+     * Accessor to get the orders attribute from the related `Order` model.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getOrdersAttribute()
+    {
+        return $this->orders ? $this->orders->orders : null;
+    }
+
+    /**
+     * Accessor to get the reviews attribute from the related `ProductReviews` model.
+     * Get all reviews written by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|NULL
+     */
+    public function getReviewsAttribute()
+    {
+        // Retrieve all reviews written by the user
+        return $this->reviews ? $this->reviews->reviews : null;
+    }
+
+    /**
+     * Accessor to get the addresses attribute from the related `Address` model.
+     * Get all items in the user's addresses.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getAddressesAttribute()
+    {
+        // Retrieve the addresses and then get its items
+        return $this->addresses ? $this->addresses->addresses : null;
+    }
+
+    /**
+     * Get many orders for this user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get many orders for this user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get all reviews written by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reviews(): HasMany|NULL
+    {
+        return $this->hasMany(ProductReview::class);
+    }
+
+    /**
+     * Get the user's wishlist.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function wishlist(): HasOne
+    {
+        return $this->hasOne(Wishlist::class);
+    }
+
+    /**
+     * Retrieve or create the user's wishlist.
+     *
+     * @return \App\Models\Wishlist
+     */
+    public function getOrCreateWishlist()
+    {
+        // Retrieve the existing wishlist or create a new one if it doesn't exist
+        return $this->getWishlist()->firstOrCreate();
+    }
 }

@@ -13,18 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
+            $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->decimal('price', 8, 2);
-            $table->tinyInteger('tax')->default(19);
+            $table->unsignedBigInteger('billing_address_id'); // Foreign key to billing address
+            $table->unsignedBigInteger('shipping_address_id');  // Foreign key to shipping address
+            $table->string('order_number')->unique();
+            $table->decimal('shipping_cost', 8, 2)->nullable();
+            $table->decimal('total_amount', 8, 2);
             $table->string('currency', 3)->default('EUR');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('price_type')->default('Regular');
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending'); // Order status
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
@@ -37,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('orders');
     }
 };

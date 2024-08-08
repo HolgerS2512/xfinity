@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->decimal('discount_amount', 8, 2);
-            $table->string('currency', 3);
+            $table->string('currency', 3)->default('EUR');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
