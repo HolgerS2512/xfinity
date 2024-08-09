@@ -2,8 +2,6 @@
 
 namespace App\Models\Repos;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TranslationRepository extends ModelRepository
 {
@@ -11,7 +9,7 @@ class TranslationRepository extends ModelRepository
      * Indicates that the primary key for the table is the 'hash' column
      *
      */
-    protected $primaryKey = 'hash';
+    protected $primaryKey = 'id';
 
     /**
      * Disables auto-incrementing since the primary key is not an integer

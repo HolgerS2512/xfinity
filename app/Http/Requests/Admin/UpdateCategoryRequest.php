@@ -18,6 +18,9 @@ class UpdateCategoryRequest extends JsonResponseRequest
             'name' => 'string|max:60|min:3',
             'active' => 'boolean',
             'popular' => 'boolean',
+            'level' => 'integer|min:0|max:255',
+            'parent_id' => 'integer',
+            'description' => 'string|max:1000',
         ];
     }
 }

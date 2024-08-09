@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('text_translations', function (Blueprint $table) {
-            $table->string('hash')->primary();
+            $table->string('id')->primary();
             $table->text('de')->nullable();
             $table->text('en')->nullable();
             $table->timestamp('created_at')->useCurrent();

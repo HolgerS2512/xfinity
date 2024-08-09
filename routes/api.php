@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Admin\ContactController;
-use App\Http\Controllers\Admin\SubcategoryController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -122,6 +122,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
 
 Route::get('/all/categories', [CategoryController::class, 'allActive']);
+// Route::get('/all/categories', function() {
+//     VersionManager::create([]);
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -133,14 +136,14 @@ Route::prefix('admin')->group(function () {
 
     Route::apiResource('category', CategoryController::class);
 
-    Route::apiResource('subcategory', SubcategoryController::class);
 });
 
-// Route::prefix('admin')->group(function () {
-//     Route::get('/users', function () {
-//         // Matches The "/admin/users" URL
-//     });
-// });
+// GET /admin/category – index (zeigt eine Liste aller Kategorien)
+// POST /admin/category – store (erstellt eine neue Kategorie)
+// GET /admin/category/{category} – show (zeigt eine einzelne Kategorie)
+// PUT/PATCH /admin/category/{category} – update (aktualisiert eine vorhandene Kategorie)
+// DELETE /admin/category/{category} – destroy (löscht eine Kategorie)
+
 
 // -> https://xfinity-software/demo_shop
 

@@ -15,8 +15,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable();
             $table->integer('ranking');
             $table->string('name')->unique();
+            $table->string('description')->nullable()->unique();
+            $table->tinyInteger('level')->default(1);
             $table->tinyInteger('active')->default(0);
             $table->tinyInteger('popular')->default(0);
             $table->timestamp('created_at')->useCurrent();

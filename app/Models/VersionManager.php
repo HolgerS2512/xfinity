@@ -19,7 +19,7 @@ class VersionManager extends Model
      * Indicates that the primary key for the table is the 'hash' column
      *
      */
-    protected $primaryKey = 'hash';
+    protected $primaryKey = 'id';
 
     /**
      * Disables auto-incrementing since the primary key is not an integer

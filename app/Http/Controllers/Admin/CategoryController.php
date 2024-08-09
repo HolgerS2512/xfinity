@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Repos\CategoryRepositoryController;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
-use App\Models\Translation;
 use App\Models\VersionManager;
+use App\Traits\Translation\TranslationMethodsTrait;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
-final class CategoryController extends CategoryRepositoryController
+class CategoryController extends Controller
 {
+    use TranslationMethodsTrait;
+
     /**
      * The name of the custom authentication cookie used in the application.
      *
@@ -29,7 +32,7 @@ final class CategoryController extends CategoryRepositoryController
      *
      * @var string
      */
-    private string $versionId = 'QMwMbD9y2Brej92G20240805192529';
+    private string $versionId = 'd9ikZlc9i4aZvgZC20240809151433';
 
     /**
      * Display a listing of the resource.
@@ -40,21 +43,24 @@ final class CategoryController extends CategoryRepositoryController
     {
         try {
             // Get all categories and subcatgeroies
-            $data = Category::where('active', true)
-                ->select('id', 'name')
-                ->with([
-                    'subcategories' => function ($query) {
-                        $query->where('active', true)
-                            ->select('id', 'name', 'category_id')
-                            ->with([
-                                'maincategories' => function ($query) {
-                                    $query->where('active', true)
-                                        ->select('id', 'name', 'subcategory_id');
-                                }
-                            ]);
-                    }
-                ])->get();
-
+            // $data = Category::where('active', true)
+            //     ->select('id', 'name')
+            //     ->with([
+            //         'subcategories' => function ($query) {
+            //             $query->where('active', true)
+            //                 ->select('id', 'name', 'category_id')
+            //                 ->with([
+            //                     'maincategories' => function ($query) {
+            //                         $query->where('active', true)
+            //                             ->select('id', 'name', 'subcategory_id');
+            //                     }
+            //                 ]);
+            //         }
+            //     ])->get();
+            // $data = Category::all();
+            // $data = Category::loadActiveCategoriesByLvl();
+            $data = Category::loadAllCategoriesByLvl();
+            // dd($data);
             // Get the versions hash
             $vm = VersionManager::findOrFail($this->versionId);
 
@@ -114,8 +120,54 @@ final class CategoryController extends CategoryRepositoryController
     public function store(StoreCategoryRequest $request)
     {
         try {
-            // Add Ranking
-            $ranking = ['ranking' => Category::all()->count() + 1];
+            $ranking = [];
+            $categories = Category::where('level', $request->level ?? 1)->get();
+
+            // Add Ranking only request ranking does not exist
+            if (!$request->ranking) {
+                $resRank = 1;
+
+                // if have datasets
+                if ($categories?->count() > 1) {
+
+                    $testRank = 1;
+
+                    // looks for gaps
+                    for ($i = 0; $i < $categories->last()->ranking; $i++) {
+                        
+                        if (isset($categories[$i]) && $categories[$i]?->ranking !== $testRank) {
+                            $resRank = $testRank;
+                            break;
+                        }
+                        ++$testRank;
+                    }
+
+                    // if no gaps present
+                    if ($resRank === 1) {
+                        $resRank = $categories?->count() + 1;
+                    }
+                }
+
+                $ranking = [
+                    'ranking' => $resRank,
+                ];
+            }
+
+            // Request ranking exist in DB, gives present values new ranking
+            if ($request->ranking) {
+                $exist = false;
+                $newRank = (int) $request->ranking;
+
+                foreach ($categories as $cat) {
+                    if ($cat?->ranking === (int) $request->ranking) {
+                        $exist = true;
+                    }
+                    if ($exist) {
+                        ++$newRank;
+                        $cat->update(['ranking' => $newRank]);
+                    }
+                }
+            }
 
             // Save Category
             $category = Category::create(array_merge($ranking, $request->all()));

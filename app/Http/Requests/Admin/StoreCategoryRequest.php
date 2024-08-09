@@ -15,6 +15,10 @@ class StoreCategoryRequest extends JsonResponseRequest
     {
         return [
             'name' => 'required|string|max:60|min:3',
+            'level' => 'integer|min:0|max:255',
+            'ranking' => 'integer',
+            'parent_id' => 'integer',
+            'description' => 'string|max:1000',
         ];
     }
 }
