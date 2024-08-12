@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-// Route::get('privacy_policy', fn() => view('welcome'))->name('privacy_policy');
+
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
 

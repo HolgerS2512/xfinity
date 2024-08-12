@@ -311,7 +311,7 @@ img,p{margin:0;Margin:0;font-family:Lato,BlinkMacSystemFont,Segoe UI,Helvetica N
 <!--[if !mso]>-->
 <td class=t54 style="width:320px;text-align:left;line-height:20px;mso-line-height-rule:exactly;mso-text-raise:2px;">
 <!--<![endif]-->
-<a class=t52 href="LINK" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;" target=_blank>{{ __('company.privacy') }}</a></td>
+<a class=t52 href="{{ route('privacy_policy') }}" style="display:block;margin:0;Margin:0;font-family:Open Sans,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;line-height:20px;font-weight:400;font-style:normal;font-size:13px;text-decoration:none;direction:ltr;color:#BBBBBB;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;" target=_blank>{{ __('company.privacy') }}</a></td>
 </tr></table>
 </td></tr><tr><td><div class=t56 style="mso-line-height-rule:exactly;mso-line-height-alt:20px;line-height:20px;font-size:1px;display:block;">&nbsp;&nbsp;</div></td></tr></table></td>
 </tr></table>

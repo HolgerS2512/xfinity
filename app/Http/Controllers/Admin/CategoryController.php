@@ -42,25 +42,9 @@ class CategoryController extends Controller
     public function allActive()
     {
         try {
-            // Get all categories and subcatgeroies
-            // $data = Category::where('active', true)
-            //     ->select('id', 'name')
-            //     ->with([
-            //         'subcategories' => function ($query) {
-            //             $query->where('active', true)
-            //                 ->select('id', 'name', 'category_id')
-            //                 ->with([
-            //                     'maincategories' => function ($query) {
-            //                         $query->where('active', true)
-            //                             ->select('id', 'name', 'subcategory_id');
-            //                     }
-            //                 ]);
-            //         }
-            //     ])->get();
-            // $data = Category::all();
-            // $data = Category::loadActiveCategoriesByLvl();
-            $data = Category::loadAllCategoriesByLvl();
-            // dd($data);
+            // Custom function returned all active categories
+            $data = Category::loadActiveCategoriesByLvl();
+
             // Get the versions hash
             $vm = VersionManager::findOrFail($this->versionId);
 
@@ -73,6 +57,8 @@ class CategoryController extends Controller
                 str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
                 false,
                 false,
+                false,
+                'none',
             );
 
             return response()->json([
@@ -96,7 +82,7 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            $data = Category::with('subcategories')->get();
+            $data = Category::loadAllCategoriesByLvl();
 
             return response()->json([
                 'status' => true,

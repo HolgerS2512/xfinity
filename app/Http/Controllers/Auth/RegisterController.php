@@ -9,6 +9,8 @@ use App\Mail\Auth\RegisterSuccessMail;
 use App\Models\User;
 use App\Models\Auth\VerifyEmailToken;
 use App\Http\Requests\Auth\VerifyEmailRequest;
+use App\Jobs\Auth\SendRegisterSuccessEmail;
+use App\Jobs\Auth\SendVerifyEmail;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -60,7 +62,8 @@ final class RegisterController extends Controller
 
                 if ($verify) {
                     // Send mail with values.
-                    Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
+                    // Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
+                    dispatch(new SendVerifyEmail($user->email, route('verify_email', [$urlCode]), $token));
 
                     return response()->json([
                         'status' => true,
@@ -143,7 +146,9 @@ final class RegisterController extends Controller
                 'email_verified_at' => Carbon::now(),
             ]);
 
-            Mail::to($user->email)->send(new RegisterSuccessMail);
+            // Send email
+            // Mail::to($user->email)->send(new RegisterSuccessMail);
+            dispatch(new SendRegisterSuccessEmail($user->email));
 
             return response()->json([
                 'status' => true,

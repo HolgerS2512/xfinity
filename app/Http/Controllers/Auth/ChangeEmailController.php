@@ -3,17 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Auth\ChangeEmailMail;
+use App\Jobs\Auth\SendChangeMailEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Exception;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 final class ChangeEmailController extends Controller
 {
@@ -66,7 +63,8 @@ final class ChangeEmailController extends Controller
             DB::table('email_resets')->where('created_at', '<', Carbon::now()->subHour(1))->delete();
 
             // Send email.
-            Mail::to($request->user()->email)->send(new ChangeEmailMail($token));
+            // Mail::to($request->user()->email)->send(new ChangeEmailMail($token));
+            dispatch(new SendChangeMailEmail($request->user()->email, $token));
 
             // Search and check is column exist. Inserted or updated "email_resets" table.
             $resetToken = DB::table('email_resets')->where('email', $request->user()->email)->get();

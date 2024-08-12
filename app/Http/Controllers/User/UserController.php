@@ -22,11 +22,18 @@ final class UserController extends Controller
     {
         try {
             $user = Auth::user();
-            unset($user->id, $user->created_at, $user->updated_at, $user->email_verified_at);
 
-            $AC = new AesCryptographer(env('CRYPTO_KEY'));
+            $newUser = [
+                'salutation' => $user->salutation,
+                'firstname' => $user->firstname,
+                'lastname' => $user->lastname,
+                'email' => $user->email,
+                'birthday' => $user->birthday,
+            ];
 
-            $encrypted = $AC->encrypt($user);
+            $AC = new AesCryptographer(config('app.encryption_password'));
+
+            $encrypted = $AC->encrypt(json_encode($newUser));
 
             return $encrypted;
 

@@ -20,7 +20,7 @@ class ForgetPasswordMail extends CustomMail
      *
      * @return void
      */
-    public function __construct(public $url, public $accessToken)
+    public function __construct(protected $url, protected $accessToken)
     {
         parent::__construct();
     }

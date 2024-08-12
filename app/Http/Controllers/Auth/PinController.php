@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\PinRequest;
+use App\Jobs\Auth\SendVerifyEmail;
 use App\Models\User;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\Auth\VerifyEmailMail;
 use App\Models\Auth\VerifyEmailToken;
 use Illuminate\Support\Facades\Request;
 
@@ -108,7 +106,8 @@ final class PinController extends Controller
                 ]);
 
                 // Send mail with values.
-                Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
+                // Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
+                dispatch(new SendVerifyEmail($user->email, route('verify_email', [$urlCode]), $token));
 
                 return response()->json([
                     'status' => true,

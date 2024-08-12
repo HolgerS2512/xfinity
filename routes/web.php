@@ -14,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Route::get('/*', [CookieController::class, 'index']);
+
+// --- Important: don't delete this route !!! ---
+Route::get('privacy_policy', function() {
+    redirect('/privacy_policy');
+})->name('privacy_policy');
 

@@ -56,7 +56,7 @@ php artisan passport:client --personal
 
 ```shell
 PASSPORT_PERSONAL_ACCESS_CLIENT_ID=1
-PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=oQ7MH4ZbNiIgjWS0IbLPQr4gek2HKE4Ii8bvt32f
+PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET=z8TQU8N5U4IZrH1eLn4aJwJwUYe4a2BzWVF7QPYv
 ```
 
 - Edit User Model
@@ -122,10 +122,38 @@ class AuthServiceProvider extends ServiceProvider
 
 
 
-
-
-
-
 ## Deploy
 
 - [Follow documentation -> passport](https://laravel.com/docs/9.x/passport#deploying-passport)
+
+### Important
+
+- Install Supervisor
+1. 
+```
+sudo apt-get install supervisor
+```
+
+1. Add file: /etc/supervisor/conf.d/laravel-worker.conf
+
+```
+[program:laravel-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /path-to-your-project/artisan queue:work --sleep=3 --tries=3
+autostart=true
+autorestart=true
+user=yourusername
+numprocs=1
+redirect_stderr=true
+stdout_logfile=/path-to-your-project/worker.log
+```
+```
+sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start laravel-worker:*
+```
+1. Start
+```php
+php artisan queue:work
+```
+

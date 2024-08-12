@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\ForgetRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Jobs\Auth\SendForgetPasswordEmail;
 use App\Mail\Auth\ForgetPasswordMail;
 use App\Models\User;
 use Exception;
@@ -39,7 +40,8 @@ final class ForgetPasswordController extends Controller
             $urlCode = GetApiCodesTrait::create()->url;
 
             // Send email.
-            Mail::to($request->email)->send(new ForgetPasswordMail(route('reset_password', [$urlCode]), $token));
+            // Mail::to($request->email)->send(new ForgetPasswordMail(route('reset_password', [$urlCode]), $token));
+            dispatch(new SendForgetPasswordEmail($request->email, route('reset_password', [$urlCode]), $token));
 
             // Delete all coulmns is older than one hour.
             DB::table('password_resets')->where('created_at', '<', Carbon::now()->subHour(1))->delete();

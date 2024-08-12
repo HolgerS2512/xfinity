@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\Auth\SendChangePasswordEmail;
 use App\Mail\Auth\ChangePasswordMail;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -73,7 +74,8 @@ final class ChangePasswordController extends Controller
             DB::table('password_resets')->where('created_at', '<', Carbon::now()->subHour(1))->delete();
 
             // Send email.
-            Mail::to($request->user()->email)->send(new ChangePasswordMail($token));
+            // Mail::to($request->user()->email)->send(new ChangePasswordMail($token));
+            dispatch(new SendChangePasswordEmail($request->user()->email, $token));
 
             // Search and check is column exist. Inserted or updated "password_resets" table.
             $resetToken = DB::table('password_resets')->where('email', $request->user()->email)->get();

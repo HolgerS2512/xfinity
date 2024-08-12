@@ -12,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
-
+use Illuminate\Support\Facades\URL;
 
 final class AuthController extends Controller
 {
@@ -78,14 +78,15 @@ final class AuthController extends Controller
                     $request->session()->regenerate();
                     $token = $user->createToken($this->cookieName)->accessToken;
                     // 60 * 24 * 10  - 10 Days
-                    $cookie = Cookie::make($this->cookieName, $token, (60 * 24 * 10));
 
+                    $userAttributes = $user->only(['firstname', 'lastname', 'email']);
+                    
                     return response()->json([
                         'status' => true,
                         'message' => __('auth.login'),
                         'token' => $token,
-                        'user' => $user,
-                    ], 200)->cookie($cookie);
+                        'user' => $userAttributes,
+                    ], 200);
                 }
             }
 
