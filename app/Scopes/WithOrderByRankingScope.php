@@ -17,6 +17,6 @@ class WithOrderByRankingScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $builder->orderBy('ranking');
+        return $builder->orderBy('ranking');
     }
 }

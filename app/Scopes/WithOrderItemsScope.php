@@ -18,6 +18,6 @@ class WithOrderItemsScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load the `orderItems` relationship for the `Order` model
-        $builder->with('items');
+        return $builder->with('items');
     }
 }

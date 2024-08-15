@@ -18,6 +18,6 @@ class WithMainImageScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load the `main_image` relationship for the `Produkt` model
-        $builder->with('main_image');
+        return $builder->with('main_image');
     }
 }

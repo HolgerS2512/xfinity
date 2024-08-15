@@ -36,7 +36,6 @@ final class UserController extends Controller
             $encrypted = $AC->encrypt(json_encode($newUser));
 
             return $encrypted;
-
         } catch (Exception $e) {
 
             return response()->json([
@@ -94,4 +93,44 @@ final class UserController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Laravel get the authentification user address values API Function
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function addresses()
+    {
+        try {
+            $user = Auth::user();
+            $user = User::findOrFail($user->id);
+
+            $addresses = $user->addresses()->get();
+
+            $AC = new AesCryptographer(config('app.encryption_password'));
+
+            $encrypted = $AC->encrypt(json_encode($addresses->toArray()));
+
+            return $encrypted;
+        } catch (Exception $e) {
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
+        }
+    }
 }
+
+// $user = User::find(1);
+
+// $user->addresses()->create([
+//     'address_type' => 'billing',
+//     'street' => 'Neue Straße',
+//     'house_number' => '123',
+//     'city' => 'Berlin',
+//     'zip' => '10115',
+//     'country' => 'DE',
+//     'active' => true,
+// ]);
+

@@ -18,6 +18,6 @@ class WithOrderScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load `orders` relationship for the `User` model
-        $builder->with('orders');
+        return $builder->with('orders');
     }
 }

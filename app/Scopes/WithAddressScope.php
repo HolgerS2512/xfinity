@@ -18,6 +18,6 @@ class WithAddressScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load the `wishlist` relationship for the `User` model
-        $builder->with('addresses');
+        return $builder->with('addresses');
     }
 }

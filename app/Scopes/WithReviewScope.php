@@ -18,6 +18,6 @@ class WithReviewScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load `reviews` relationship for the `Produkt` model
-        $builder->with('reviews');
+        return $builder->with('reviews');
     }
 }

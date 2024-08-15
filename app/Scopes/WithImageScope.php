@@ -18,6 +18,6 @@ class WithImageScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load `images` relationship for the `Produkt` model
-        $builder->with('images');
+        return $builder->with('images');
     }
 }

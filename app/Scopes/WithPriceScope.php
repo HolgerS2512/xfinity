@@ -18,6 +18,6 @@ class WithPriceScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         // Eager load the `price` relationship for the `Produkt` model
-        $builder->with('prices');
+        return $builder->with('prices');
     }
 }

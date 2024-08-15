@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -24,18 +25,6 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      */
     const UPDATED_AT = null;
-
-    /**
-     * The attributes that should be appended to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'wishlist',
-        'orders',
-        'reviews',
-        'addresses',
-    ];
 
     /**
      * The attributes that are mass assignable.
@@ -81,11 +70,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         parent::boot();
 
-        // Add the global scope to always load the `price` relationship
-        static::addGlobalScope(new WithWishlistScope);
-        static::addGlobalScope(new WithOrderScope);
-        static::addGlobalScope(new WithReviewScope);
-        static::addGlobalScope(new WithAddressScope);
+        // static::addGlobalScope(new WithAddressScope);
+        // static::addGlobalScope(new WithWishlistScope);
+        // static::addGlobalScope(new WithOrderScope);
+        // static::addGlobalScope(new WithReviewScope);
     }
 
     /**
@@ -102,45 +90,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Accessor to get the orders attribute from the related `Order` model.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getOrdersAttribute()
-    {
-        return $this->orders ? $this->orders->orders : null;
-    }
-
-    /**
-     * Accessor to get the reviews attribute from the related `ProductReviews` model.
-     * Get all reviews written by the user.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection|NULL
-     */
-    public function getReviewsAttribute()
-    {
-        // Retrieve all reviews written by the user
-        return $this->reviews ? $this->reviews->reviews : null;
-    }
-
-    /**
-     * Accessor to get the addresses attribute from the related `Address` model.
-     * Get all items in the user's addresses.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public function getAddressesAttribute()
-    {
-        // Retrieve the addresses and then get its items
-        return $this->addresses ? $this->addresses->addresses : null;
-    }
-
-    /**
-     * Get many orders for this user.
+     * Get many addresses for this user.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|NULL
      */
-    public function addresses(): HasMany
+    public function addresses()
     {
         return $this->hasMany(Address::class);
     }

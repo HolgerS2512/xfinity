@@ -106,9 +106,7 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
         Route::get('/account/profile', 'profile');
 
-        Route::get('/account/profile', 'profile');
-
-        Route::get('/account/address', 'address');
+        Route::get('/account/addresses', 'addresses');
 
         Route::get('/account/orders', 'orders');
     });
