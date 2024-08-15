@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Address;
 use App\Models\AesCryptographer;
 use App\Models\User;
 use Carbon\Carbon;
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Validator;
 final class UserController extends Controller
 {
     /**
+     * The cryptographer instance used for encryption and decryption.
+     *
+     * @var \App\Services\AesCryptographer
+     */
+    private $cryptographer;
+
+    /**
+     * Create a new instance of the class.
+     *
+     * Initialize the cryptographer with the encryption password from the application configuration.
+     */
+    public function __construct()
+    {
+        $this->cryptographer = new AesCryptographer(config('app.encryption_password'));
+    }
+
+    /**
      * Laravel get the authentification user values API Function
      * 
      * @return \Illuminate\Http\Response
@@ -21,19 +39,10 @@ final class UserController extends Controller
     public function profile()
     {
         try {
-            $user = Auth::user();
+            $userId = Auth::id();
+            $user = User::findOrFail($userId);
 
-            $newUser = [
-                'salutation' => $user->salutation,
-                'firstname' => $user->firstname,
-                'lastname' => $user->lastname,
-                'email' => $user->email,
-                'birthday' => $user->birthday,
-            ];
-
-            $AC = new AesCryptographer(config('app.encryption_password'));
-
-            $encrypted = $AC->encrypt(json_encode($newUser));
+            $encrypted = $this->cryptographer->encrypt(json_encode($user));
 
             return $encrypted;
         } catch (Exception $e) {
@@ -102,14 +111,11 @@ final class UserController extends Controller
     public function addresses()
     {
         try {
-            $user = Auth::user();
-            $user = User::findOrFail($user->id);
+            $userId = Auth::id();
 
-            $addresses = $user->addresses()->get();
+            $addresses = Address::where('user_id', $userId)->get();
 
-            $AC = new AesCryptographer(config('app.encryption_password'));
-
-            $encrypted = $AC->encrypt(json_encode($addresses->toArray()));
+            $encrypted = $this->cryptographer->encrypt(json_encode($addresses));
 
             return $encrypted;
         } catch (Exception $e) {
@@ -133,4 +139,3 @@ final class UserController extends Controller
 //     'country' => 'DE',
 //     'active' => true,
 // ]);
-

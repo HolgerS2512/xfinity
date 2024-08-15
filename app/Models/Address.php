@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\AddressType;
 use App\Models\Repos\ModelRepository;
+use App\Scopes\WithOrderByCreateAscScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends ModelRepository
@@ -25,6 +26,29 @@ class Address extends ModelRepository
         'active',
         'updated_at',
     ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'id',
+        'user_id',
+        'updated_at',
+        'created_at',
+    ];
+
+    /**
+     * Eloquent Event Listener
+     *
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new WithOrderByCreateAscScope);
+    }
 
     /**
      * The attributes that should be cast.
