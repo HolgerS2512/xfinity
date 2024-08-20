@@ -123,6 +123,8 @@ final class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $token = $request->user()->token();
 
@@ -139,9 +141,11 @@ final class AuthController extends Controller
                 DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
             }
 
-            Cookie::queue(Cookie::forget($this->cookieName));
+            // Cookie::queue(Cookie::forget($this->cookieName));
 
             $request->session()->regenerate();
+
+            DB::commit();
 
             return response()->json([
                 'status' => true,
@@ -149,6 +153,7 @@ final class AuthController extends Controller
             ], 204);
             // http status 204 -> No Content -> no response!
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response([
                 'status' => false,

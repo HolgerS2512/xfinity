@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\AddressType;
 use App\Models\Repos\ModelRepository;
-use App\Scopes\WithOrderByCreateAscScope;
+use App\Scopes\WithOrderByCreateDescScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends ModelRepository
@@ -16,14 +16,17 @@ class Address extends ModelRepository
      */
     protected $fillable = [
         'user_id',
+        'firstname',
+        'lastname',
         'address_type',
         'street',
-        'house_number',
         'city',
         'state',
         'zip',
         'country',
+        'phone',
         'active',
+        'details',
         'updated_at',
     ];
 
@@ -33,10 +36,9 @@ class Address extends ModelRepository
      * @var array<int, string>
      */
     protected $hidden = [
-        'id',
         'user_id',
-        'updated_at',
-        'created_at',
+        // 'updated_at',
+        // 'created_at',
     ];
 
     /**
@@ -47,7 +49,7 @@ class Address extends ModelRepository
     {
         parent::boot();
 
-        static::addGlobalScope(new WithOrderByCreateAscScope);
+        static::addGlobalScope(new WithOrderByCreateDescScope);
     }
 
     /**

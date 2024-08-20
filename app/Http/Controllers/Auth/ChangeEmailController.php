@@ -22,6 +22,8 @@ final class ChangeEmailController extends Controller
      */
     public function edit(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             // Validation.
             $credentials = Validator::make($request->all(), [
@@ -81,11 +83,14 @@ final class ChangeEmailController extends Controller
                 DB::table('email_resets')->insert($values);
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('email.change'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
@@ -103,6 +108,8 @@ final class ChangeEmailController extends Controller
      */
     public function update(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             // Validation.
             $credentials = Validator::make($request->all(), [
@@ -168,11 +175,14 @@ final class ChangeEmailController extends Controller
                 DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('email.updated'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

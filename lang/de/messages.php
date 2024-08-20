@@ -18,5 +18,9 @@ return [
     'throttleRequestException' => 'Die Anforderungssignatur konnte nicht generiert werden. Route nicht verfügbar.',
 
     'data_updated' => 'Sie haben Ihre Nutzerdaten erfolgreich geändert.',
+    'address_new' => 'Sie haben erfolgreich eine neue Adresse hinzugefügt.',
+    'address_update' => 'Ihre Adressdaten wurden erfolgreich geändert.',
+    'address_delete' => 'Ihre Adressdaten wurden erfolgreich gelöscht.',
+
     'contact' => 'Ihre Nachricht wurde erfolgreich gesendet.',
 ];

@@ -11,7 +11,8 @@ use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\AddressController as UserAddrController;
+use App\Http\Controllers\User\ProfileController;
 use App\Models\VersionManager;
 use Illuminate\Support\Facades\Route;
 
@@ -77,9 +78,6 @@ Route::middleware(['throttle:3,1'])->group(function () {
 
 Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
 
-    // Change Personal Data Routes
-    Route::put('/update/user/personal/data', [UserController::class, 'update']);
-
     // Change Password
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
 
@@ -102,14 +100,20 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout']);
 
     // User Account actions
-    Route::controller(UserController::class)->group(function () {
+    // Route::controller(UserController::class)->group(function () {
 
-        Route::get('/account/profile', 'profile');
+        // Route::get('/account/profile', 'profile');
 
-        Route::get('/account/addresses', 'addresses');
+        // Route::apiResource('/account/addresses', UserAddrController::class);
 
-        Route::get('/account/orders', 'orders');
-    });
+        // Route::get('/account/orders', 'orders');
+    // });
+
+    Route::apiResource('/account/profile', ProfileController::class);
+
+    Route::apiResource('/account/addresses', UserAddrController::class);
+
+    // Route::get('/account/orders', 'orders');
 });
 
 /*

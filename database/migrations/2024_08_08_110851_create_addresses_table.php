@@ -19,14 +19,17 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->string('firstname', 60)->nullable();
+            $table->string('lastname', 40)->nullable();
             $table->enum('address_type', ['billing', 'shipping'])->default('billing'); // Address type (e.g., 'billing', 'shipping')
             $table->string('street', 80);
-            $table->string('house_number', 40);
             $table->string('city', 80);
             $table->string('state', 50)->nullable();
             $table->string('zip', 20);
             $table->string('country', 2);
             $table->tinyInteger('active')->default(0);
+            $table->string('details')->nullable();
+            $table->string('phone', 60)->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });

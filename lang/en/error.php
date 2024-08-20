@@ -15,4 +15,6 @@ return [
 
   '500' => 'Sorry, an error has occurred. Please try again later.',
 
+  'to_many_addresses' => 'A maximum of :max addresses is allowed.',
+
 ];

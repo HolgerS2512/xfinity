@@ -15,4 +15,6 @@ return [
 
   '500' => 'Leider ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.',
 
+  'to_many_addresses' => 'Eine maximale Anzahl von :max Adressen ist erlaubt.',
+
 ];

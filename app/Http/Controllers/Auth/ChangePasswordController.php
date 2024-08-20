@@ -24,6 +24,8 @@ final class ChangePasswordController extends Controller
      */
     public function edit(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             // Validation.
             $credentials = Validator::make($request->all(), [
@@ -92,11 +94,14 @@ final class ChangePasswordController extends Controller
                 DB::table('password_resets')->insert($values);
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('passwords.change'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
@@ -111,6 +116,8 @@ final class ChangePasswordController extends Controller
      */
     public function update(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             // Validation.
             $credentials = Validator::make($request->all(), [
@@ -193,11 +200,14 @@ final class ChangePasswordController extends Controller
                 DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('passwords.updated'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

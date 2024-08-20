@@ -28,6 +28,8 @@ final class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             // Check if user doesnt exist.
             if (!User::where('email', $request->email)->doesntExist()) {
@@ -64,6 +66,7 @@ final class RegisterController extends Controller
                     // Send mail with values.
                     // Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
                     dispatch(new SendVerifyEmail($user->email, route('verify_email', [$urlCode]), $token));
+                    DB::commit();
 
                     return response()->json([
                         'status' => true,
@@ -72,11 +75,15 @@ final class RegisterController extends Controller
                     ], 200);
                 }
             }
+
+            DB::rollBack();
+
             return response()->json([
                 'status' => false,
                 'message' => __('errors.500'),
             ], 500);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
@@ -94,6 +101,8 @@ final class RegisterController extends Controller
      */
     public function verifyEmail(VerifyEmailRequest $request, $url)
     {
+        DB::beginTransaction();
+        
         try {
             // Search and check in table "verify_email_tokens" via url if is exist.
             $tokenColl = DB::table('verify_email_tokens')->where('url', $url);
@@ -132,6 +141,7 @@ final class RegisterController extends Controller
                 DB::table('verify_email_tokens')->where('created_at', '<', Carbon::now()->subWeeks(2))->delete();
 
                 $tokenColl->delete();
+                DB::commit();
 
                 return response()->json([
                     'status' => false,
@@ -149,12 +159,14 @@ final class RegisterController extends Controller
             // Send email
             // Mail::to($user->email)->send(new RegisterSuccessMail);
             dispatch(new SendRegisterSuccessEmail($user->email));
+            DB::commit();
 
             return response()->json([
                 'status' => true,
                 'message' => __('auth.email_verify'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

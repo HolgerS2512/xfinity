@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/*', [CookieController::class, 'index']);
 
 // --- Important: don't delete this route !!! ---
+// applicationin in email
 Route::get('privacy_policy', function() {
     redirect('/privacy_policy');
 })->name('privacy_policy');

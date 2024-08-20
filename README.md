@@ -120,6 +120,7 @@ class AuthServiceProvider extends ServiceProvider
 
 ```
 
+- In Passport class customize token: `laravel_token`.
 
 
 ## Deploy
@@ -157,3 +158,7 @@ sudo supervisorctl start laravel-worker:*
 php artisan queue:work
 ```
 
+#### tip
+```cli
+php artisan config:cache & php artisan route:cache & php artisan view:cache & php artisan serve
+```

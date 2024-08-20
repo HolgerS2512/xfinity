@@ -25,6 +25,8 @@ final class ForgetPasswordController extends Controller
      */
     public function edit(ForgetRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             // Check if user exist.
             if (User::where('email', $request->email)->doesntExist()) {
@@ -62,12 +64,15 @@ final class ForgetPasswordController extends Controller
                 DB::table('password_resets')->insert($values);
             }
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('passwords.forget'),
                 'url' => $urlCode,
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
@@ -85,6 +90,8 @@ final class ForgetPasswordController extends Controller
      */
     public function update(ResetPasswordRequest $request, $url)
     {
+        DB::beginTransaction();
+
         try {
             // Find column in table "password_resets".
             $dbToken = DB::table('password_resets')->where('url', $url)->first();
@@ -119,6 +126,7 @@ final class ForgetPasswordController extends Controller
             // Check that the token column “created_at” is not older than 15 minutes.
             if (Carbon::now()->diffInMinutes($dbToken->created_at) > 15) {
                 DB::table('password_resets')->delete($dbToken->id);
+                DB::commit();
 
                 return response()->json([
                     'status' => false,
@@ -139,11 +147,14 @@ final class ForgetPasswordController extends Controller
             // Delete all expired at tokens
             DB::table('password_resets')->where('created_at', '<', Carbon::now()->subDays(1))->delete();
 
+            DB::commit();
+
             return response()->json([
                 'status' => true,
                 'message' => __('passwords.updated'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

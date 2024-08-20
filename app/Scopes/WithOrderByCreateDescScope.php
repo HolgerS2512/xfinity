@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
-class WithOrderByCreateAscScope implements Scope
+class WithOrderByCreateDescScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -17,6 +17,7 @@ class WithOrderByCreateAscScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->orderBy('created_at');
+        $builder->orderByRaw('GREATEST(created_at, updated_at) DESC');
     }
+    
 }

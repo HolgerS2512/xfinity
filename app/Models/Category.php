@@ -127,6 +127,16 @@ class Category extends ModelRepository
      */
     public static function loadActiveCategoriesByLvl($level = 1)
     {
+        $makeHiddenAttr = [
+            'id',
+            'parent_id',
+            'ranking',
+            'description',
+            'popular',
+            'created_at',
+            'updated_at',
+        ];
+
         // Retrieve all active categories at the specified level
         $categories = static::where('level', $level)
             ->active()
@@ -143,6 +153,14 @@ class Category extends ModelRepository
         // Recursively load subcategories for each category
         foreach ($categories as $category) {
             $category->subcategories = static::loadSubcategoriesRecursive($category->subcategories);
+
+            // Exclude 'id' and 'created_at' attributes for the category and its subcategories
+            $category->makeHidden($makeHiddenAttr);
+
+            // Also hide attributes for all nested subcategories
+            foreach ($category->subcategories as $subcategory) {
+                $subcategory->makeHidden($makeHiddenAttr);
+            }
         }
 
         return $categories;
