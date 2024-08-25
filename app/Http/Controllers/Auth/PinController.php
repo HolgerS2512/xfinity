@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
 use App\Models\Auth\VerifyEmailToken;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 
 final class PinController extends Controller
@@ -61,6 +62,7 @@ final class PinController extends Controller
                 'message' => __('auth.email_not_exists'),
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -119,6 +121,7 @@ final class PinController extends Controller
                 'message' => __('auth.email_verify'),
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

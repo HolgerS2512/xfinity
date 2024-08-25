@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 final class ProfileController extends Controller
@@ -46,6 +47,7 @@ final class ProfileController extends Controller
 
             return $encrypted;
         } catch (Exception $e) {
+            Log::channel('database')->error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -128,6 +130,7 @@ final class ProfileController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -168,6 +171,7 @@ final class ProfileController extends Controller
             }
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('ProfileController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

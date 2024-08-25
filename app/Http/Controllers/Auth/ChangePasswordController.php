@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
+use Illuminate\Support\Facades\Log;
 
 final class ChangePasswordController extends Controller
 {
@@ -102,6 +103,7 @@ final class ChangePasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -208,6 +210,7 @@ final class ChangePasswordController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

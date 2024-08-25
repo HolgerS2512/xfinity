@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\URL;
 use App\Traits\Security\Cryptography;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 class CookieController extends Controller
 {
@@ -43,6 +44,7 @@ class CookieController extends Controller
 
             return response()->cookie($cookie);
         } catch (Exception $e) {
+            Log::channel('database')->error('CookieController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

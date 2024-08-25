@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 final class CategoryController extends Controller
 {
@@ -99,6 +100,7 @@ final class CategoryController extends Controller
                 'data' => $data,
             ], 200)->cookie($cookie);
         } catch (Exception $e) {
+            Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -122,6 +124,7 @@ final class CategoryController extends Controller
                 'data' => $data,
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -209,6 +212,7 @@ final class CategoryController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -233,6 +237,7 @@ final class CategoryController extends Controller
                 'data' => $data,
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -311,7 +316,8 @@ final class CategoryController extends Controller
                 'message' => ($status ? '' : __('error.500')),
             ], ($status ? 200 : 500));
         } catch (Exception $e) {
-            DB::commit();
+            DB::rollBack();
+            Log::channel('database')->error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -346,6 +352,7 @@ final class CategoryController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

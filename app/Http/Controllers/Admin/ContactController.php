@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class ContactController extends Controller
 {
@@ -115,6 +116,7 @@ final class ContactController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

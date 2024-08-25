@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 final class RegisterController extends Controller
@@ -84,6 +85,7 @@ final class RegisterController extends Controller
             ], 500);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -167,6 +169,7 @@ final class RegisterController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

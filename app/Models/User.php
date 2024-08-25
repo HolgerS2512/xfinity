@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
         'birthday',
         'email',
         'password',
+        'newsletter_subscriber',
         'email_verified_at',
         'updated_at',
     ];
@@ -63,6 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
      * @var array<string, string>
      */
     protected $casts = [
+        'newsletter_subscriber' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 
@@ -122,6 +124,16 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
     public function reviews(): HasMany|NULL
     {
         return $this->hasMany(ProductReview::class);
+    }
+
+    /**
+     * Get all cookies for this user instance.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function cookies()
+    {
+        return $this->hasMany(Cookie::class);
     }
 
     /**

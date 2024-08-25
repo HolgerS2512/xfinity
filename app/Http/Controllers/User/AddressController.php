@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class AddressController extends Controller
 {
@@ -54,6 +55,7 @@ final class AddressController extends Controller
                 'data' => $encrypted,
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('AddressController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -140,6 +142,7 @@ final class AddressController extends Controller
             ], 200);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('AddressController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -237,6 +240,7 @@ final class AddressController extends Controller
             ], 500);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('AddressController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -278,6 +282,7 @@ final class AddressController extends Controller
             ], 500);
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('AddressController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

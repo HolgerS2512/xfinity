@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 final class AuthController extends Controller
@@ -45,6 +46,7 @@ final class AuthController extends Controller
                 'email' => $request->email,
             ], 200);
         } catch (Exception $e) {
+            Log::channel('database')->error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -95,6 +97,7 @@ final class AuthController extends Controller
                 'message' => __('passwords.user'),
             ], 422);
         } catch (Exception $e) {
+            Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -154,6 +157,7 @@ final class AuthController extends Controller
             // http status 204 -> No Content -> no response!
         } catch (Exception $e) {
             DB::rollBack();
+            Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
 
             return response([
                 'status' => false,
