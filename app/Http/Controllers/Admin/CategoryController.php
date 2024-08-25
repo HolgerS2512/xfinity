@@ -9,7 +9,7 @@ use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\User;
 use App\Models\VersionManager;
-use App\Traits\Middleware\PermissionTrait;
+use App\Traits\Middleware\PermissionServiceTrait;
 use App\Traits\Translation\TranslationMethodsTrait;
 use Carbon\Carbon;
 use Exception;
@@ -22,14 +22,14 @@ use Illuminate\Support\Facades\Cache;
 
 final class CategoryController extends Controller
 {
-    use TranslationMethodsTrait, PermissionTrait;
+    use TranslationMethodsTrait, PermissionServiceTrait;
 
     /**
      * The permission name for permissionService.
      *
      * @var string
      */
-    private string $permission = 'category';
+    private string $permissionName = 'category';
 
     /**
      * The name of the custom authentication cookie used in the application.
@@ -61,7 +61,7 @@ final class CategoryController extends Controller
                 return $next($request);
             }
 
-            $this->permisssionService($request, $next);
+            $this->permisssionService($request, $next, $this->permissionName);
         });
     }
 

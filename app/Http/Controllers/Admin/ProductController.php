@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\VersionManager;
-use App\Traits\Middleware\PermissionTrait;
+use App\Traits\Middleware\PermissionServiceTrait;
 use App\Traits\Translation\TranslationMethodsTrait;
 use Exception;
 use Illuminate\Http\Request;
@@ -18,14 +18,14 @@ use Illuminate\Support\Facades\URL;
 
 class ProductController extends Controller
 {
-    use PermissionTrait, TranslationMethodsTrait;
+    use PermissionServiceTrait, TranslationMethodsTrait;
 
     /**
      * The permission name for permissionService.
      *
      * @var string
      */
-    private string $permission = 'product';
+    private string $permissionName = 'product';
 
     /**
      * 
@@ -43,7 +43,7 @@ class ProductController extends Controller
             //     return $next($request);
             // }
 
-            $this->permisssionService($request, $next);
+            $this->permisssionService($request, $next, $this->permissionName);
         });
     }
 

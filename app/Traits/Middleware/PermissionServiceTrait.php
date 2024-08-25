@@ -5,7 +5,7 @@ namespace App\Traits\Middleware;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-trait PermissionTrait
+trait PermissionServiceTrait
 {
     /**
      * 
@@ -14,13 +14,14 @@ trait PermissionTrait
      * a 403 Unauthorized response.
      * 
      */
-    protected function permisssionService($request, $next)
+    protected function permisssionService($request, $next, $permissionName)
     {
         $id = Auth::id();
+
         $user = User::findOrFail($id);
 
         // Check if user has permission to access products based on the route
-        if ($request->routeIs("this->permission.create") || $request->routeIs("this->permission.store")) {
+        if ($request->routeIs("$permissionName.create") || $request->routeIs("$permissionName.store")) {
             if (!$user->hasPermission('create')) {
 
                 return response()->json([
@@ -30,7 +31,7 @@ trait PermissionTrait
             }
         }
 
-        if ($request->routeIs("this->permission.index") || $request->routeIs("this->permission.show")) {
+        if ($request->routeIs("$permissionName.index") || $request->routeIs("$permissionName.show")) {
             if (!$user->hasPermission('read')) {
 
                 return response()->json([
@@ -40,7 +41,7 @@ trait PermissionTrait
             }
         }
 
-        if ($request->routeIs("this->permission.edit")) {
+        if ($request->routeIs("$permissionName.edit")) {
             if (!$user->hasPermission('edit')) {
 
                 return response()->json([
@@ -50,7 +51,7 @@ trait PermissionTrait
             }
         }
 
-        if ($request->routeIs("this->permission.update")) {
+        if ($request->routeIs("$permissionName.update")) {
             if (!$user->hasPermission('update')) {
 
                 return response()->json([
@@ -60,7 +61,7 @@ trait PermissionTrait
             }
         }
 
-        if ($request->routeIs("this->permission.destroy")) {
+        if ($request->routeIs("$permissionName.destroy")) {
             if (!$user->hasPermission('delete')) {
 
                 return response()->json([
