@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\User;
 use App\Models\VersionManager;
+use App\Traits\Middleware\PermissionTrait;
 use App\Traits\Translation\TranslationMethodsTrait;
 use Carbon\Carbon;
 use Exception;
@@ -15,10 +17,19 @@ use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
-class CategoryController extends Controller
+final class CategoryController extends Controller
 {
-    use TranslationMethodsTrait;
+    use TranslationMethodsTrait, PermissionTrait;
+
+    /**
+     * The permission name for permissionService.
+     *
+     * @var string
+     */
+    private string $permission = 'category';
 
     /**
      * The name of the custom authentication cookie used in the application.
@@ -35,6 +46,26 @@ class CategoryController extends Controller
     private string $versionId = 'd9ikZlc9i4aZvgZC20240809151433';
 
     /**
+     * 
+     * Applies middleware to check user permissions before allowing access to
+     * specific routes. Users without the appropriate permissions will receive
+     * a 403 Unauthorized response.
+     * 
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+
+            // Exclude routes
+            if ($request->routeIs('all_active_categories')) {
+                return $next($request);
+            }
+
+            $this->permisssionService($request, $next);
+        });
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -42,8 +73,10 @@ class CategoryController extends Controller
     public function allActive()
     {
         try {
-            // Custom function returned all active categories
-            $data = Category::loadActiveCategoriesByLvl();
+            // Custom function returned all active categories | cache time 24 h
+            $data = Cache::remember("categories", 60 * 24, function () {
+                return Category::loadActiveCategoriesByLvl();
+            });
 
             // Get the versions hash
             $vm = VersionManager::findOrFail($this->versionId);
@@ -105,6 +138,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             $ranking = [];
             $categories = Category::where('level', $request->level ?? 1)->get();
@@ -120,7 +155,7 @@ class CategoryController extends Controller
 
                     // looks for gaps
                     for ($i = 0; $i < $categories->last()->ranking; $i++) {
-                        
+
                         if (isset($categories[$i]) && $categories[$i]?->ranking !== $testRank) {
                             $resRank = $testRank;
                             break;
@@ -161,10 +196,19 @@ class CategoryController extends Controller
             // Is save successfully
             $status = isset($category->id) && !empty($category->id);
 
+            // Cache invalid
+            if ($status) {
+                Cache::forget("categories");
+                DB::commit();
+            } else {
+                DB::rollBack();
+            }
+
             return response()->json([
                 'status' => $status,
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
@@ -206,6 +250,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
+        DB::beginTransaction();
+
         try {
             // Find this instance 
             $category = Category::findOrFail($id);
@@ -244,7 +290,16 @@ class CategoryController extends Controller
             // Update Category
             $status = $category->update(array_merge(['updated_at' => Carbon::now()], $values));
 
+            // Cache invalid
+            if ($status) {
+                Cache::forget("categories");
+                DB::commit();
+            } else {
+                DB::rollBack();
+            }
+
             if ($request->name) {
+
                 return response()->json([
                     'status' => $status && $statusName,
                     'message' => ($status && $statusName ? '' : __('error.500')),
@@ -256,6 +311,7 @@ class CategoryController extends Controller
                 'message' => ($status ? '' : __('error.500')),
             ], ($status ? 200 : 500));
         } catch (Exception $e) {
+            DB::commit();
 
             return response()->json([
                 'status' => false,
@@ -272,14 +328,24 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
+
         try {
-            $status = Category::findOrFail($id);
-            $status->delete();
+            $category = Category::findOrFail($id);
+            
+            $status = $category->delete();
+
+            // Cache invalid & db saved
+            if ($status) {
+                Cache::forget("categories");
+                DB::commit();
+            }
 
             return response()->json([
                 'status' => $status,
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

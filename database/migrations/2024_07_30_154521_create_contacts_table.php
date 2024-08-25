@@ -21,9 +21,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->text('message');
-            $table->tinyInteger('task')->default(1);
+            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

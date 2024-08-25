@@ -13,19 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('price_coupons', function (Blueprint $table) {
+        Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('price_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreignId('coupon_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->enum('name', ['create', 'read', 'edit', 'update', 'delete'])->unique();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
-            $table->timestamp('deleted_at')->nullable();
         });
     }
 
@@ -36,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('price_coupons');
+        Schema::dropIfExists('permissions');
     }
 };

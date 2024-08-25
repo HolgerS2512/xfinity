@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\OrderStatus;
+use App\Enums\StatusValues;
 use App\Models\Repos\OrderRepository;
 use App\Scopes\WithOrderItemsScope;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -38,7 +38,7 @@ class Order extends OrderRepository
      * @var array<string, class>
      */
     protected $casts = [
-        'status' => OrderStatus::class,
+        'status' => StatusValues::class,
     ];
 
     /**

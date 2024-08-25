@@ -10,10 +10,13 @@ use App\Scopes\WithOrderByRankingScope;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 
 class Category extends ModelRepository
 {
+    use SoftDeletes;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +32,17 @@ class Category extends ModelRepository
         'popular',
         'updated_at',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     * 
+     * This is required for the SoftDeletes trait, as it relies on 
+     * the 'deleted_at' timestamp to determine whether a record 
+     * has been soft deleted or not.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * Eloquent Event Listener

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 final class ProfileController extends Controller
@@ -83,47 +84,55 @@ final class ProfileController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    { {
-            try {
-                // Validation.
-                $credentials = Validator::make($request->all(), [
-                    'salutation' => 'required|string|regex:/^[mdwz]$/',
-                    'firstname' => 'required|string|max:60|min:2',
-                    'lastname' => 'required|string|max:40|min:2',
-                    'birthday' => 'required|date_format:Y-m-d',
-                ]);
+    {
+        DB::beginTransaction();
 
-                if ($credentials->fails()) {
+        try {
+            // Validation.
+            $credentials = Validator::make($request->all(), [
+                'salutation' => 'required|string|regex:/^[mdwz]$/',
+                'firstname' => 'required|string|max:60|min:2',
+                'lastname' => 'required|string|max:40|min:2',
+                'birthday' => 'required|date_format:Y-m-d',
+            ]);
 
-                    return response()->json([
-                        'status' => false,
-                        'message' => $credentials->messages()->all(),
-                    ], 400);
-                }
+            if ($credentials->fails()) {
 
-                // Updated user data.
-                $userId = Auth::id();
-                $user = User::findOrFail($userId);
+                return response()->json([
+                    'status' => false,
+                    'message' => $credentials->messages()->all(),
+                ], 400);
+            }
 
-                $user->update([
-                    'salutation' => $request->salutation,
-                    'firstname' => $request->firstname,
-                    'lastname' => $request->lastname,
-                    'birthday' => $request->birthday,
-                    'updated_at' => Carbon::now(),
-                ]);
+            // Updated user data.
+            $userId = Auth::id();
+            $user = User::findOrFail($userId);
+
+            $user->update([
+                'salutation' => $request->salutation,
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'birthday' => $request->birthday,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            $saved = $user->save();
+
+            if ($saved) {
+                DB::commit();
 
                 return response()->json([
                     'status' => true,
                     'message' => __('messages.data_updated'),
                 ], 200);
-            } catch (Exception $e) {
-
-                return response()->json([
-                    'status' => false,
-                    'message' => __('error.500'),
-                ], 500);
             }
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
         }
     }
 
@@ -135,20 +144,35 @@ final class ProfileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Find user
+            $user = User::findOrFail($id);
+
+            // Find & delete address, orders, wishlist ...
+            // Can delete this???
+
+            dd($user);
+
+            // delete user
+            $saved = $user->delete();
+
+            if ($saved) {
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => __('messages.data_updated'),
+                ], 200);
+            }
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
+        }
     }
 }
-
-
-
-// $user = User::find(1);
-
-// $user->addresses()->create([
-//     'address_type' => 'billing',
-//     'street' => 'Neue Straße',
-//     'house_number' => '123',
-//     'city' => 'Berlin',
-//     'zip' => '10115',
-//     'country' => 'DE',
-//     'active' => true,
-// ]);

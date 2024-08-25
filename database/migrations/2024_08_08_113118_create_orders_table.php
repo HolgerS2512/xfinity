@@ -28,6 +28,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending'); // Order status
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

@@ -6,9 +6,13 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use OwenIt\Auditing\Auditable;
 
-class VersionManager extends Model
+class VersionManager extends Model implements AuditableContract
 {
+    use Auditable;
+
     /**
      * Nullabled updated_at column by new instance.
      *
@@ -71,6 +75,7 @@ class VersionManager extends Model
         // Listen to the "updating" event
         static::updating(function ($thisInstance) {
             $thisInstance->hash = static::makeHash();
+            $thisInstance->updated_at = Carbon::now();
         });
     }
 

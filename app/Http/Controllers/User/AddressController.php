@@ -63,24 +63,6 @@ final class AddressController extends Controller
     }
 
     /**
-     * Returns an array sorted by most recent date in `updated_at` and `created_at`.
-     *
-     * @param  array $data
-     * @return array $data
-     */
-    public function sortDatesByLatest(array $data)
-    {
-        usort($data, function ($a, $b) {
-            $dateA = $a['updated_at'] ? strtotime($a['updated_at']) : strtotime($a['created_at']);
-            $dateB = $b['updated_at'] ? strtotime($b['updated_at']) : strtotime($b['created_at']);
-
-            return $dateB <=> $dateA;  // Most recent date first
-        });
-
-        return $data;
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\StoreRequest  $request
@@ -116,6 +98,7 @@ final class AddressController extends Controller
 
                     if (!$saveStandard) {
                         DB::rollBack();
+                        
                         return response()->json([
                             'status' => false,
                             'message' => __('error.500'),

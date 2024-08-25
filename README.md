@@ -26,12 +26,27 @@ DB_DATABASE=xfinity
 DB_USERNAME=root
 DB_PASSWORD='ZZW!9Vm-+rc*$q&'
 
+CACHE_DRIVER=redis
+QUEUE_CONNECTION=database
+
+REDIS_CLIENT=phpredis
+REDIS_HOST=127.0.0.1
+REDIS_PASSWORD=null
+REDIS_PORT=6379
+REDIS_DB=0
+REDIS_CACHE_DB=1
+
 MAIL_HOST=sandbox.smtp.mailtrap.io
 MAIL_PORT=2525
 MAIL_USERNAME=6f758fc5713358
 MAIL_PASSWORD=87bcce64c55b2d
 MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="kontakt@xFinity.com"
+
+SESSION_SECURE_COOKIE=false
+# Supported: "lax", "strict", "none", null
+SESSION_SAME_SITE_COOKIE=strict
+SESSION_HTTP_ONLY_COOKIE=false # have to always false!
 ```
 
 - Install Passport package
@@ -99,7 +114,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        'App\Models\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**
@@ -122,6 +137,21 @@ class AuthServiceProvider extends ServiceProvider
 
 - In Passport class customize token: `laravel_token`.
 
+- Install Audit-Package
+```shell
+composer require owen-it/laravel-auditing
+php artisan vendor:publish --provider="OwenIt\Auditing\AuditingServiceProvider" --tag="config"
+php artisan vendor:publish --provider "OwenIt\Auditing\AuditingServiceProvider" --tag="migrations"
+php artisan migrate
+```
+- add in app/config
+```php
+/*
+* Package Service Providers...
+*/
+OwenIt\Auditing\AuditingServiceProvider::class,
+```
+
 
 ## Deploy
 
@@ -131,13 +161,13 @@ class AuthServiceProvider extends ServiceProvider
 
 - Install Supervisor
 1. 
-```
+```shell
 sudo apt-get install supervisor
 ```
 
 1. Add file: /etc/supervisor/conf.d/laravel-worker.conf
 
-```
+```shell
 [program:laravel-worker]
 process_name=%(program_name)s_%(process_num)02d
 command=php /path-to-your-project/artisan queue:work --sleep=3 --tries=3
@@ -148,17 +178,17 @@ numprocs=1
 redirect_stderr=true
 stdout_logfile=/path-to-your-project/worker.log
 ```
-```
+```shell
 sudo supervisorctl reread
 sudo supervisorctl update
 sudo supervisorctl start laravel-worker:*
 ```
 1. Start
-```php
+```shell
 php artisan queue:work
 ```
 
 #### tip
-```cli
+```shell
 php artisan config:cache & php artisan route:cache & php artisan view:cache & php artisan serve
 ```

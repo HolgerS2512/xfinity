@@ -29,6 +29,7 @@ return new class extends Migration
             $table->string('currency', 3)->default('EUR');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

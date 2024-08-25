@@ -123,10 +123,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 */
 
 
-Route::get('/all/categories', [CategoryController::class, 'allActive']);
-// Route::get('/all/categories', function() {
-//     VersionManager::create([]);
-// });
+Route::get('/all/categories', [CategoryController::class, 'allActive'])
+    ->name('all_active_categories');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -134,17 +133,18 @@ Route::get('/all/categories', [CategoryController::class, 'allActive']);
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->middleware(['role:admin'])->group(function () {
 
     Route::apiResource('category', CategoryController::class);
 
 });
 
-// GET /admin/category – index (zeigt eine Liste aller Kategorien)
-// POST /admin/category – store (erstellt eine neue Kategorie)
-// GET /admin/category/{category} – show (zeigt eine einzelne Kategorie)
-// PUT/PATCH /admin/category/{category} – update (aktualisiert eine vorhandene Kategorie)
-// DELETE /admin/category/{category} – destroy (löscht eine Kategorie)
+// --- apiRessource ---
+// GET        /admin/category            – index (zeigt eine Liste aller Kategorien)
+// POST       /admin/category            – store (erstellt eine neue Kategorie)
+// GET        /admin/category/{category} – show (zeigt eine einzelne Kategorie)
+// PUT/PATCH  /admin/category/{category} – update (aktualisiert eine vorhandene Kategorie)
+// DELETE     /admin/category/{category} – destroy (löscht eine Kategorie)
 
 
 // -> https://xfinity-software/demo_shop
@@ -173,4 +173,9 @@ Route::prefix('admin')->group(function () {
 // Route::get('test', function () {
 //     \Illuminate\Support\Facades\App::setLocale('en');
 //     return __('shop.0');
+// });
+
+// Create new db entry in table
+// Route::get('/new/version/manager', function() {
+//     VersionManager::create([]);
 // });

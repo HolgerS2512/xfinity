@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\StatusValues;
+use App\Models\Repos\ModelRepository;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Contact extends Model
+class Contact extends ModelRepository
 {
-    use HasFactory;
-
-    /**
-     * Nullabled updated_at column by new instance.
-     *
-     */
-    const UPDATED_AT = null;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,13 +16,13 @@ class Contact extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'status',
         'salutation',
         'firstname',
         'lastname',
         'email',
         'phone',
         'message',
-        'task',
         'updated_at',
     ];
 
@@ -37,6 +32,17 @@ class Contact extends Model
      * @var array<int, string>
      */
     protected $casts = [
-        'task' => 'boolean',
+        'status' => StatusValues::class,
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     * 
+     * This is required for the SoftDeletes trait, as it relies on 
+     * the 'deleted_at' timestamp to determine whether a record 
+     * has been soft deleted or not.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 }

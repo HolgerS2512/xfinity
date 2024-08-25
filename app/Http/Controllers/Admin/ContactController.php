@@ -7,13 +7,63 @@ use App\Http\Requests\Admin\ContactRequest;
 use App\Mail\Contact\ContactMail;
 use App\Mail\Contact\FeedbackMail;
 use App\Models\Contact;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 final class ContactController extends Controller
 {
+    /**
+     * 
+     * Applies middleware to check user permissions before allowing access to
+     * specific routes. Users without the appropriate permissions will receive
+     * a 403 Unauthorized response.
+     * 
+     */
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $id = Auth::id();
+            $user = User::findOrFail($id);
+
+            if ($request->routeIs('contact.index') || $request->routeIs('contact.show')) {
+                if (!$user->hasPermission('read')) {
+
+                    return response()->json([
+                        'status' => false,
+                        'error' => __('auth.unauthenticated'),
+                    ], 403);
+                }
+            }
+
+            if ($request->routeIs('contact.update')) {
+                if (!$user->hasPermission('edit') || !$user->hasPermission('update')) {
+
+                    return response()->json([
+                        'status' => false,
+                        'error' => __('auth.unauthenticated'),
+                    ], 403);
+                }
+            }
+
+            if ($request->routeIs('contact.destroy')) {
+                if (!$user->hasPermission('delete')) {
+
+                    return response()->json([
+                        'status' => false,
+                        'error' => __('auth.unauthenticated'),
+                    ], 403);
+                }
+            }
+
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -32,6 +82,8 @@ final class ContactController extends Controller
      */
     public function create(ContactRequest $request)
     {
+        DB::beginTransaction();
+
         try {
             // Preparation save new contact message.
             $values = [
@@ -44,7 +96,7 @@ final class ContactController extends Controller
             if ($request->phone) $values['phone'] = $request->phone;
             if ($request->salutation) $values['salutation'] = $request->salutation;
 
-            $saveInDB = Contact::insert($values);
+            $saved = Contact::insert($values);
 
             // Preparation mail values.
             // $mailV = [...$request->all()];
@@ -52,14 +104,17 @@ final class ContactController extends Controller
             // if (!$request->salutation) $mailV['salutation'] = ' - ';
 
             // Mail::to('kontakt@xfinity.de')->send(new ContactMail($mailV));
-            
-            // Mail::to($request->email)->send(new FeedbackMail);
+
+            Mail::to($request->email)->send(new FeedbackMail);
+
+            if ($saved) DB::commit();
 
             return response()->json([
-                'status' => $saveInDB,
-                'message' => $saveInDB ? __("messages.contact") : __('error.500'),
+                'status' => $saved,
+                'message' => $saved ? __("messages.contact") : __('error.500'),
             ], 200);
         } catch (Exception $e) {
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,
