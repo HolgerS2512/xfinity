@@ -67,7 +67,7 @@ final class CategoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the active resource.
      *
      * @return \Illuminate\Http\Response
      */

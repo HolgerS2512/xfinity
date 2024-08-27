@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -11,8 +12,9 @@ use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CookieController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\User\AddressController as UserAddrController;
+use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\SettingController;
 use App\Models\VersionManager;
 use Illuminate\Support\Facades\Route;
 
@@ -102,16 +104,20 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
     // User Account actions
     // Route::controller(UserController::class)->group(function () {
 
-        // Route::get('/account/profile', 'profile');
+    // Route::get('/account/profile', 'profile');
 
-        // Route::apiResource('/account/addresses', UserAddrController::class);
+    // Route::apiResource('/account/addresses', AddressController::class);
 
-        // Route::get('/account/orders', 'orders');
+    // Route::get('/account/orders', 'orders');
     // });
 
     Route::apiResource('/account/profile', ProfileController::class);
 
-    Route::apiResource('/account/addresses', UserAddrController::class);
+    Route::apiResource('/account/addresses', AddressController::class);
+
+    Route::apiResource('/account/settings', SettingController::class);
+    
+    Route::put('/account/settings/subscriber/{id}', [SettingController::class, 'updateSubscriber']);
 
     // Route::get('/account/orders', 'orders');
 });
@@ -126,6 +132,9 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 Route::get('/all/categories', [CategoryController::class, 'allActive'])
     ->name('all_active_categories');
 
+Route::get('/all/products', [ProductController::class, 'allActive'])
+    ->name('all_active_products');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -133,10 +142,11 @@ Route::get('/all/categories', [CategoryController::class, 'allActive'])
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['role:admin'])->group(function () {
+Route::prefix('admin')->middleware(['role:admin', 'role:editor'])->group(function () {
 
     Route::apiResource('category', CategoryController::class);
 
+    Route::apiResource('product', ProductController::class);
 });
 
 // --- apiRessource ---
@@ -176,6 +186,8 @@ Route::prefix('admin')->middleware(['role:admin'])->group(function () {
 // });
 
 // Create new db entry in table
-// Route::get('/new/version/manager', function() {
+// Route::get('/version/manager', function() {
 //     VersionManager::create([]);
+
+//     return response();
 // });

@@ -142,7 +142,7 @@ class Category extends ModelRepository
     public static function loadActiveCategoriesByLvl($level = 1)
     {
         $makeHiddenAttr = [
-            'id',
+            // 'id',
             'parent_id',
             'ranking',
             'description',

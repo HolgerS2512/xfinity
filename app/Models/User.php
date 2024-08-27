@@ -6,6 +6,7 @@ use App\Scopes\WithAddressScope;
 use App\Scopes\WithOrderScope;
 use App\Scopes\WithReviewScope;
 use App\Scopes\WithWishlistScope;
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -81,6 +82,11 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
         // static::addGlobalScope(new WithWishlistScope);
         // static::addGlobalScope(new WithOrderScope);
         // static::addGlobalScope(new WithReviewScope);
+
+        // Listen to the "updating" event
+        static::updating(function ($thisInstance) {
+            $thisInstance->updated_at = Carbon::now();
+        });
     }
 
     /**
@@ -133,7 +139,7 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
      */
     public function cookies()
     {
-        return $this->hasMany(Cookie::class);
+        // return $this->hasMany(Cookie::class);
     }
 
     /**

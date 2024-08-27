@@ -29,6 +29,20 @@ class ProductController extends Controller
     private string $permissionName = 'product';
 
     /**
+     * The name of the custom authentication cookie used in the application.
+     *
+     * @var string
+     */
+    private string $cookieName = 'AA_PvAC';
+
+    /**
+     * The "id" of the custom id cookie.
+     *
+     * @var string
+     */
+    private string $versionId = '4cvFHgh0c3Gwzwa20240826094859';
+
+    /**
      * 
      * Applies middleware to check user permissions before allowing access to
      * specific routes. Users without the appropriate permissions will receive
@@ -40,12 +54,57 @@ class ProductController extends Controller
         $this->middleware(function ($request, $next) {
 
             // Exclude routes
-            // if ($request->routeIs('all_active_categories')) {
-            //     return $next($request);
-            // }
+            if ($request->routeIs('all_active_products')) {
+                return $next($request);
+            }
 
             $this->permisssionService($request, $next, $this->permissionName);
         });
+    }
+
+    /**
+     * Display a listing of the active resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function allActive()
+    {
+        try {
+            // Custom function returned all active categories | cache time 24 h
+            // $data = Cache::remember("products", 60 * 24, function () {
+                // return Product::loadActiveCategoriesByLvl();
+            // });
+
+            $data = '';
+
+            // Get the versions hash
+            $vm = VersionManager::findOrFail($this->versionId);
+
+            // Set cookie for frontend hash (30 Days)
+            $cookie = Cookie::make(
+                $this->cookieName,
+                $vm->hash,
+                (60 * 24 * 30),
+                '/',
+                str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
+                false,
+                false,
+                false,
+                'none',
+            );
+
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+            ], 200)->cookie($cookie);
+        } catch (Exception $e) {
+            Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
+        }
     }
 
     /**

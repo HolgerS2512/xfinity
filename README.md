@@ -155,6 +155,13 @@ OwenIt\Auditing\AuditingServiceProvider::class,
 
 ## Deploy
 
+### ToDo
+
+- Mailing
+- Redis
+- Queue Server Settings
+- Service Worker
+
 - [Follow documentation -> passport](https://laravel.com/docs/9.x/passport#deploying-passport)
 
 ### Important

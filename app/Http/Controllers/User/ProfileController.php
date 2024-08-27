@@ -106,16 +106,28 @@ final class ProfileController extends Controller
                 ], 400);
             }
 
+            // Is current user logged in and this request id
+            $authId = Auth::id();
+
+            if ($authId !== $id) {
+                DB::rollBack();
+                Log::channel('database')
+                    ->error('WARNING HACKER!!! Send id: ' . $id . ' auth id: ' . $authId);
+
+                return response()->json([
+                    'status' => false,
+                    'message' => __('auth.failed'),
+                ], 401);
+            }
+
             // Updated user data.
-            $userId = Auth::id();
-            $user = User::findOrFail($userId);
+            $user = User::findOrFail($id);
 
             $user->update([
                 'salutation' => $request->salutation,
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'birthday' => $request->birthday,
-                'updated_at' => Carbon::now(),
             ]);
 
             $saved = $user->save();
@@ -147,36 +159,6 @@ final class ProfileController extends Controller
      */
     public function destroy($id)
     {
-        DB::beginTransaction();
-
-        try {
-            // Find user
-            $user = User::findOrFail($id);
-
-            // Find & delete address, orders, wishlist ...
-            // Can delete this???
-
-            dd($user);
-
-            // delete user
-            $saved = $user->delete();
-
-            if ($saved) {
-                DB::commit();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => __('messages.data_updated'),
-                ], 200);
-            }
-        } catch (Exception $e) {
-            DB::rollBack();
-            Log::channel('database')->error('ProfileController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-                'message' => __('error.500'),
-            ], 500);
-        }
+        //
     }
 }
