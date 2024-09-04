@@ -20,6 +20,15 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role)
     {
         $id = Auth::id();
+
+        if (!$id) {
+
+            return response()->json([
+                'status' => false,
+                'message' => __('auth.unauthenticated'),
+            ], 403);
+        }
+
         $user = User::findOrFail($id);
 
         // Check if the user is authenticated and has the required role

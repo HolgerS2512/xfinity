@@ -11,10 +11,10 @@ use Illuminate\Support\Facades\DB;
 */
 
 $item = [];
-$table = DB::table('translations')->select('id', 'de')->get();
+$table = DB::table('translations')->select('hash', 'de')->get();
 
 foreach ($table as $val) {
-    $item[$val->id] = $val->de;
+    $item[$val->hash] = $val->de;
 }
 
 return $item;

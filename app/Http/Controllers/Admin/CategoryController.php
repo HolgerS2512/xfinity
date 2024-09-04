@@ -44,7 +44,7 @@ final class CategoryController extends Controller
      *
      * @var string
      */
-    private string $versionId = 'd9ikZlc9i4aZvgZC20240809151433';
+    private string $versionId = 'f4358d27-f5ae-4ce8-8fe6-b02349c00d37';
 
     /**
      * 
@@ -55,20 +55,30 @@ final class CategoryController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
 
+        $this->middleware(function ($request, $next) {
             // Exclude routes
             if ($request->routeIs('all_active_categories')) {
                 return $next($request);
             }
 
-            $this->permisssionService($request, $next, $this->permissionName);
+            // Permission
+            if ($this->permisssionService($request, $next, $this->permissionName)) {
+
+                return response()->json([
+                    'status' => false,
+                    'error' => __('auth.unauthenticated'),
+                ], 403);
+            }
+
+            return $next($request);
         });
     }
 
     /**
      * Display a listing of the active resource.
      *
+     * @param  string  $noCookie
      * @return \Illuminate\Http\Response
      */
     public function allActive()
@@ -79,26 +89,10 @@ final class CategoryController extends Controller
                 return Category::loadActiveCategoriesByLvl();
             });
 
-            // Get the versions hash
-            $vm = VersionManager::findOrFail($this->versionId);
-
-            // Set cookie for frontend hash (30 Days)
-            $cookie = Cookie::make(
-                $this->cookieName,
-                $vm->hash,
-                (60 * 24 * 30),
-                '/',
-                str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
-                false,
-                false,
-                false,
-                'none',
-            );
-
             return response()->json([
                 'status' => true,
                 'data' => $data,
-            ], 200)->cookie($cookie);
+            ], 200);
         } catch (Exception $e) {
             Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
@@ -255,6 +249,7 @@ final class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
+        $statusName = '';
         DB::beginTransaction();
 
         try {
@@ -297,6 +292,7 @@ final class CategoryController extends Controller
 
             // Cache invalid
             if ($status) {
+
                 Cache::forget("categories");
                 DB::commit();
             } else {
@@ -338,7 +334,7 @@ final class CategoryController extends Controller
 
         try {
             $category = Category::findOrFail($id);
-            
+
             $status = $category->delete();
 
             // Cache invalid & db saved

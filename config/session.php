@@ -181,7 +181,7 @@ return [
     |
     */
 
-    'http_only' => env('SESSION_HTTP_ONLY_COOKIE', true),
+    'http_only' => env('SESSION_HTTP_ONLY_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------

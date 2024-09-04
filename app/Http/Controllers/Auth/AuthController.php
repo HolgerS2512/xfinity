@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Auth\LookupRequest;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Services\Cryption\CryptionService;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,23 @@ final class AuthController extends Controller
      * @var string
      */
     private string $cookieName = 'xFs_at';
+
+    /**
+     * The CryptionService instance.
+     *
+     * @var CryptionService
+     */
+    protected $cryptionService;
+
+    /**
+     * Constructor to initialize the CryptionService.
+     *
+     * @param CryptionService $cryptionService
+     */
+    public function __construct(CryptionService $cryptionService)
+    {
+        $this->cryptionService = $cryptionService;
+    }
 
     /**
      * User Look up API Function. Decides on registration or login form.
@@ -82,13 +100,24 @@ final class AuthController extends Controller
                     // 60 * 24 * 10  - 10 Days
 
                     $userAttributes = $user->only(['firstname', 'lastname', 'email']);
-                    
+
+                    $cookie = Cookie::make(
+                        $this->cookieName,
+                        $token,
+                        (60 * 24 * 10),
+                        '/',
+                        str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
+                        false,
+                        false,
+                        false,
+                        'Strict',
+                    );
+
                     return response()->json([
                         'status' => true,
                         'message' => __('auth.login'),
-                        'token' => $token,
                         'user' => $userAttributes,
-                    ], 200);
+                    ], 200)->cookie($cookie);
                 }
             }
 

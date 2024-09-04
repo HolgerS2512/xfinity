@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class Category extends ModelRepository
 {
@@ -54,14 +55,14 @@ class Category extends ModelRepository
 
         // Listen to the "creating" event
         static::creating(function ($thisInstance) {
-            $hash = static::hashedString($thisInstance->attributes['name']);
+            $hash = (string) Str::uuid();
             $saved = static::saveTranslation($thisInstance->attributes['name'], $hash);
             if ($saved) {
                 $thisInstance->name =  $hash;
             }
 
             if (isset($thisInstance->attributes['description']) && !empty($thisInstance->attributes['description'])) {
-                $hash = static::hashedString(substr($thisInstance->attributes['description'], 0, 10));
+                $hash = (string) Str::uuid();
                 $saved = static::saveTextTranslation($thisInstance->attributes['description'], $hash);
                 if ($saved) {
                     $thisInstance->description =  $hash;
@@ -232,7 +233,7 @@ class Category extends ModelRepository
     {
         try {
             $result = Translation::insert([
-                'id' => $hash,
+                'hash' => $hash,
                 'de' => $str,
             ]);
 
@@ -253,7 +254,7 @@ class Category extends ModelRepository
     {
         try {
             $result = TextTranslation::insert([
-                'id' => $hash,
+                'hash' => $hash,
                 'de' => $str,
             ]);
 
@@ -261,17 +262,5 @@ class Category extends ModelRepository
         } catch (\Throwable $th) {
             throw $th;
         }
-    }
-
-    /**
-     * Returned a hash as string.
-     * 
-     * @param string $string
-     * @return string $result
-     */
-    public static function hashedString($str): string
-    {
-        $date = preg_replace('/[^0-9]+/', '', trim(Carbon::now()));
-        return mb_substr(Hash::make($str), 7) . $date;
     }
 }

@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('translations', function (Blueprint $table) {
+        Schema::create('consents', function (Blueprint $table) {
             $table->id();
-            $table->uuid('hash')->unique();
-            $table->string('de')->nullable();
-            $table->string('en')->nullable();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
+            $table->string('consent_token')->unique();
+            $table->string('ip_address');
+            $table->text('user_agent');
+            $table->boolean('consent_given');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('translations');
+        Schema::dropIfExists('consents');
     }
 };

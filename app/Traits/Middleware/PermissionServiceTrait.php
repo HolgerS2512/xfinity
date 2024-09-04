@@ -22,53 +22,23 @@ trait PermissionServiceTrait
 
         // Check if user has permission to access products based on the route
         if ($request->routeIs("$permissionName.create") || $request->routeIs("$permissionName.store")) {
-            if (!$user->hasPermission('create')) {
-
-                return response()->json([
-                    'status' => false,
-                    'error' => __('auth.unauthenticated'),
-                ], 403);
-            }
+            return (!$user->hasPermission('create'));
         }
 
         if ($request->routeIs("$permissionName.index") || $request->routeIs("$permissionName.show")) {
-            if (!$user->hasPermission('read')) {
-
-                return response()->json([
-                    'status' => false,
-                    'error' => __('auth.unauthenticated'),
-                ], 403);
-            }
+            return (!$user->hasPermission('read'));
         }
 
         if ($request->routeIs("$permissionName.edit")) {
-            if (!$user->hasPermission('edit')) {
-
-                return response()->json([
-                    'status' => false,
-                    'error' => __('auth.unauthenticated'),
-                ], 403);
-            }
+            return (!$user->hasPermission('edit'));
         }
 
         if ($request->routeIs("$permissionName.update")) {
-            if (!$user->hasPermission('update')) {
-
-                return response()->json([
-                    'status' => false,
-                    'error' => __('auth.unauthenticated'),
-                ], 403);
-            }
+            return (!$user->hasPermission('update'));
         }
 
         if ($request->routeIs("$permissionName.destroy")) {
-            if (!$user->hasPermission('delete')) {
-
-                return response()->json([
-                    'status' => false,
-                    'error' => __('auth.unauthenticated'),
-                ], 403);
-            }
+            return (!$user->hasPermission('delete'));
         }
 
         return $next($request);

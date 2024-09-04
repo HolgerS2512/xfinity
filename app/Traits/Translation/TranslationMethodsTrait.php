@@ -4,6 +4,8 @@ namespace App\Traits\Translation;
 
 use App\Models\TextTranslation;
 use App\Models\Translation;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 trait TranslationMethodsTrait
 {
@@ -19,10 +21,11 @@ trait TranslationMethodsTrait
     {
         try {
             // Find the translation record by id as hash
-            $translate = Translation::where('id', $hash)->first();
+            $translate = Translation::where('hash', $hash)->first();
+
             // Check if the translation exists
             if (!$translate) {
-                throw new \Exception("Translation not found for id: $hash");
+                throw new ModelNotFoundException("Translation not found for id: $hash");
             }
 
             // Update the translation record
@@ -50,10 +53,10 @@ trait TranslationMethodsTrait
     {
         try {
             // Find the translation record by id as hash
-            $translate = TextTranslation::where('id', $hash)->first();
+            $translate = TextTranslation::where('hash', $hash)->first();
             // Check if the translation exists
             if (!$translate) {
-                throw new \Exception("Translation not found for id: $hash");
+                throw new ModelNotFoundException("Translation not found for id: $hash");
             }
 
             // Update the translation record

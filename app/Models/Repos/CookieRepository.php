@@ -3,14 +3,14 @@
 namespace App\Models\Repos;
 
 
-class TranslationRepository extends ModelRepository
+class CookieRepository extends ModelRepository
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $guarded = [];
+    protected $fillable = ['*'];
 
     /**
      * Eloquent Event Listener

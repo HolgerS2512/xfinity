@@ -4,18 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\User;
-use App\Models\VersionManager;
 use App\Traits\Middleware\PermissionServiceTrait;
 use App\Traits\Translation\TranslationMethodsTrait;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
 
 class ProductController extends Controller
 {
@@ -27,20 +22,6 @@ class ProductController extends Controller
      * @var string
      */
     private string $permissionName = 'product';
-
-    /**
-     * The name of the custom authentication cookie used in the application.
-     *
-     * @var string
-     */
-    private string $cookieName = 'AA_PvAC';
-
-    /**
-     * The "id" of the custom id cookie.
-     *
-     * @var string
-     */
-    private string $versionId = '4cvFHgh0c3Gwzwa20240826094859';
 
     /**
      * 
@@ -58,13 +39,22 @@ class ProductController extends Controller
                 return $next($request);
             }
 
-            $this->permisssionService($request, $next, $this->permissionName);
+            if ($this->permisssionService($request, $next, $this->permissionName)) {
+                
+                return response()->json([
+                    'status' => false,
+                    'error' => __('auth.unauthenticated'),
+                ], 403);
+            }
+
+            return $next($request);
         });
     }
 
     /**
      * Display a listing of the active resource.
      *
+     * @param  string  $noCookie
      * @return \Illuminate\Http\Response
      */
     public function allActive()
@@ -72,31 +62,15 @@ class ProductController extends Controller
         try {
             // Custom function returned all active categories | cache time 24 h
             // $data = Cache::remember("products", 60 * 24, function () {
-                // return Product::loadActiveCategoriesByLvl();
+            // return Product::loadActiveCategoriesByLvl();
             // });
 
             $data = '';
 
-            // Get the versions hash
-            $vm = VersionManager::findOrFail($this->versionId);
-
-            // Set cookie for frontend hash (30 Days)
-            $cookie = Cookie::make(
-                $this->cookieName,
-                $vm->hash,
-                (60 * 24 * 30),
-                '/',
-                str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
-                false,
-                false,
-                false,
-                'none',
-            );
-
             return response()->json([
                 'status' => true,
                 'data' => $data,
-            ], 200)->cookie($cookie);
+            ], 200);
         } catch (Exception $e) {
             Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
@@ -120,26 +94,10 @@ class ProductController extends Controller
             //     // return Category::loadActiveCategoriesByLvl();
             // });
 
-            // // Get the versions hash
-            // $vm = VersionManager::findOrFail($this->versionId);
-
-            // // Set cookie for frontend hash (30 Days)
-            // $cookie = Cookie::make(
-            //     $this->cookieName,
-            //     $vm->hash,
-            //     (60 * 24 * 30),
-            //     '/',
-            //     str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
-            //     false,
-            //     false,
-            //     false,
-            //     'none',
-            // );
-
             // return response()->json([
             //     'status' => true,
             //     'data' => $data,
-            // ], 200)->cookie($cookie);
+            // ], 200);
         } catch (Exception $e) {
             Log::channel('database')->error('ProductController|index: ' . $e->getMessage(), ['exception' => $e]);
 

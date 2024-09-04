@@ -4,8 +4,8 @@ namespace App\Enums;
 
 enum RoleType: string
 {
-    case Ingeneur = 'ingeneur';
-    case Admin = 'admin';
-    case Editor = 'editor';
-    case User = 'user';
+    case ingeneur = 'ingeneur';
+    case admin = 'admin';
+    case editor = 'editor';
+    case user = 'user';
 }

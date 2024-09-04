@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
@@ -10,7 +9,7 @@ use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\CookieController;
+use App\Http\Controllers\Cookie\CookieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\User\AddressController;
 use App\Http\Controllers\User\ProfileController;
@@ -20,10 +19,19 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API App Routes
 |--------------------------------------------------------------------------
 */
 
+Route::apiResource('/settings/cookie', CookieController::class);
+
+Route::get('cookie/category', [CookieController::class, 'categoryCookie']);
+
+Route::get('/all/categories', [CategoryController::class, 'allActive'])
+    ->name('all_active_categories');
+
+Route::get('/all/products', [ProductController::class, 'allActive'])
+    ->name('all_active_products');
 
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
@@ -117,24 +125,8 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
     Route::apiResource('/account/settings', SettingController::class);
     
-    Route::put('/account/settings/subscriber/{id}', [SettingController::class, 'updateSubscriber']);
-
     // Route::get('/account/orders', 'orders');
 });
-
-/*
-|--------------------------------------------------------------------------
-| API App Routes
-|--------------------------------------------------------------------------
-*/
-
-
-Route::get('/all/categories', [CategoryController::class, 'allActive'])
-    ->name('all_active_categories');
-
-Route::get('/all/products', [ProductController::class, 'allActive'])
-    ->name('all_active_products');
-
 
 /*
 |--------------------------------------------------------------------------
@@ -142,17 +134,17 @@ Route::get('/all/products', [ProductController::class, 'allActive'])
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['role:admin', 'role:editor'])->group(function () {
-
+Route::prefix('admin')->middleware(['auth:api', 'verified'])->group(function () {
+    
     Route::apiResource('category', CategoryController::class);
-
+    
     Route::apiResource('product', ProductController::class);
 });
 
 // --- apiRessource ---
 // GET        /admin/category            – index (zeigt eine Liste aller Kategorien)
 // POST       /admin/category            – store (erstellt eine neue Kategorie)
-// GET        /admin/category/{category} – show (zeigt eine einzelne Kategorie)
+// GET/HEAD   /admin/category/{category} – show (zeigt eine einzelne Kategorie)
 // PUT/PATCH  /admin/category/{category} – update (aktualisiert eine vorhandene Kategorie)
 // DELETE     /admin/category/{category} – destroy (löscht eine Kategorie)
 

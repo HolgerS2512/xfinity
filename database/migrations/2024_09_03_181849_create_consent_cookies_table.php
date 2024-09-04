@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('version_managers', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->string('hash');
+        Schema::create('consent_cookies', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('consent_id')->constrained()->onDelete('cascade');
+            $table->foreignId('cookie_id')->constrained()->onDelete('cascade');
+            $table->boolean('consented');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('version_managers');
+        Schema::dropIfExists('consent_cookies');
     }
 };
