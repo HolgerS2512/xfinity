@@ -28,4 +28,16 @@ class Cookie extends CookieRepository
     protected $casts = [
         'category' => CookieType::class,
     ];
+
+    /**
+     * Define a many-to-many relationship between Cookies and Consents.
+     * A cookie can belong to many consents.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function consents()
+    {
+        return $this->belongsToMany(Consent::class, 'consent_cookies')
+                    ->withPivot('consented');
+    }
 }

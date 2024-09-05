@@ -17,4 +17,13 @@ class ConsentCookie extends CookieRepository
         'consented',
         'updated_at',
     ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'consented' => 'boolean',
+    ];
 }

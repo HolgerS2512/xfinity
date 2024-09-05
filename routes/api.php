@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/settings/cookie', CookieController::class);
 
-Route::get('cookie/category', [CookieController::class, 'categoryCookie']);
-
 Route::get('/all/categories', [CategoryController::class, 'allActive'])
     ->name('all_active_categories');
 

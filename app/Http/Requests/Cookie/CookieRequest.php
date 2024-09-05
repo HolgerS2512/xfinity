@@ -4,7 +4,7 @@ namespace App\Http\Requests\Cookie;
 
 use App\Http\Requests\JsonResponseRequest;
 
-class StoreRequest extends JsonResponseRequest
+class CookieRequest extends JsonResponseRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,6 +14,7 @@ class StoreRequest extends JsonResponseRequest
     public function rules()
     {
         return [
+            "consented" => 'required|boolean',
             "necessary" => 'required|boolean',
             "preferences" => 'required|boolean',
             "statistics" => 'required|boolean',

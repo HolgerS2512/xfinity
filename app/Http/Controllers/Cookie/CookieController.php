@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Cookie;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Cookie\StoreRequest;
+use App\Http\Requests\Cookie\CookieRequest;
 use Illuminate\Http\Request;
 use App\Models\Consent;
 use App\Models\ConsentCookie;
@@ -43,10 +43,10 @@ class CookieController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CookieRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreRequest $request)
+    public function store(CookieRequest $request)
     {
         $saved = [];
         $user = [];
@@ -65,7 +65,7 @@ class CookieController extends Controller
                 'consent_token' => Str::random(40),
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->header('User-Agent'),
-                'consent_given' => true,
+                'consent_given' => $request->consented,
             ];
 
             // Merge values and user id if exist
@@ -78,6 +78,7 @@ class CookieController extends Controller
 
                 // saved consent cookie in db (pivot table)
                 foreach ($request->all() as $cookieCategory => $consented) {
+                    if ($cookieCategory === 'consented') continue;
                     $cookiesM = CookieModel::where('category', $cookieCategory)->get();
 
                     foreach ($cookiesM as $cookieM) {
@@ -125,7 +126,7 @@ class CookieController extends Controller
      */
     public function show($id)
     {
-        //
+        dd('show');
     }
 
     /**
