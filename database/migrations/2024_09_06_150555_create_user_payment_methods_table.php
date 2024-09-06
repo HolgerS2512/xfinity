@@ -13,21 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('user_payment_methods', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignId('payment_id')
+            $table->foreignId('payment_method_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->unsignedBigInteger('billing_address_id'); // Foreign key to billing address
-            $table->unsignedBigInteger('shipping_address_id');  // Foreign key to shipping address
-            $table->string('order_number')->unique();
-            $table->decimal('shipping_cost', 8, 2)->nullable();
-            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending'); // Order status
+            $table->boolean('is_default')->default(false);
+            $table->string('external_reference', 40);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -41,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('user_payment_methods');
     }
 };

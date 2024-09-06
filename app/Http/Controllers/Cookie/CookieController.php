@@ -8,21 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Consent;
 use App\Models\ConsentCookie;
 use App\Models\Cookie as CookieModel;
-use App\Traits\Helpers\BooleanManager;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
-use Illuminate\Auth\AuthManager;
 
 class CookieController extends Controller
 {
-    use BooleanManager;
-
     /**
      * The name of consents cookie used in the application.
      *

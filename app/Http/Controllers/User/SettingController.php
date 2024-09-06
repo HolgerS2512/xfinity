@@ -128,7 +128,7 @@ class SettingController extends Controller
             // Is current user logged in and this request id
             $authId = Auth::id();
 
-            if ($authId !== $id) {
+            if ($authId !== (int) $id) {
                 DB::rollBack();
                 Log::channel('database')
                     ->error('WARNING HACKER!!! Send id: ' . $id . ' auth id: ' . $authId);

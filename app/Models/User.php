@@ -194,4 +194,24 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
             $query->where('name', $permission);
         })->exists();
     }
+
+    /**
+     * Get many payment methods for this user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany|NULL
+     */
+    public function preferredPaymentMethods()
+    {
+        return $this->hasMany(UserPaymentMethod::class);
+    }
+
+    /**
+     * Get the user's default payment method.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function defaultPaymentMethod()
+    {
+        return $this->hasOne(UserPaymentMethod::class)->where('is_default', true);
+    }
 }

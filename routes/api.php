@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Cookie\CookieController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\User\AddressController;
+use App\Http\Controllers\User\PaymentMethodsController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\SettingController;
 use App\Models\VersionManager;
@@ -107,20 +108,12 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 
     Route::get('/logout', [AuthController::class, 'logout']);
 
-    // User Account actions
-    // Route::controller(UserController::class)->group(function () {
-
-    // Route::get('/account/profile', 'profile');
-
-    // Route::apiResource('/account/addresses', AddressController::class);
-
-    // Route::get('/account/orders', 'orders');
-    // });
-
     Route::apiResource('/account/profile', ProfileController::class);
 
     Route::apiResource('/account/addresses', AddressController::class);
 
+    Route::apiResource('/account/payment', PaymentMethodsController::class);
+    
     Route::apiResource('/account/settings', SettingController::class);
     
     // Route::get('/account/orders', 'orders');
