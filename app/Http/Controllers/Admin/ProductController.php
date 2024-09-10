@@ -116,7 +116,25 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Logik
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ProductController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
+        }
     }
 
     /**
@@ -139,7 +157,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Logik
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ProductController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+                'message' => __('error.500'),
+            ], 500);
+        }
     }
 
     /**

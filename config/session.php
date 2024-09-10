@@ -128,7 +128,7 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
-        env('APP_Cookie_Name', 'xFs') . '_csL'
+        'b_Sc'
     ),
 
     /*

@@ -15,15 +15,15 @@ return [
     |
     */
 
-    'paths' => ['api/*'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Wichtig: Füge 'sanctum/csrf-cookie' hier hinzu
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // Alle Methoden (GET, POST, etc.) erlauben
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://localhost:3000', 'http://xfinity.test:3000'], // Ersetze mit deiner Frontend-Domain
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // Alle Header erlauben
 
     'exposed_headers' => [],
 

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Consent;
 use App\Models\ConsentCookie;
 use App\Models\Cookie as CookieModel;
+use App\Traits\Helpers\BooleanManager;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +18,7 @@ use Illuminate\Support\Str;
 
 class CookieController extends Controller
 {
-    /**
-     * The name of consents cookie used in the application.
-     *
-     * @var string
-     */
-    private string $consentCookie = 'xFs_cCv';
+    use BooleanManager;
 
     /**
      * Display a listing of the resource.
@@ -154,7 +150,6 @@ class CookieController extends Controller
 
         try {
             DB::table('consents')->where('created_at', '<', Carbon::now()->subYears(10))->delete();
-            DB::table('consent_cookies')->where('created_at', '<', Carbon::now()->subYears(10))->delete();
             DB::commit();
 
             return response()->json([

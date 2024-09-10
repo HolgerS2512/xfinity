@@ -23,7 +23,7 @@ final class AuthController extends Controller
      *
      * @var string
      */
-    private string $cookieName = 'xFs_at';
+    private string $cookieName = '_abck';
 
     /**
      * The CryptionService instance.
@@ -96,28 +96,31 @@ final class AuthController extends Controller
                 // Check passwords match, set access token and login app.
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
-                    $token = $user->createToken($this->cookieName)->accessToken;
+                    $token = $user->createToken($this->cookieName)->plainTextToken;
                     // 60 * 24 * 10  - 10 Days
 
                     $userAttributes = $user->only(['firstname', 'lastname', 'email']);
 
-                    $cookie = Cookie::make(
+                    Cookie::queue(Cookie::make(
                         $this->cookieName,
                         $token,
                         (60 * 24 * 10),
-                        '/',
-                        str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
-                        false,
+                        // '/',
+                        // str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
+                        null,
+                        null,
+                        false, // Deploy-> true,
                         false,
                         false,
                         'Strict',
-                    );
+                    ));
 
                     return response()->json([
                         'status' => true,
                         'message' => __('auth.login'),
                         'user' => $userAttributes,
-                    ], 200)->cookie($cookie);
+                        'token' => $token,
+                    ], 200);
                 }
             }
 
@@ -158,22 +161,25 @@ final class AuthController extends Controller
         DB::beginTransaction();
 
         try {
-            $token = $request->user()->token();
+            // $token = $request->user()->token();
+
+            // // Delete current user token
+            // DB::table('oauth_access_tokens')->delete($token->id);
+
+            // // Delete expired token (older then 3 Months)
+            // DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
+
+            // // Delete old current user tokens
+            // $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
+
+            // for ($i = 1; $i < count($tokens); $i++) {
+            //     DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
+            // }
 
             // Delete current user token
-            DB::table('oauth_access_tokens')->delete($token->id);
+            $request->user()->currentAccessToken()->delete();
 
-            // Delete expired token (older then 3 Months)
-            DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
-
-            // Delete old current user tokens
-            $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
-
-            for ($i = 1; $i < count($tokens); $i++) {
-                DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
-            }
-
-            // Cookie::queue(Cookie::forget($this->cookieName));
+            Cookie::queue(Cookie::forget($this->cookieName));
 
             $request->session()->regenerate();
 
@@ -182,7 +188,7 @@ final class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => __('auth.logout'),
-            ], 204);
+            ], 204)->withCookie(cookie()->forget($this->cookieName));
             // http status 204 -> No Content -> no response!
         } catch (Exception $e) {
             DB::rollBack();

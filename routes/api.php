@@ -10,12 +10,12 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 use App\Http\Controllers\Auth\PinController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Cookie\CookieController;
-use App\Http\Controllers\PageController;
+use App\Http\Controllers\User\WishlistController;
 use App\Http\Controllers\User\AddressController;
+use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\PaymentMethodsController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\SettingController;
-use App\Models\VersionManager;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -85,7 +85,7 @@ Route::middleware(['throttle:3,1'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'throttle:6,1'])->group(function () {
 
     // Change Password
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
@@ -104,19 +104,21 @@ Route::middleware(['auth:api', 'verified', 'throttle:6,1'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:api', 'verified'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('/account/profile', ProfileController::class);
 
+    Route::apiResource('/account/orders', OrderController::class);
+
     Route::apiResource('/account/addresses', AddressController::class);
 
     Route::apiResource('/account/payment', PaymentMethodsController::class);
-    
+
     Route::apiResource('/account/settings', SettingController::class);
-    
-    // Route::get('/account/orders', 'orders');
+
+    Route::apiResource('/account/wishlist', WishlistController::class);
 });
 
 /*
@@ -125,10 +127,10 @@ Route::middleware(['auth:api', 'verified'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['auth:api', 'verified'])->group(function () {
-    
+Route::prefix('admin')->middleware(['auth:sanctum', 'verified'])->group(function () {
+
     Route::apiResource('category', CategoryController::class);
-    
+
     Route::apiResource('product', ProductController::class);
 });
 
@@ -143,13 +145,6 @@ Route::prefix('admin')->middleware(['auth:api', 'verified'])->group(function () 
 // -> https://xfinity-software/demo_shop
 
 
-// use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
-// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//     $request->fulfill();
-
-//     return redirect('/home');
-// })->middleware(['auth', 'signed'])->name('verification.verify');
 
 
 
@@ -161,16 +156,4 @@ Route::prefix('admin')->middleware(['auth:api', 'verified'])->group(function () 
 
 // Route::get('test/mails', function () {
 //     \Illuminate\Support\Facades\Mail::to('test@test.de')->send(new App\Mail\Auth\RegisterSuccessMail('https://test-url-test', 168752));
-// });
-
-// Route::get('test', function () {
-//     \Illuminate\Support\Facades\App::setLocale('en');
-//     return __('shop.0');
-// });
-
-// Create new db entry in table
-// Route::get('/version/manager', function() {
-//     VersionManager::create([]);
-
-//     return response();
 // });
