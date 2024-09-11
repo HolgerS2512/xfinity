@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentMethodsController extends Controller
 {
@@ -42,13 +43,19 @@ class PaymentMethodsController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -83,13 +90,19 @@ class PaymentMethodsController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -120,16 +133,21 @@ class PaymentMethodsController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    // 'message' => __('messages.data_updated'),
                 ], 200);
             }
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

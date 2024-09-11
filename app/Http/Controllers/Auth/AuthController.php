@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class AuthController extends Controller
 {
@@ -63,12 +64,17 @@ final class AuthController extends Controller
                 'route' => 'login',
                 'email' => $request->email,
             ], 200);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -88,8 +94,8 @@ final class AuthController extends Controller
             if (Carbon::now()->diffInMinutes($user->email_verified_at) === 0) {
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.unauth_mail'),
-                ], 408);
+                    'message' => 'email_not_verified',
+                ], 400);
             }
 
             if ($user) {
@@ -117,7 +123,6 @@ final class AuthController extends Controller
 
                     return response()->json([
                         'status' => true,
-                        'message' => __('auth.login'),
                         'user' => $userAttributes,
                         'token' => $token,
                     ], 200);
@@ -126,14 +131,19 @@ final class AuthController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => __('passwords.user'),
-            ], 422);
+                'message' => 'password_not_match_db_pwd',
+            ], 400);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' =>  __('error.500'),
             ], 500);
         }
     }
@@ -147,8 +157,7 @@ final class AuthController extends Controller
     {
         return response()->json([
             'status' => false,
-            'message' => __('auth.unauthenticated'),
-        ], 403);
+        ], 401);
     }
 
     /**
@@ -187,16 +196,21 @@ final class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.logout'),
             ], 204)->withCookie(cookie()->forget($this->cookieName));
             // http status 204 -> No Content -> no response!
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
 
             return response([
                 'status' => false,
-                'message' => $e->getMessage(),
             ], 500);
         }
     }

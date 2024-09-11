@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class SettingController extends Controller
 {
@@ -68,7 +69,7 @@ class SettingController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->messages()->all(),
+                    // 'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -82,8 +83,7 @@ class SettingController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.failed'),
-                ], 401);
+                ], 403);
             }
 
             // Updated user data.
@@ -100,16 +100,27 @@ class SettingController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => __('messages.data_updated'),
                 ], 200);
             }
+
+            DB::rollBack();
+
+            return response()->json([
+                'status' => false,
+            ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -135,8 +146,7 @@ class SettingController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.failed'),
-                ], 401);
+                ], 403);
             }
 
             // Find user
@@ -155,16 +165,21 @@ class SettingController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => __('messages.data_updated'),
                 ], 200);
             }
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

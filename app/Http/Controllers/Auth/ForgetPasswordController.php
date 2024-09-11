@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ForgetPasswordController extends Controller
 {
@@ -34,8 +35,8 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_not_exists'),
-                ], 401);
+                    'message' => 'email_doesnt_exists',
+                ], 400);
             }
 
             // Generate token and url.
@@ -69,16 +70,21 @@ final class ForgetPasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('passwords.forget'),
                 'url' => $urlCode,
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -103,8 +109,8 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_url'),
-                ], 401);
+                    'message' => 'url_link_not_match',
+                ], 400);
             }
 
             // Checks for token doesnt match.
@@ -112,8 +118,8 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.token_not_match'),
-                ], 401);
+                    'message' => 'token_not_match',
+                ], 400);
             }
 
             // Check if user exist.
@@ -121,8 +127,8 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_not_exists'),
-                ], 401);
+                    'message' => 'email_doesnt_exists',
+                ], 400);
             }
 
             // Check that the token column “created_at” is not older than 15 minutes.
@@ -132,7 +138,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_token'),
+                    'message' => 'token_timeout',
                 ], 408);
             }
 
@@ -153,15 +159,20 @@ final class ForgetPasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('passwords.updated'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

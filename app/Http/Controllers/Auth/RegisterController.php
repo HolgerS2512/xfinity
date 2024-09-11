@@ -18,6 +18,7 @@ use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class RegisterController extends Controller
 {
@@ -37,8 +38,8 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_exists'),
-                ], 401);
+                    'message' => 'email_user_exists',
+                ], 400);
             }
 
             // Hashed request password.
@@ -67,11 +68,11 @@ final class RegisterController extends Controller
                     // Send mail with values.
                     // Mail::to($user->email)->send(new VerifyEmailMail(route('verify_email', [$urlCode]), $token));
                     dispatch(new SendVerifyEmail($user->email, route('verify_email', [$urlCode]), $token));
+
                     DB::commit();
 
                     return response()->json([
                         'status' => true,
-                        'message' => __('auth.register'),
                         'url' => $urlCode,
                     ], 200);
                 }
@@ -81,15 +82,20 @@ final class RegisterController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => __('errors.500'),
             ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -114,8 +120,8 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_url'),
-                ], 401);
+                    'message' => 'url_link_not_match',
+                ], 400);
             }
 
             // Seach user via token relations.
@@ -125,8 +131,8 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_user_exist'),
-                ], 401);
+                    'message' => 'account_doesnt_exists',
+                ], 400);
             }
 
             // Check if auth tokens doesnt match.
@@ -134,8 +140,8 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_pin'),
-                ], 401);
+                    'message' => 'token_not_match',
+                ], 400);
             }
 
             // Check if auth token expires date doesnt greater then 15 minutes and delete greater then 1 day.
@@ -147,8 +153,8 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.auth_token'),
-                ], 408);
+                    'message' => 'token_timeout',
+                ], 400);
             }
 
             // Delete token, update user and send register success mail.
@@ -165,15 +171,20 @@ final class RegisterController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('auth.email_verify'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

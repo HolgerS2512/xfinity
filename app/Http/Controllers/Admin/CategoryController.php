@@ -20,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class CategoryController extends Controller
 {
@@ -38,13 +39,6 @@ final class CategoryController extends Controller
      * @var string
      */
     private string $cookieName = 'L_CD';
-
-    /**
-     * The "id" of the custom id cookie.
-     *
-     * @var string
-     */
-    private string $versionId = 'f4358d27-f5ae-4ce8-8fe6-b02349c00d37';
 
     /**
      * 
@@ -67,7 +61,6 @@ final class CategoryController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'error' => __('auth.unauthenticated'),
                 ], 403);
             }
 
@@ -93,12 +86,17 @@ final class CategoryController extends Controller
                 'status' => true,
                 'data' => $data,
             ], 200);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -117,12 +115,17 @@ final class CategoryController extends Controller
                 'status' => true,
                 'data' => $data,
             ], 200);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -197,20 +200,30 @@ final class CategoryController extends Controller
             if ($status) {
                 Cache::forget("categories");
                 DB::commit();
-            } else {
-                DB::rollBack();
+
+                return response()->json([
+                    'status' => true,
+                ], 200);
             }
 
+            DB::rollBack();
+
             return response()->json([
-                'status' => $status,
-            ], 200);
+                'status' => false,
+            ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -230,12 +243,17 @@ final class CategoryController extends Controller
                 'status' => true,
                 'data' => $data,
             ], 200);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -303,21 +321,32 @@ final class CategoryController extends Controller
 
                 return response()->json([
                     'status' => $status && $statusName,
-                    'message' => ($status && $statusName ? '' : __('error.500')),
                 ], ($status && $statusName ? 200 : 500));
             }
 
+            if ($status) {
+
+                return response()->json([
+                    'status' => true,
+                ], 200);
+            }
+
             return response()->json([
-                'status' => $status,
-                'message' => ($status ? '' : __('error.500')),
-            ], ($status ? 200 : 500));
+                'status' => false,
+            ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -341,18 +370,28 @@ final class CategoryController extends Controller
             if ($status) {
                 Cache::forget("categories");
                 DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                ], 200);
             }
 
             return response()->json([
-                'status' => $status,
-            ], 200);
+                'status' => false,
+            ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

@@ -14,6 +14,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class AddressController extends Controller
 {
@@ -54,12 +55,17 @@ final class AddressController extends Controller
                 'status' => true,
                 'data' => $encrypted,
             ], 200);
+        } catch (HttpException $e) {
+            Log::channel('database')->error('AddressController|index: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             Log::channel('database')->error('AddressController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -84,8 +90,7 @@ final class AddressController extends Controller
             if ($counter->count() >= $max) {
                 return response()->json([
                     'status' => false,
-                    'message' => __('error.to_many_addresses', ['max' => $max]),
-                ], 405);
+                ], 403);
             }
 
             $ifExist = [];
@@ -103,7 +108,6 @@ final class AddressController extends Controller
                         
                         return response()->json([
                             'status' => false,
-                            'message' => __('error.500'),
                         ], 500);
                     }
                 }
@@ -134,19 +138,32 @@ final class AddressController extends Controller
 
             $saved = $address->save();
 
-            if ($saved) DB::commit();
+            if ($saved) {
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                ], 200);
+            }
+
+            DB::rollBack();
 
             return response()->json([
-                'status' => $saved,
-                'message' => __($saved ? 'messages.address_new' : 'error.500'),
-            ], 200);
+                'status' => false,
+            ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('AddressController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('AddressController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -191,7 +208,6 @@ final class AddressController extends Controller
 
                         return response()->json([
                             'status' => false,
-                            'message' => __('error.500'),
                         ], 500);
                     }
                 }
@@ -228,7 +244,6 @@ final class AddressController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => __('messages.address_update'),
                 ], 200);
             }
 
@@ -236,15 +251,20 @@ final class AddressController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('AddressController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('AddressController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -270,7 +290,6 @@ final class AddressController extends Controller
 
                 return response()->json([
                     'status' => true,
-                    'message' => __('messages.address_delete'),
                 ], 200);
             }
 
@@ -278,15 +297,20 @@ final class AddressController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('AddressController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('AddressController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

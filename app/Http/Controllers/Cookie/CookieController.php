@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CookieController extends Controller
 {
@@ -94,16 +95,21 @@ class CookieController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('error.500'),
                 ], 500);
             }
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -155,13 +161,19 @@ class CookieController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

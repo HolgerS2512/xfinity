@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrderController extends Controller
 {
@@ -25,7 +29,31 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Logik
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|store: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
 
     /**
@@ -48,7 +76,31 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Logik
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
 
     /**
@@ -59,6 +111,30 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            // Logik
+
+            DB::commit();
+
+            return response()->json([
+                'status' => true,
+            ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
+        } catch (Exception $e) {
+            DB::rollBack();
+            Log::channel('database')->error('OrderController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
 }

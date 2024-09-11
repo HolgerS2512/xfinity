@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ChangePasswordController extends Controller
 {
@@ -39,7 +40,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->messages()->all(),
+                    // 'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -48,8 +49,8 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => (object) ['password' => [__('passwords.third_match')]],
-                ], 401);
+                    'message' => 'password_match_old_new',
+                ], 400);
             }
 
             // Compares passwords for matches.
@@ -57,7 +58,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('passwords.not_match'),
+                    'message' => 'password_not_match_db_pwd',
                 ], 401);
             }
 
@@ -66,7 +67,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_not_exists'),
+                    'message' => 'email_doesnt_exists',
                 ], 401);
             }
 
@@ -99,15 +100,20 @@ final class ChangePasswordController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('passwords.change'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -133,7 +139,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->messages()->all(),
+                    // 'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -142,8 +148,8 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => (object) ['password' => [__('passwords.third_match')]],
-                ], 401);
+                    'message' => 'password_match_old_new',
+                ], 400);
             }
 
             // Compares passwords for matches.
@@ -151,7 +157,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('passwords.not_match'),
+                    'message' => 'password_not_match_db_pwd',
                 ], 401);
             }
 
@@ -160,7 +166,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.email_not_exists'),
+                    'message' => 'email_not_match_db_email',
                 ], 401);
             }
 
@@ -172,7 +178,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.token_not_match'),
+                    'message' => 'token_not_match',
                 ], 401);
             }
 
@@ -187,34 +193,39 @@ final class ChangePasswordController extends Controller
                 'updated_at' => Carbon::now(),
             ]);
 
-            $token = $request->user()->token();
+            // $token = $request->user()->token();
 
             // Delete current user token
-            DB::table('oauth_access_tokens')->delete($token->id);
+            // DB::table('oauth_access_tokens')->delete($token->id);
 
-            // Delete expired token (older then 3 Months)
-            DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
+            // // Delete expired token (older then 3 Months)
+            // DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now()->subMonths(3))->delete();
 
-            // Delete old current user tokens
-            $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
+            // // Delete old current user tokens
+            // $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
 
-            for ($i = 1; $i < count($tokens); $i++) {
-                DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
-            }
+            // for ($i = 1; $i < count($tokens); $i++) {
+            //     DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
+            // }
 
             DB::commit();
 
             return response()->json([
                 'status' => true,
-                'message' => __('passwords.updated'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

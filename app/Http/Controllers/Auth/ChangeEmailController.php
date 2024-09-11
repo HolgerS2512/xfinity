@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ChangeEmailController extends Controller
 {
@@ -36,7 +37,7 @@ final class ChangeEmailController extends Controller
             if ($credentials->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->messages()->all(),
+                    // 'message' => $credentials->messages()->all(),
                     // 'message' => $credentials->errors(),
                 ], 400);
             }
@@ -46,8 +47,8 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('email.third_match'),
-                ], 401);
+                    'message' => 'email_match_old_new',
+                ], 400);
             }
 
             // Compares emails for matches.
@@ -55,8 +56,8 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('email.not_match'),
-                ], 401);
+                    'message' => 'email_not_match_db_email',
+                ], 400);
             }
 
             // Generate auth token.
@@ -88,15 +89,20 @@ final class ChangeEmailController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => __('email.change'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
@@ -125,7 +131,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => $credentials->messages()->all(),
+                    // 'message' => $credentials->messages()->all(),
                 ], 400);
             }
 
@@ -134,7 +140,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('email.third_match'),
+                    'message' => 'email_match_old_new',
                 ], 401);
             }
 
@@ -143,8 +149,8 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('email.not_match'),
-                ], 401);
+                    'message' => 'email_not_match_db_email',
+                ], 400);
             }
 
             // Find column in table "email_resets".
@@ -155,8 +161,8 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => __('auth.token_not_match'),
-                ], 401);
+                    'message' => 'token_not_match',
+                ], 400);
             }
 
             // Delete token via id.
@@ -171,25 +177,30 @@ final class ChangeEmailController extends Controller
             ]);
 
             // Delete old current user tokens
-            $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
+            // $tokens = DB::table('oauth_access_tokens')->where('user_id', $request->user()->id)->orderBy('created_at', 'desc')->get();
 
-            for ($i = 1; $i < count($tokens); $i++) {
-                DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
-            }
+            // for ($i = 1; $i < count($tokens); $i++) {
+            //     DB::table('oauth_access_tokens')->delete($tokens[$i]->id);
+            // }
 
             DB::commit();
 
             return response()->json([
                 'status' => true,
-                'message' => __('email.updated'),
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }

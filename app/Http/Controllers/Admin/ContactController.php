@@ -8,6 +8,7 @@ use App\Mail\Contact\ContactMail;
 use App\Mail\Contact\FeedbackMail;
 use App\Models\Contact;
 use App\Models\User;
+use App\Traits\Middleware\PermissionServiceTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use Exception;
@@ -15,9 +16,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ContactController extends Controller
 {
+    use PermissionServiceTrait;
+
+    /**
+     * The permission name for permissionService.
+     *
+     * @var string
+     */
+    private string $permissionName = 'contact';
+
     /**
      * 
      * Applies middleware to check user permissions before allowing access to
@@ -28,37 +39,17 @@ final class ContactController extends Controller
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
-            $id = Auth::id();
-            $user = User::findOrFail($id);
 
-            if ($request->routeIs('contact.index') || $request->routeIs('contact.show')) {
-                if (!$user->hasPermission('read')) {
-
-                    return response()->json([
-                        'status' => false,
-                        'error' => __('auth.unauthenticated'),
-                    ], 403);
-                }
+            // Exclude routes
+            if ($request->routeIs('create')) {
+                return $next($request);
             }
 
-            if ($request->routeIs('contact.update')) {
-                if (!$user->hasPermission('edit') || !$user->hasPermission('update')) {
-
-                    return response()->json([
-                        'status' => false,
-                        'error' => __('auth.unauthenticated'),
-                    ], 403);
-                }
-            }
-
-            if ($request->routeIs('contact.destroy')) {
-                if (!$user->hasPermission('delete')) {
-
-                    return response()->json([
-                        'status' => false,
-                        'error' => __('auth.unauthenticated'),
-                    ], 403);
-                }
+            if ($this->permisssionService($request, $next, $this->permissionName)) {
+                
+                return response()->json([
+                    'status' => false,
+                ], 403);
             }
 
             return $next($request);
@@ -108,19 +99,33 @@ final class ContactController extends Controller
 
             Mail::to($request->email)->send(new FeedbackMail);
 
-            if ($saved) DB::commit();
+            if ($saved) {
+                DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                ], 200);
+            }
+
+            DB::rollBack();
+            
+            return response()->json([
+                'status' => false,
+            ], 500);
+
+        } catch (HttpException $e) {
+            DB::rollBack();
+            Log::channel('database')->error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
-                'status' => $saved,
-                'message' => $saved ? __("messages.contact") : __('error.500'),
-            ], 200);
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
             Log::channel('database')->error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-                'message' => __('error.500'),
             ], 500);
         }
     }
