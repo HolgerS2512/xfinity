@@ -49,7 +49,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'password_match_old_new',
+                    'message' => [true, 'password_match_old_new'],
                 ], 400);
             }
 
@@ -58,7 +58,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'password_not_match_db_pwd',
+                    'message' => [true, 'password_not_match_db_pwd'],
                 ], 401);
             }
 
@@ -67,7 +67,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_doesnt_exists',
+                    'message' => [true, 'email_doesnt_exists'],
                 ], 401);
             }
 
@@ -148,7 +148,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'password_match_old_new',
+                    'message' => [true, 'password_match_old_new'],
                 ], 400);
             }
 
@@ -157,7 +157,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'password_not_match_db_pwd',
+                    'message' => [true, 'password_not_match_db_pwd'],
                 ], 401);
             }
 
@@ -166,7 +166,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_not_match_db_email',
+                    'message' => [true, 'email_not_match_db_email'],
                 ], 401);
             }
 
@@ -178,7 +178,7 @@ final class ChangePasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_not_match',
+                    'message' => [true, 'token_not_match'],
                 ], 401);
             }
 

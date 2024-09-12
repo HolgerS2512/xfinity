@@ -33,7 +33,7 @@ final class PinController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'url_link_not_match',
+                    'message' => [true, 'url_link_not_match'],
                 ], 400);
             }
 
@@ -49,7 +49,7 @@ final class PinController extends Controller
 
                     return response()->json([
                         'status' => false,
-                        'message' => 'token_timeout',
+                        'message' => [true, 'token_timeout'],
                         'email' => $user->email,
                     ], 408);
                 }
@@ -66,7 +66,7 @@ final class PinController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => 'email_doesnt_exists',
+                'message' => [true, 'email_doesnt_exists'],
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
@@ -101,7 +101,7 @@ final class PinController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_user_exists',
+                    'message' => [true, 'email_user_exists'],
                 ], 400);
             }
 

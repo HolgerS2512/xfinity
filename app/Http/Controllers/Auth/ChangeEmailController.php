@@ -47,7 +47,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_match_old_new',
+                    'message' => [true, 'email_match_old_new'],
                 ], 400);
             }
 
@@ -56,7 +56,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_not_match_db_email',
+                    'message' => [true, 'email_not_match_db_email'],
                 ], 400);
             }
 
@@ -140,7 +140,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_match_old_new',
+                    'message' => [true, 'email_match_old_new'],
                 ], 401);
             }
 
@@ -149,7 +149,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_not_match_db_email',
+                    'message' => [true, 'email_not_match_db_email'],
                 ], 400);
             }
 
@@ -161,7 +161,7 @@ final class ChangeEmailController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_not_match',
+                    'message' => [true, 'token_not_match'],
                 ], 400);
             }
 

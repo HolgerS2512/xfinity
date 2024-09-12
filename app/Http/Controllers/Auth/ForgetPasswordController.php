@@ -35,7 +35,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_doesnt_exists',
+                    'message' => [true, 'email_doesnt_exists'],
                 ], 400);
             }
 
@@ -109,7 +109,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'url_link_not_match',
+                    'message' => [true, 'url_link_not_match'],
                 ], 400);
             }
 
@@ -118,7 +118,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_not_match',
+                    'message' => [true, 'token_not_match'],
                 ], 400);
             }
 
@@ -127,7 +127,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_doesnt_exists',
+                    'message' => [true, 'email_doesnt_exists'],
                 ], 400);
             }
 
@@ -138,7 +138,7 @@ final class ForgetPasswordController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_timeout',
+                    'message' => [true, 'token_timeout'],
                 ], 408);
             }
 

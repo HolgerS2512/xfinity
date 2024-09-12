@@ -94,7 +94,7 @@ final class AuthController extends Controller
             if (Carbon::now()->diffInMinutes($user->email_verified_at) === 0) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_not_verified',
+                    'message' => [true, 'email_not_verified'],
                 ], 400);
             }
 
@@ -127,11 +127,16 @@ final class AuthController extends Controller
                         'token' => $token,
                     ], 200);
                 }
+
+                return response()->json([
+                    'status' => false,
+                    'message' => [true, 'password_not_match_db_pwd'],
+                ], 400);
             }
 
             return response()->json([
                 'status' => false,
-                'message' => 'password_not_match_db_pwd',
+                'message' => [true, 'account_doesnt_exists'],
             ], 400);
         } catch (HttpException $e) {
             Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);

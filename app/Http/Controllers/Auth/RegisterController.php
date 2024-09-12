@@ -38,7 +38,7 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'email_user_exists',
+                    'message' => [true, 'email_user_exists'],
                 ], 400);
             }
 
@@ -120,7 +120,7 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'url_link_not_match',
+                    'message' => [true, 'url_link_not_match'],
                 ], 400);
             }
 
@@ -131,7 +131,7 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'account_doesnt_exists',
+                    'message' => [true, 'account_doesnt_exists_verify'],
                 ], 400);
             }
 
@@ -140,7 +140,7 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_not_match',
+                    'message' => [true, 'token_not_match'],
                 ], 400);
             }
 
@@ -153,7 +153,7 @@ final class RegisterController extends Controller
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'token_timeout',
+                    'message' => [true, 'token_timeout'],
                 ], 400);
             }
 
