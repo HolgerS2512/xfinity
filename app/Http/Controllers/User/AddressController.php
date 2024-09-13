@@ -73,7 +73,7 @@ final class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\StoreRequest  $request
+     * @param  \App\Http\Requests\Address\StoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreRequest $request)
@@ -90,7 +90,7 @@ final class AddressController extends Controller
             if ($counter->count() >= $max) {
                 return response()->json([
                     'status' => false,
-                ], 403);
+                ], 400);
             }
 
             $ifExist = [];
@@ -182,7 +182,7 @@ final class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\UpdateRequest  $request
+     * @param  \App\Http\Requests\Address\UpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProfileSetting\UpdateRequest;
 use App\Models\User;
 use App\Services\Cryption\CryptionService;
 use Carbon\Carbon;
@@ -51,28 +52,15 @@ class SettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\ProfileSetting\UpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'newsletter_subscriber' => 'required|boolean',
-            ]);
-
-            if ($credentials->fails()) {
-
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                ], 400);
-            }
-
             // Is current user logged in and this request id
             $authId = Auth::id();
 

@@ -69,7 +69,7 @@ final class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\ContactRequest  $request
+     * @param  \App\Http\Requests\Admin\ContactRequest $request
      * @return \Illuminate\Http\Response
      */
     public function create(ContactRequest $request)

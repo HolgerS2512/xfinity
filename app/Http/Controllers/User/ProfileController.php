@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Profile\UpdateRequest;
 use App\Models\User;
 use App\Services\Cryption\CryptionService;
 use Carbon\Carbon;
@@ -87,31 +88,15 @@ final class ProfileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Profile\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'salutation' => 'required|string|regex:/^[mdwz]$/',
-                'firstname' => 'required|string|max:60|min:2',
-                'lastname' => 'required|string|max:40|min:2',
-                'birthday' => 'required|date_format:Y-m-d',
-            ]);
-
-            if ($credentials->fails()) {
-
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                ], 400);
-            }
-
             // Is current user logged in and this request id
             $authId = Auth::id();
 

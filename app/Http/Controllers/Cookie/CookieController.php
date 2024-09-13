@@ -34,7 +34,7 @@ class CookieController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\CookieRequest  $request
+     * @param  \App\Http\Requests\Cookie\CookieRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CookieRequest $request)

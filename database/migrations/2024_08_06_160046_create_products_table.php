@@ -15,13 +15,15 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('article_number')->unique();
+            $table->integer('ranking');
             $table->string('name')->unique();
             $table->string('description')->unique();
-            $table->integer('stock');
             $table->foreignId('category_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            ->constrained()
+            ->cascadeOnUpdate()
+            ->cascadeOnDelete();
+            $table->integer('stock')->default(0);
             $table->tinyInteger('active')->default(0);
             $table->tinyInteger('popular')->default(0);
             $table->timestamp('created_at')->useCurrent();

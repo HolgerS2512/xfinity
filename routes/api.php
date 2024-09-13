@@ -24,8 +24,6 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::apiResource('/settings/cookie', CookieController::class);
-
 Route::get('/all/categories', [CategoryController::class, 'allActive'])
     ->name('all_active_categories');
 
@@ -49,6 +47,9 @@ Route::middleware(['throttle:9,1'])->group(function () {
 
     // Login Route
     Route::post('/login', [AuthController::class, 'login']);
+
+    // Cookie handling
+    Route::apiResource('/settings/cookie', CookieController::class);
 });
 
 Route::middleware(['throttle:3,1'])->group(function () {
@@ -85,7 +86,7 @@ Route::middleware(['throttle:3,1'])->group(function () {
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:sanctum', 'verified', 'throttle:6,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'throttle:3,1'])->group(function () {
 
     // Change Password
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);

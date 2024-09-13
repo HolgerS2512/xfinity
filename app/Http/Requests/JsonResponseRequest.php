@@ -39,7 +39,7 @@ class JsonResponseRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'status'    => false,
-            'message'   => $validator->errors()
+            'validator'   => $validator->errors(),
         ], 400));
     }
 }

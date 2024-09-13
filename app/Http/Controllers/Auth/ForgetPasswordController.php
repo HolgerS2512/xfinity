@@ -22,7 +22,7 @@ final class ForgetPasswordController extends Controller
     /**
      * Laravel Passport User Forget Password  API Function
      * 
-     * @param \App\Mail\Auth\ForgetRequest $request
+     * @param \App\Http\Requests\Auth\ForgetRequest $request
      * @return \Illuminate\Http\Response
      */
     public function edit(ForgetRequest $request)

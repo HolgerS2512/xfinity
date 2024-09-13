@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangePasswordEditRequest;
+use App\Http\Requests\Auth\ChangePasswordUpdateRequest;
 use App\Jobs\Auth\SendChangePasswordEmail;
 use App\Mail\Auth\ChangePasswordMail;
 use Illuminate\Http\Request;
@@ -20,30 +22,16 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 final class ChangePasswordController extends Controller
 {
     /**
-     * Laravel Passport User Change Password  API Function
+     * Laravel Passport User Change Password Edit API Function
      * 
+     * @param  \App\Http\Requests\Auth\ChangePasswordEditRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(ChangePasswordEditRequest $request)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'current_password' => 'required|min:8|max:255',
-                'password' => 'required|string|min:8|max:255|confirmed|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
-                'password_confirmation' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/'
-            ]);
-
-            if ($credentials->fails()) {
-  
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                ], 400);
-            }
-
             // Compare old password and new password for match.
             if ($request->current_password === $request->password) {
 
@@ -117,32 +105,18 @@ final class ChangePasswordController extends Controller
             ], 500);
         }
     }
+
     /**
-     * Laravel Passport User Change Password  API Function
+     * Laravel Passport User Change Password Update API Function
      * 
+     * @param  \App\Http\Requests\Auth\ChangePasswordUpdateRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(ChangePasswordUpdateRequest $request)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'pin' => 'required|integer|max:100000|min:10',
-                'current_password' => 'required|min:8|max:255',
-                'password' => 'required|string|min:8|max:255|confirmed|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
-                'password_confirmation' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
-            ]);
-
-            if ($credentials->fails()) {
-
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                ], 400);
-            }
-
             // Compare old password and new password for match.
             if ($request->current_password === $request->password) {
 
@@ -179,7 +153,7 @@ final class ChangePasswordController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => [true, 'token_not_match'],
-                ], 401);
+                ], 400);
             }
 
             // Delete token via id.

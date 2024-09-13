@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class JsonResponseRequest extends FormRequest
+class AdminJsonRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -39,7 +39,7 @@ class JsonResponseRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'status'    => false,
-            'message'   => $validator->errors()
+            // 'message'   => $validator->errors(),
         ], 400));
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\ChangeEmailEditRequest;
+use App\Http\Requests\Auth\ChangeEmailUpdateRequest;
 use App\Jobs\Auth\SendChangeMailEmail;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -19,29 +21,14 @@ final class ChangeEmailController extends Controller
     /**
      * Edit the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Auth\ChangeEmailEditRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit(ChangeEmailEditRequest $request)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'current_email' => 'required|email',
-                'email' => 'required|email|confirmed|unique:users,email',
-                'email_confirmation' => 'required|email',
-            ]);
-
-            if ($credentials->fails()) {
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                    // 'message' => $credentials->errors(),
-                ], 400);
-            }
-
             // Compare old email and new email for match.
             if ($request->email === $request->user()->email) {
 
@@ -110,31 +97,14 @@ final class ChangeEmailController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\Auth\ChangeEmailUpdateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(ChangeEmailUpdateRequest $request)
     {
         DB::beginTransaction();
 
         try {
-            // Validation.
-            $credentials = Validator::make($request->all(), [
-                'pin' => 'required|integer|max:100000|min:10000',
-                'current_email' => 'required|email',
-                'email' => 'required|email|confirmed|unique:users,email',
-                'email_confirmation' => 'required|email',
-            ]);
-
-            if ($credentials->fails()) {
-
-                return response()->json([
-                    'status' => false,
-                    // 'message' => $credentials->messages()->all(),
-                ], 400);
-            }
-
             // Compare old email and new email for match.
             if ($request->email === $request->user()->email) {
 

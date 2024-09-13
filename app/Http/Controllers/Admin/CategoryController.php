@@ -133,7 +133,7 @@ final class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\StoreCategoryRequest  $request
+     * @param  \App\Http\Requests\Admin\StoreCategoryRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCategoryRequest $request)
@@ -261,7 +261,7 @@ final class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\UpdateCategoryRequest  $request
+     * @param  \App\Http\Requests\Admin\UpdateCategoryRequest $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

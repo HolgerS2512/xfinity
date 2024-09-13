@@ -157,6 +157,7 @@ OwenIt\Auditing\AuditingServiceProvider::class,
 
 ### ToDo
 
+- activate CSRF protection
 - Mailing
 - Redis
 - Queue Server Settings
@@ -165,6 +166,11 @@ OwenIt\Auditing\AuditingServiceProvider::class,
 - [Follow documentation -> passport](https://laravel.com/docs/9.x/passport#deploying-passport)
 
 ### Important
+
+- CSRF protection comment out
+```php
+App\Http\Middleware\VerifyCsrfToken
+```
 
 - Install Supervisor
 1. 
