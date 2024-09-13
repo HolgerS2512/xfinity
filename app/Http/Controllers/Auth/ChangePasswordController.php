@@ -32,12 +32,12 @@ final class ChangePasswordController extends Controller
             // Validation.
             $credentials = Validator::make($request->all(), [
                 'current_password' => 'required|min:8|max:255',
-                'password' => 'required|string|min:8|max:255|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'password_confirmation' => 'required|string|min:8|max:255|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/'
+                'password' => 'required|string|min:8|max:255|confirmed|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
+                'password_confirmation' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/'
             ]);
 
             if ($credentials->fails()) {
-
+  
                 return response()->json([
                     'status' => false,
                     // 'message' => $credentials->messages()->all(),
@@ -59,7 +59,7 @@ final class ChangePasswordController extends Controller
                 return response()->json([
                     'status' => false,
                     'message' => [true, 'password_not_match_db_pwd'],
-                ], 401);
+                ], 400);
             }
 
             // Check if user exist.
@@ -131,8 +131,8 @@ final class ChangePasswordController extends Controller
             $credentials = Validator::make($request->all(), [
                 'pin' => 'required|integer|max:100000|min:10',
                 'current_password' => 'required|min:8|max:255',
-                'password' => 'required|string|min:8|max:255|confirmed|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
-                'password_confirmation' => 'required|string|min:8|max:255|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+                'password' => 'required|string|min:8|max:255|confirmed|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
+                'password_confirmation' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
             ]);
 
             if ($credentials->fails()) {
