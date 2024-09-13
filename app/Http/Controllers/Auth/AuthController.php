@@ -193,7 +193,7 @@ final class AuthController extends Controller
             // Delete current user token
             $request->user()->currentAccessToken()->delete();
 
-            Cookie::queue(Cookie::forget($this->cookieName));
+            Cookie::queue(Cookie::forget($this->cookieName)->withPath('/'));
 
             $request->session()->regenerate();
 
@@ -201,8 +201,9 @@ final class AuthController extends Controller
 
             return response()->json([
                 'status' => true,
-            ], 204)->withCookie(cookie()->forget($this->cookieName));
+            ], 204);
             // http status 204 -> No Content -> no response!
+            
         } catch (HttpException $e) {
             DB::rollBack();
             Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
