@@ -11,7 +11,6 @@ use App\Models\User;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -30,7 +29,7 @@ final class ChangeEmailController extends Controller
 
         try {
             // Compare old email and new email for match.
-            if ($request->email === $request->user()->email) {
+            if ($request->new_email === $request->user()->email) {
 
                 return response()->json([
                     'status' => false,
@@ -106,7 +105,7 @@ final class ChangeEmailController extends Controller
 
         try {
             // Compare old email and new email for match.
-            if ($request->email === $request->user()->email) {
+            if ($request->new_email === $request->user()->email) {
 
                 return response()->json([
                     'status' => false,
@@ -142,7 +141,7 @@ final class ChangeEmailController extends Controller
             $user = User::where('email', $request->current_email);
 
             $user->update([
-                'email' => $request->email,
+                'email' => $request->new_email,
                 'updated_at' => Carbon::now(),
             ]);
 

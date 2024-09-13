@@ -13,7 +13,7 @@ return [
     |
     */
 
-    "accepted" => ":Attribute muss akzeptiert werden.",
+    "accepted" => "Dies muss akzeptiert werden.",
     "accepted_if" => ":Attribute muss akzeptiert werden, wenn :other :value ist.",
     "active_url" => ":Attribute ist keine gültige Internet-Adresse.",
     "after" => ":Attribute muss ein Datum nach :date sein.",
@@ -31,12 +31,12 @@ return [
         "array" => ":Attribute muss zwischen :min & :max Elemente haben.",
         "file" => ":Attribute muss zwischen :min & :max Kilobytes groß sein.",
         "numeric" => ":Attribute muss zwischen :min & :max liegen.",
-        "string" => ":Attribute muss zwischen :min & :max Zeichen lang sein.",
+        "string" => "Dies muss zwischen :min & :max Zeichen lang sein.",
     ],
 
     "boolean" => ":Attribute muss entweder 'true' oder 'false' sein.",
     "can" => "Das Feld :attribute enthält einen nicht autorisierten Wert.",
-    "confirmed" => ":Attribute stimmt nicht mit der Bestätigung überein.",
+    "confirmed" => "Dies stimmt nicht mit der Bestätigung überein.",
     "contains" => "Dem Feld :attribute fehlt ein erforderlicher Wert.",
     "current_password" => "Das Passwort ist falsch.",
     "date" => ":Attribute muss ein gültiges Datum sein.",
@@ -79,13 +79,13 @@ return [
     "image" => ":Attribute muss ein Bild sein.",
     "in" => "Der gewählte Wert für :attribute ist ungültig.",
     "in_array" => "Der gewählte Wert für :attribute kommt nicht in :other vor.",
-    "integer" => ":Attribute muss eine ganze Zahl sein.",
+    "integer" => "Dies muss eine ganze Zahl sein.",
     "ip" => ":Attribute muss eine gültige IP-Adresse sein.",
     "ipv4" => ":Attribute muss eine gültige IPv4-Adresse sein.",
     "ipv6" => ":Attribute muss eine gültige IPv6-Adresse sein.",
     "json" => ":Attribute muss ein gültiger JSON-String sein.",
     "list" => ":Attribute muss eine Liste sein.",
-    "lowercase" => ":Attribute muss in Kleinbuchstaben sein.",
+    "lowercase" => "Dies muss in Kleinbuchstaben sein.",
 
     'lt' => [
         "array" => ":Attribute muss weniger als :value Elemente haben.",
@@ -107,18 +107,18 @@ return [
         "array" => ":Attribute darf maximal :max Elemente haben.",
         "file" => ":Attribute darf maximal :max Kilobytes groß sein.",
         "numeric" => ":Attribute darf maximal :max sein.",
-        "string" => ":Attribute darf maximal :max Zeichen haben.",
+        "string" => "Dies darf maximal :max Zeichen haben.",
     ],
 
     "max_digits" => ":Attribute darf maximal :max Ziffern lang sein.",
     "mimes" => ":Attribute muss den Dateityp :values haben.",
-    "mimetypes" => ":Attribute muss den Dateityp :values haben.",
+    "mimetypes" => "Dies muss den Dateityp :values haben.",
 
     'min' => [
         "array" => ":Attribute muss mindestens :min Elemente haben.",
         "file" => ":Attribute muss mindestens :min Kilobytes groß sein.",
         "numeric" => ":Attribute muss mindestens :min sein.",
-        "string" => ":Attribute muss mindestens :min Zeichen lang sein.",
+        "string" => "Dies muss mindestens :min Zeichen lang sein.",
     ],
 
     "min_digits" => ":Attribute muss mindestens :min Ziffern lang sein.",
@@ -136,9 +136,9 @@ return [
 
     'password' => [
         "letters" => ":Attribute muss mindestens einen Buchstaben beinhalten.",
-        "mixed" => ":Attribute muss mindestens einen Großbuchstaben und einen Kleinbuchstaben beinhalten.",
-        "numbers" => ":Attribute muss mindestens eine Zahl beinhalten.",
-        "symbols" => ":Attribute muss mindestens ein Sonderzeichen beinhalten.",
+        "mixed" => "Es muss mindestens einen Großbuchstaben und einen Kleinbuchstaben beinhalten.",
+        "numbers" => "Es muss mindestens eine Zahl beinhalten.",
+        "symbols" => "Es muss mindestens ein Sonderzeichen beinhalten.",
         "uncompromised" => ":Attribute wurde in einem Datenleck gefunden. Bitte wählen Sie ein anderes :attribute.",
     ],
     "present" => ":Attribute muss vorhanden sein.",
@@ -151,7 +151,7 @@ return [
     "prohibited_if" => ":Attribute ist unzulässig, wenn :other :value ist.",
     "prohibited_unless" => ":Attribute ist unzulässig, wenn :other nicht :values ist.",
     "prohibits" => ":Attribute verbietet die Angabe von :other.",
-    "regex" => ":Attribute Format ist ungültig.",
+    "regex" => "Format ungültig.",
     "relatable" => ":Attribute kann nicht mit dieser Ressource verbunden werden.",
     "required" => "Dies ist ein Pflichtfeld.",
     "required_array_keys" => "Dieses Feld muss Einträge enthalten für: :values.",

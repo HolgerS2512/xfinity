@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\JsonResponseRequest;
+use Illuminate\Validation\Rules\Password;
 
 class ResetPasswordRequest extends JsonResponseRequest
 {
@@ -16,7 +17,16 @@ class ResetPasswordRequest extends JsonResponseRequest
         return [
             'pin' => 'required|integer|max:100000|min:10',
             'email' => 'required|email|exists:users,email',
-            'password' => 'required|string|min:8|max:255|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
+            'password' => [
+                'required',
+                'string',
+                'max:255',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+                'confirmed'
+            ],
         ];
     }
 }

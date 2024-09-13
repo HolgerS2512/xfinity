@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\JsonResponseRequest;
+use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends JsonResponseRequest
 {
@@ -17,7 +18,16 @@ class RegisterRequest extends JsonResponseRequest
             'firstname' => 'required|string|max:60|min:2',
             'lastname' => 'required|string|max:40|min:2',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/'
+            'password' => [
+                'required',
+                'string',
+                'max:255',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+                'confirmed'
+            ],
         ];
     }
 }

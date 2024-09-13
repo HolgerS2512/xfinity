@@ -14,7 +14,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -33,7 +32,7 @@ final class ChangePasswordController extends Controller
 
         try {
             // Compare old password and new password for match.
-            if ($request->current_password === $request->password) {
+            if ($request->current_password === $request->new_password) {
 
                 return response()->json([
                     'status' => false,
@@ -118,7 +117,7 @@ final class ChangePasswordController extends Controller
 
         try {
             // Compare old password and new password for match.
-            if ($request->current_password === $request->password) {
+            if ($request->current_password === $request->new_password) {
 
                 return response()->json([
                     'status' => false,
@@ -163,7 +162,7 @@ final class ChangePasswordController extends Controller
             $user = User::where('email', $request->user()->email);
 
             $user->update([
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($request->new_password),
                 'updated_at' => Carbon::now(),
             ]);
 

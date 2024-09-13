@@ -15,8 +15,8 @@ class ChangeEmailEditRequest extends JsonResponseRequest
     {
         return [
             'current_email' => 'required|email',
-            'email' => 'required|email|confirmed|unique:users,email',
-            'email_confirmation' => 'required|email',
+            'new_email' => 'required|email|confirmed|unique:users,email',
+            'new_email_confirmation' => 'required|email',
         ];
     }
 }

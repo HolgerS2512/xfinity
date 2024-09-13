@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth;
 
 use App\Http\Requests\JsonResponseRequest;
+use Illuminate\Validation\Rules\Password;
 
 class ChangePasswordUpdateRequest extends JsonResponseRequest
 {
@@ -15,9 +16,35 @@ class ChangePasswordUpdateRequest extends JsonResponseRequest
     {
         return [
             'pin' => 'required|integer|max:100000|min:10',
-            'current_password' => 'required|min:8|max:255',
-            'password' => 'required|string|min:8|max:255|confirmed|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
-            'password_confirmation' => 'required|string|min:8|max:255|regex:/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,255}$/',
+            'current_password' => [
+                'required',
+                'string',
+                'max:255',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+                'confirmed'
+            ],
+            'new_password' => [
+                'required',
+                'string',
+                'max:255',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+                'confirmed'
+            ],
+            'new_password_confirmation' => [
+                'required',
+                'string',
+                'max:255',
+                Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
         ];
     }
 }
