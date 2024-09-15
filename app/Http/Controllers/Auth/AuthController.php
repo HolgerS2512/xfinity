@@ -65,13 +65,13 @@ final class AuthController extends Controller
                 'email' => $request->email,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -105,16 +105,14 @@ final class AuthController extends Controller
                     $token = $user->createToken($this->cookieName)->plainTextToken;
                     // 60 * 24 * 10  - 10 Days
 
-                    $userAttributes = $user->only(['firstname', 'lastname', 'email']);
+                    $userAttributes = $user->only(['firstname']);
 
                     Cookie::queue(Cookie::make(
                         $this->cookieName,
                         $token,
                         (60 * 24 * 10),
-                        // '/',
-                        // str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
-                        null,
-                        null,
+                        '/',
+                        null, // str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
                         false, // Deploy-> true,
                         false,
                         false,
@@ -139,13 +137,13 @@ final class AuthController extends Controller
                 'message' => [true, 'account_doesnt_exists'],
             ], 400);
         } catch (HttpException $e) {
-            Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -203,17 +201,17 @@ final class AuthController extends Controller
                 'status' => true,
             ], 204);
             // http status 204 -> No Content -> no response!
-            
+
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
 
             return response([
                 'status' => false,

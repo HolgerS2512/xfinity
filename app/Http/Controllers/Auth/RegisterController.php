@@ -85,14 +85,14 @@ final class RegisterController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -110,7 +110,7 @@ final class RegisterController extends Controller
     public function verifyEmail(VerifyEmailRequest $request, $url)
     {
         DB::beginTransaction();
-        
+
         try {
             // Search and check in table "verify_email_tokens" via url if is exist.
             $tokenColl = DB::table('verify_email_tokens')->where('url', $url);
@@ -174,14 +174,14 @@ final class RegisterController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

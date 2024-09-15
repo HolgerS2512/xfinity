@@ -55,7 +55,7 @@ return [
         'database' => [
             'driver' => 'custom',
             'via' => App\Logging\DatabaseLogger::class,
-            'level' => 'error',
+            'level' => 'warnung',
         ],
 
         'stack' => [

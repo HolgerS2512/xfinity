@@ -18,13 +18,53 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class SettingController extends Controller
 {
     /**
+     * The CryptionService instance.
+     *
+     * @var CryptionService
+     */
+    protected $cryptionService;
+
+    /**
+     * Constructor to initialize the CryptionService.
+     *
+     * @param CryptionService $cryptionService
+     */
+    public function __construct(CryptionService $cryptionService)
+    {
+        $this->cryptionService = $cryptionService;
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        try {
+            $userId = Auth::id();
+            $user = User::findOrFail($userId);
+            $userAttributes = $user->only(['id', 'newsletter_subscriber']);
+
+            $encrypted = $this->cryptionService->encrypt($userAttributes);
+
+            return response()->json([
+                'status' => true,
+                'data' => $encrypted,
+            ], 200);
+        } catch (HttpException $e) {
+            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], $e->getStatusCode() ?? 500);
+        } catch (Exception $e) {
+            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
+
+            return response()->json([
+                'status' => false,
+            ], 500);
+        }
     }
 
     /**
@@ -64,10 +104,8 @@ class SettingController extends Controller
             // Is current user logged in and this request id
             $authId = Auth::id();
 
-            if ($authId !== $id) {
+            if ($authId !== (int) $id) {
                 DB::rollBack();
-                Log::channel('database')
-                    ->error('WARNING HACKER!!! Send id: ' . $id . ' auth id: ' . $authId);
 
                 return response()->json([
                     'status' => false,
@@ -98,14 +136,14 @@ class SettingController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('SettingController|updateSubscriber: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -129,8 +167,6 @@ class SettingController extends Controller
 
             if ($authId !== (int) $id) {
                 DB::rollBack();
-                Log::channel('database')
-                    ->error('WARNING HACKER!!! Send id: ' . $id . ' auth id: ' . $authId);
 
                 return response()->json([
                     'status' => false,
@@ -157,14 +193,14 @@ class SettingController extends Controller
             }
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('SettingController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

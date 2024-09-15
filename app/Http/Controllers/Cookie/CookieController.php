@@ -48,8 +48,7 @@ class CookieController extends Controller
             $this->middleware('auth');
 
             if (Auth::check()) {
-                $userId = Auth::id();
-                $user['user_id'] = $userId;
+                $user['user_id'] = Auth::id();
             }
 
             $values = [
@@ -99,14 +98,14 @@ class CookieController extends Controller
             }
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -163,14 +162,14 @@ class CookieController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

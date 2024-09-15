@@ -78,14 +78,14 @@ final class ChangeEmailController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -159,14 +159,14 @@ final class ChangeEmailController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

@@ -44,18 +44,22 @@ final class ProfileController extends Controller
         try {
             $userId = Auth::id();
             $user = User::findOrFail($userId);
+            $userAttributes = $user->only(['id', 'salutation', 'firstname', 'lastname', 'email', 'birthday']);
 
-            $encrypted = $this->cryptionService->encrypt($user);
+            $encrypted = $this->cryptionService->encrypt($userAttributes);
 
-            return $encrypted;
+            return response()->json([
+                'status' => true,
+                'data' => $encrypted,
+            ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -100,10 +104,8 @@ final class ProfileController extends Controller
             // Is current user logged in and this request id
             $authId = Auth::id();
 
-            if ($authId !== $id) {
+            if ($authId !== (int) $id) {
                 DB::rollBack();
-                Log::channel('database')
-                    ->error('WARNING HACKER!!! Send id: ' . $id . ' auth id: ' . $authId);
 
                 return response()->json([
                     'status' => false,
@@ -137,14 +139,14 @@ final class ProfileController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

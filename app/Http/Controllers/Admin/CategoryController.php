@@ -82,18 +82,21 @@ final class CategoryController extends Controller
                 return Category::loadActiveCategoriesByLvl();
             });
 
+            // Simulate timeout request
+            // sleep(11);
+            
             return response()->json([
                 'status' => true,
                 'data' => $data,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -116,13 +119,13 @@ final class CategoryController extends Controller
                 'data' => $data,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -213,14 +216,14 @@ final class CategoryController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -244,13 +247,13 @@ final class CategoryController extends Controller
                 'data' => $data,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -336,14 +339,14 @@ final class CategoryController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -381,14 +384,14 @@ final class CategoryController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

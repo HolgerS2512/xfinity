@@ -70,14 +70,14 @@ final class PinController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -141,14 +141,14 @@ final class PinController extends Controller
             ], 500);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

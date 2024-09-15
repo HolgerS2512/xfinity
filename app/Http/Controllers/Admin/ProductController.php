@@ -43,7 +43,7 @@ class ProductController extends Controller
             }
 
             if ($this->permisssionService($request, $next, $this->permissionName)) {
-                
+
                 return response()->json([
                     'status' => false,
                 ], 403);
@@ -74,13 +74,13 @@ class ProductController extends Controller
                 'data' => $data,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('ProductController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('ProductController|allActive: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|allActive: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -106,13 +106,13 @@ class ProductController extends Controller
             //     'data' => $data,
             // ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('ProductController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('ProductController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -141,14 +141,14 @@ class ProductController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -176,14 +176,14 @@ class ProductController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -212,14 +212,14 @@ class ProductController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -253,14 +253,14 @@ class ProductController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ProductController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ProductController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

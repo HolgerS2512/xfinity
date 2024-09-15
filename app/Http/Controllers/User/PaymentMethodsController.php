@@ -45,14 +45,14 @@ class PaymentMethodsController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -92,14 +92,14 @@ class PaymentMethodsController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -137,14 +137,14 @@ class PaymentMethodsController extends Controller
             }
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

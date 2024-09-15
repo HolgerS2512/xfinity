@@ -90,14 +90,14 @@ final class ChangePasswordController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -188,14 +188,14 @@ final class ChangePasswordController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

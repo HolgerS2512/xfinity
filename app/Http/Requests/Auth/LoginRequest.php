@@ -24,7 +24,6 @@ class LoginRequest extends JsonResponseRequest
                     ->mixedCase()
                     ->numbers()
                     ->symbols(),
-                'confirmed'
             ],
         ];
     }

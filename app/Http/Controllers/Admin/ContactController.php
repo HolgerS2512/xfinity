@@ -46,7 +46,7 @@ final class ContactController extends Controller
             }
 
             if ($this->permisssionService($request, $next, $this->permissionName)) {
-                
+
                 return response()->json([
                     'status' => false,
                 ], 403);
@@ -108,21 +108,20 @@ final class ContactController extends Controller
             }
 
             DB::rollBack();
-            
+
             return response()->json([
                 'status' => false,
             ], 500);
-
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

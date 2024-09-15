@@ -29,13 +29,13 @@ class WishlistController extends Controller
                 'status' => true,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('WishlistController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('WishlistController|index: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|index: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -63,14 +63,14 @@ class WishlistController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|store: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|store: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -93,13 +93,13 @@ class WishlistController extends Controller
                 'status' => true,
             ], 200);
         } catch (HttpException $e) {
-            Log::channel('database')->error('WishlistController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::channel('database')->error('WishlistController|show: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|show: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -128,14 +128,14 @@ class WishlistController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -163,14 +163,14 @@ class WishlistController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('WishlistController|destroy: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('WishlistController|destroy: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,

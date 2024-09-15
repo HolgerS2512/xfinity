@@ -3,18 +3,18 @@
 namespace App\Logging;
 
 use Monolog\Logger;
-use Illuminate\Support\Facades\DB;
-use Monolog\Handler\AbstractProcessingHandler;
 
-class DatabaseLogger extends AbstractProcessingHandler
+class DatabaseLogger
 {
-    protected function write(array $record): void
+    /**
+     * Create a custom Monolog instance.
+     *
+     * @return Logger
+     */
+    public function __invoke(array $config)
     {
-        DB::table('logs')->insert([
-            'level' => $record['level_name'],
-            'message' => $record['message'],
-            'context' => json_encode($record['context']),
-            'created_at' => now(),
+        return new Logger('Database', [
+            new DatabaseHandler(),
         ]);
     }
 }

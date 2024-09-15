@@ -74,14 +74,14 @@ final class ForgetPasswordController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ForgetPasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
@@ -162,14 +162,14 @@ final class ForgetPasswordController extends Controller
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();
-            Log::channel('database')->error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
             ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::channel('database')->error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('ForgetPasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
