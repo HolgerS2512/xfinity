@@ -43,20 +43,27 @@ Route::get('/all/products', [ProductController::class, 'allActive'])
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['throttle:9,1'])->group(function () {
+Route::middleware(['throttle:5,1'])->group(function () {
 
     // Login Route
     Route::post('/login', [AuthController::class, 'login']);
 
+    // Look Up
+    Route::post('/lookup_account', [AuthController::class, 'lookup']);
+
     // Cookie handling
     Route::apiResource('/settings/cookie', CookieController::class);
+
+    // Contact Route
+    Route::post('contact', [ContactController::class, 'create']);
+
+    // Unauthenticated method
+    Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
 });
 
 Route::middleware(['throttle:3,1'])->group(function () {
 
-    // Look Up & Register methods
-    Route::post('/lookup_account', [AuthController::class, 'lookup']);
-
+    // Register methods
     Route::post('/register', [RegisterController::class, 'register']);
 
     // verify token methods
@@ -72,21 +79,18 @@ Route::middleware(['throttle:3,1'])->group(function () {
 
     Route::put('/reset/password/{url}', [ForgetPasswordController::class, 'update'])
         ->name('reset_password');
-
-    // Contact Route
-    Route::post('contact', [ContactController::class, 'create']);
-
-    // Unauthenticated method
-    Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
 });
 
 /*
 |--------------------------------------------------------------------------
-| API Authentificate, Throttle & Verified Routes
+| API Authentificate & Verified Routes --- (Throttle: 5)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:sanctum', 'verified', 'throttle:3,1'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified', 'throttle:5,1'])->group(function () {
+    
+    // Logout
+    Route::get('/logout', [AuthController::class, 'logout']);
 
     // Change Password
     Route::post('/edit/password', [ChangePasswordController::class, 'edit']);
@@ -101,13 +105,11 @@ Route::middleware(['auth:sanctum', 'verified', 'throttle:3,1'])->group(function 
 
 /*
 |--------------------------------------------------------------------------
-| API Authentificate & Verified Routes
+| API Authentificate & Verified Routes --- (Throttle: 10)
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-
-    Route::get('/logout', [AuthController::class, 'logout']);
+Route::middleware(['auth:sanctum', 'verified', 'throttle:10,1'])->group(function () {
 
     Route::apiResource('/account/profile', ProfileController::class);
 
