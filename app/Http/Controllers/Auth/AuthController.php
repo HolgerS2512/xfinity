@@ -13,9 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cookie;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\URL;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class AuthController extends Controller
 {
@@ -64,18 +61,9 @@ final class AuthController extends Controller
                 'route' => 'login',
                 'email' => $request->email,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('AuthController|lookup: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -103,14 +91,16 @@ final class AuthController extends Controller
                 if (Hash::check($request->password, $user->password)) {
                     $request->session()->regenerate();
                     $token = $user->createToken($this->cookieName)->plainTextToken;
-                    // 60 * 24 * 10  - 10 Days
 
                     $userAttributes = $user->only(['firstname']);
+
+                    // 60 * 24 * 10  - 10 Days
+                    $authExpire = $user->hasManyRoles() && !$user->hasRole('ingeneur') ? 0 : (60 * 24 * 10);
 
                     Cookie::queue(Cookie::make(
                         $this->cookieName,
                         $token,
-                        (60 * 24 * 10),
+                        $authExpire,
                         '/',
                         null, // str_replace('www.', '', substr(URL::to('/'), strpos(URL::to('/'), '://') + 3)),
                         false, // Deploy-> true,
@@ -136,18 +126,9 @@ final class AuthController extends Controller
                 'status' => false,
                 'message' => [true, 'account_doesnt_exists'],
             ], 400);
-        } catch (HttpException $e) {
-            Log::error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('AuthController|login: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -202,20 +183,10 @@ final class AuthController extends Controller
             ], 204);
             // http status 204 -> No Content -> no response!
 
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('AuthController|logout: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

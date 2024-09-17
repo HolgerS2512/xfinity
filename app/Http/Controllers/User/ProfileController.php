@@ -6,14 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\UpdateRequest;
 use App\Models\User;
 use App\Services\Cryption\CryptionService;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ProfileController extends Controller
 {
@@ -52,18 +48,10 @@ final class ProfileController extends Controller
                 'status' => true,
                 'data' => $encrypted,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('ProfileController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            DB::rollBack();
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -137,20 +125,10 @@ final class ProfileController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ProfileController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 

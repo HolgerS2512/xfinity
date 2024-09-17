@@ -13,9 +13,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class CookieController extends Controller
 {
@@ -67,7 +65,7 @@ class CookieController extends Controller
             if ($saved[0]) {
 
                 // saved consent cookie in db (pivot table)
-                foreach ($request->all() as $cookieCategory => $consented) {
+                foreach ($request->validated() as $cookieCategory => $consented) {
                     if ($cookieCategory === 'consented') continue;
                     $cookiesM = CookieModel::where('category', $cookieCategory)->get();
 
@@ -96,20 +94,10 @@ class CookieController extends Controller
                     'status' => false,
                 ], 500);
             }
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CookieController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -160,20 +148,10 @@ class CookieController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CookieController|destroyOlderThen10Years: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

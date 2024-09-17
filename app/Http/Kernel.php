@@ -54,6 +54,7 @@ class Kernel extends HttpKernel
             // \App\Http\Middleware\CorsMiddleware::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\LogExceptions::class,
             // \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
     ];

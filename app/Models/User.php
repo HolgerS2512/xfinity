@@ -15,14 +15,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-// use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\Builder;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 use OwenIt\Auditing\Auditable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable implements MustVerifyEmail, AuditableContract
 {
-    use HasApiTokens, HasFactory, Notifiable, Auditable;
+    use HasApiTokens, HasFactory, Notifiable, Auditable, SoftDeletes;
 
     /**
      * Nullabled updated_at column by new instance.
@@ -69,6 +69,17 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
         'newsletter_subscriber' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     * 
+     * This is required for the SoftDeletes trait, as it relies on 
+     * the 'deleted_at' timestamp to determine whether a record 
+     * has been soft deleted or not.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
 
     /**
      * Eloquent Event Listener
@@ -181,6 +192,17 @@ class User extends Authenticatable implements MustVerifyEmail, AuditableContract
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
+    }
+
+    /**
+     * Check if the user has a role.
+     *
+     * @param string $role
+     * @return bool
+     */
+    public function hasManyRoles()
+    {
+        return $this->roles()->exists();
     }
 
     /**

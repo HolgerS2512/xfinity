@@ -19,9 +19,10 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->integer('ranking')->nullable();
             $table->string('url');
             $table->string('ext', 4);
-            $table->tinyInteger('is_main')->default(0);
+            $table->tinyInteger('is_primary')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
         });

@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Traits\Api\GetApiCodesTrait;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ChangePasswordController extends Controller
 {
@@ -88,20 +86,10 @@ final class ChangePasswordController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ChangePasswordController|edit: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -186,20 +174,10 @@ final class ChangePasswordController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ChangePasswordController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

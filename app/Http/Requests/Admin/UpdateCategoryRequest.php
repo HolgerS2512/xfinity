@@ -14,13 +14,17 @@ class UpdateCategoryRequest extends JsonResponseRequest
     public function rules()
     {
         return [
-            'new_ranking' => 'integer|min:1',
-            'name' => 'string|max:60|min:3',
-            'active' => 'boolean',
-            'popular' => 'boolean',
+            'new_ranking' => 'integer',
             'level' => 'integer|min:0|max:255',
             'parent_id' => 'integer',
-            'description' => 'string|max:1000',
+            'active' => 'boolean',
+            'popular' => 'boolean',
+            'translations' => 'array',
+
+            // inner translations array
+            'translations.*.locale' => 'required|string|in:en,de',
+            'translations.*.name' => 'required|string|max:60|min:3',
+            'translations.*.description' => 'string|max:1000',
         ];
     }
 }

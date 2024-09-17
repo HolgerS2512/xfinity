@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class OrderController extends Controller
 {
@@ -39,20 +37,10 @@ class OrderController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('OrderController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('OrderController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -86,20 +74,10 @@ class OrderController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('OrderController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('OrderController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -121,20 +99,10 @@ class OrderController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('OrderController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('OrderController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

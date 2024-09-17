@@ -10,8 +10,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentMethodsController extends Controller
 {
@@ -43,20 +41,10 @@ class PaymentMethodsController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('PaymentMethodsController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -90,20 +78,10 @@ class PaymentMethodsController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('PaymentMethodsController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -135,20 +113,10 @@ class PaymentMethodsController extends Controller
                     'status' => true,
                 ], 200);
             }
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('PaymentMethodsController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 

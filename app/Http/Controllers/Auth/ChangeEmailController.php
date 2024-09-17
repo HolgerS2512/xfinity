@@ -12,8 +12,6 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ChangeEmailController extends Controller
 {
@@ -76,20 +74,10 @@ final class ChangeEmailController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ChangeEmailController|edit: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -157,20 +145,10 @@ final class ChangeEmailController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ChangeEmailController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

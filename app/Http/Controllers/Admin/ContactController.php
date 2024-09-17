@@ -15,8 +15,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class ContactController extends Controller
 {
@@ -91,7 +89,7 @@ final class ContactController extends Controller
             $saved = Contact::insert($values);
 
             // Preparation mail values.
-            // $mailV = [...$request->all()];
+            // $mailV = [...$request->validated()];
             // if (!$request->phone) $mailV['phone'] = ' - ';
             // if (!$request->salutation) $mailV['salutation'] = ' - ';
 
@@ -112,20 +110,10 @@ final class ContactController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('ContactController|create: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 

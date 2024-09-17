@@ -6,15 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Address\StoreRequest;
 use App\Http\Requests\Address\UpdateRequest;
 use App\Http\Resources\SortDatesRessource;
-use Illuminate\Http\Request;
 use App\Models\Address;
 use App\Services\Cryption\CryptionService;
-use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class AddressController extends Controller
 {
@@ -55,18 +51,9 @@ final class AddressController extends Controller
                 'status' => true,
                 'data' => $encrypted,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('AddressController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('AddressController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -151,20 +138,10 @@ final class AddressController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('AddressController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('AddressController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -252,20 +229,10 @@ final class AddressController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('AddressController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('AddressController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -298,20 +265,10 @@ final class AddressController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('AddressController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('AddressController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

@@ -11,9 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
 use App\Models\Auth\VerifyEmailToken;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class PinController extends Controller
 {
@@ -68,20 +66,10 @@ final class PinController extends Controller
                 'status' => false,
                 'message' => [true, 'email_doesnt_exists'],
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('PinController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -139,20 +127,10 @@ final class PinController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('PinController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

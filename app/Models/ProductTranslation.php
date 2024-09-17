@@ -2,20 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Repos\ProductRepository;
+use App\Models\Repos\TranslationRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductImage extends ProductRepository
+class ProductTranslation extends TranslationRepository
 {
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'is_primary' => 'boolean',
-    ];
-
     /**
      * Get the product associated with the image.
      *

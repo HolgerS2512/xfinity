@@ -2,29 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Admin\Repos\CategoryRepositoryController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
 use App\Models\User;
-use App\Models\VersionManager;
 use App\Traits\Middleware\PermissionServiceTrait;
-use App\Traits\Translation\TranslationMethodsTrait;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class CategoryController extends Controller
 {
-    use TranslationMethodsTrait, PermissionServiceTrait;
+    use PermissionServiceTrait;
 
     /**
      * The permission name for permissionService.
@@ -77,30 +72,28 @@ final class CategoryController extends Controller
     public function allActive()
     {
         try {
+            // For dump
+            Cache::forget("categories");
+
             // Custom function returned all active categories | cache time 24 h
             $data = Cache::remember("categories", 60 * 24, function () {
                 return Category::loadActiveCategoriesByLvl();
             });
 
+            // foreach ($data as $m) {
+            //     dump($m);
+            // }
+            // dd($data);
             // Simulate timeout request
             // sleep(11);
-            
+
             return response()->json([
                 'status' => true,
                 'data' => $data,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('CategoryController|allActive: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -118,18 +111,9 @@ final class CategoryController extends Controller
                 'status' => true,
                 'data' => $data,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('CategoryController|index: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -145,18 +129,44 @@ final class CategoryController extends Controller
 
         try {
             $ranking = [];
-            $categories = Category::where('level', $request->level ?? 1)->get();
+            $level = [];
+            $levelCheck = $request->level ?? 1;
 
+            // Check if have level but no parent id
+            if ($request->has('level') && !$request->has('parent_id')) {
+                DB::rollBack();
+
+                return response()->json([
+                    'status' => false,
+                ], 400);
+            }
+
+            // Add level if have parent category
+            if ($request->has('parent_id')) {
+                $parent = Category::findOrFail($request->input('parent_id'))->only('level');
+                $parentLvl = $parent['level'] + 1;
+
+                $level['level'] = $parentLvl;
+
+                // Check if level exist 
+                if (!$request->has('level')) {
+                    $levelCheck = $parent['level'] + 1;
+                }
+            }
+
+
+            $categories = Category::where('level', $levelCheck)->orderBy('ranking')->get();
+
+            $resRank = 1;
             // Add Ranking only request ranking does not exist
-            if (!$request->ranking) {
-                $resRank = 1;
+            if (!$request->has('ranking')) {
 
                 // if have datasets
-                if ($categories?->count() > 1) {
+                if ($categories?->count() >= 1) {
 
                     $testRank = 1;
 
-                    // looks for gaps
+                    // looks for gaps and korrection
                     for ($i = 0; $i < $categories->last()->ranking; $i++) {
 
                         if (isset($categories[$i]) && $categories[$i]?->ranking !== $testRank) {
@@ -171,17 +181,17 @@ final class CategoryController extends Controller
                         $resRank = $categories?->count() + 1;
                     }
                 }
-
-                $ranking = [
-                    'ranking' => $resRank,
-                ];
             }
 
             // Request ranking exist in DB, gives present values new ranking
-            if ($request->ranking) {
+            if ($request->has('ranking') && $categories->isNotEmpty()) {
+
                 $exist = false;
                 $newRank = (int) $request->ranking;
+                // Check if new ranking bigger then all catgeories
+                $resRank = $newRank >= $categories->count() ? $categories->count() + 1 : $newRank;
 
+                // looks for gaps and korrection
                 foreach ($categories as $cat) {
                     if ($cat?->ranking === (int) $request->ranking) {
                         $exist = true;
@@ -193,20 +203,28 @@ final class CategoryController extends Controller
                 }
             }
 
-            // Save Category
-            $category = Category::create(array_merge($ranking, $request->all()));
+            $ranking = [
+                'ranking' => $resRank,
+            ];
 
-            // Is save successfully
-            $status = isset($category->id) && !empty($category->id);
+            // Save category with validated data and dynamic ranking
+            $category = Category::create(array_merge($request->validated(), $ranking, $level));
 
-            // Cache invalid
-            if ($status) {
-                Cache::forget("categories");
-                DB::commit();
+            if (isset($category->id) && !empty($category->id)) {
 
-                return response()->json([
-                    'status' => true,
-                ], 200);
+                // Get translations and save it
+                $translations = $request->input('translations', []);
+                $status = $category->createTranslation($translations);
+
+                // Cache invalid & db save
+                if ($status) {
+                    Cache::forget("categories");
+                    DB::commit();
+
+                    return response()->json([
+                        'status' => true,
+                    ], 201);
+                }
             }
 
             DB::rollBack();
@@ -214,20 +232,10 @@ final class CategoryController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CategoryController|store: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -246,18 +254,9 @@ final class CategoryController extends Controller
                 'status' => true,
                 'data' => $data,
             ], 200);
-        } catch (HttpException $e) {
-            Log::error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
-            Log::error('CategoryController|show: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -270,87 +269,76 @@ final class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, $id)
     {
-        $statusName = '';
         DB::beginTransaction();
 
         try {
-            // Find this instance 
+            // Find the category instance or throw a 404 error
             $category = Category::findOrFail($id);
 
-            // Update Translation
-            if ($request->name) {
-                $categoryDB = DB::table('categories')->where('id', $id)->first();
-                $statusName = self::updateTranslation($categoryDB->name, $request->name);
-            }
+            // Update the category's name if provided
+            if ($request->filled('translations')) {
+                // Update the translation
+                // Assuming you have a method to handle translations
+                $translations = $request->input('translations', []);
+                $status = $category->updateTranslation($translations);
 
-            // Update ranking other categories
-            if ($request->new_ranking) {
+                if (!$status) {
+                    Log::warning('Translation update failed', ['request_all' => $request->all()]);
 
-                $allCategories = Category::whereNot('id', $id)->get();
-                $i = 1;
-                foreach ($allCategories as $cate) {
-                    if ($i === (int) $request->new_ranking) ++$i;
-                    $cate->update([
-                        'ranking' => $i,
-                        'updated_at' => Carbon::now(),
-                    ]);
-                    ++$i;
+                    return response()->json([
+                        'status' => false,
+                    ], 500);
                 }
             }
 
-            // Preparation request values
-            $values = $request->all();
+            // Update rankings for other categories if new ranking is provided
+            if ($request->filled('new_ranking')) {
+                $newRanking = (int) $request->input('new_ranking');
+                $i = 1;
 
-            if ($request->new_ranking) {
-                $values['ranking'] = $values['new_ranking'];
+                Category::where('id', '!=', $id)
+                    ->get()
+                    ->each(function ($cate) use (&$newRanking, &$i) {
+                        if ($i === $newRanking) ++$i;
+                        $cate->update([
+                            'ranking' => $i,
+                        ]);
+                        ++$i;
+                    });
             }
 
-            // Deletes unnecessary vars
-            unset($values['new_ranking'], $values['name']);
+            // Prepare and update category values
+            $values = $request->validated();
 
-            // Update Category
+            if ($request->filled('new_ranking')) {
+                $values['ranking'] = (int) $request->input('new_ranking');
+            }
+
+            // Remove unnecessary fields from the update array
+            unset($values['new_ranking'], $values['name'], $values['description']);
+
+            // Update the category (dont delete Carbon! Should only translation become not an update)
             $status = $category->update(array_merge(['updated_at' => Carbon::now()], $values));
 
-            // Cache invalid
             if ($status) {
-
+                // Clear the cache
                 Cache::forget("categories");
                 DB::commit();
-            } else {
-                DB::rollBack();
-            }
-
-            if ($request->name) {
-
-                return response()->json([
-                    'status' => $status && $statusName,
-                ], ($status && $statusName ? 200 : 500));
-            }
-
-            if ($status) {
 
                 return response()->json([
                     'status' => true,
                 ], 200);
             }
 
-            return response()->json([
-                'status' => false,
-            ], 500);
-        } catch (HttpException $e) {
             DB::rollBack();
-            Log::error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
 
             return response()->json([
                 'status' => false,
-            ], $e->getStatusCode() ?? 500);
+            ], 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CategoryController|update: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -382,20 +370,10 @@ final class CategoryController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('CategoryController|destroy: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

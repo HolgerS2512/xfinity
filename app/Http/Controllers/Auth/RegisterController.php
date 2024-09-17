@@ -16,9 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Traits\Api\GetApiCodesTrait;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 final class RegisterController extends Controller
 {
@@ -43,7 +41,7 @@ final class RegisterController extends Controller
             }
 
             // Hashed request password.
-            $input = $request->all();
+            $input = $request->validated();
             $input['password'] = Hash::make($input['password']);
 
             // Create new User instance and save it.
@@ -83,20 +81,10 @@ final class RegisterController extends Controller
             return response()->json([
                 'status' => false,
             ], 500);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('RegisterController|register: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 
@@ -172,20 +160,10 @@ final class RegisterController extends Controller
             return response()->json([
                 'status' => true,
             ], 200);
-        } catch (HttpException $e) {
-            DB::rollBack();
-            Log::error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], $e->getStatusCode() ?? 500);
         } catch (Exception $e) {
             DB::rollBack();
-            Log::error('RegisterController|verifyEmail: ' . $e->getMessage(), ['exception' => $e]);
-
-            return response()->json([
-                'status' => false,
-            ], 500);
+            // Exception handling is managed in the custom handler
+            throw $e; // Rethrow exception to be caught by the handler
         }
     }
 }

@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\Repos\ModelRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Translation;
 use App\Scopes\WithOrderByRankingScope;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -25,10 +24,8 @@ class Category extends ModelRepository
      */
     protected $fillable = [
         'ranking',
-        'name',
         'level',
         'parent_id',
-        'description',
         'active',
         'popular',
         'updated_at',
@@ -46,6 +43,25 @@ class Category extends ModelRepository
     protected $dates = ['deleted_at'];
 
     /**
+     * The attributes that should be appended to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'name'
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'active' => 'boolean',
+        'popular' => 'boolean',
+    ];
+
+    /**
      * Eloquent Event Listener
      *
      */
@@ -53,25 +69,19 @@ class Category extends ModelRepository
     {
         parent::boot();
 
-        // Listen to the "creating" event
-        static::creating(function ($thisInstance) {
-            $hash = (string) Str::uuid();
-            $saved = static::saveTranslation($thisInstance->attributes['name'], $hash);
-            if ($saved) {
-                $thisInstance->name =  $hash;
-            }
-
-            if (isset($thisInstance->attributes['description']) && !empty($thisInstance->attributes['description'])) {
-                $hash = (string) Str::uuid();
-                $saved = static::saveTextTranslation($thisInstance->attributes['description'], $hash);
-                if ($saved) {
-                    $thisInstance->description =  $hash;
-                }
-            }
-        });
-
         // This model always sorts by ranking
         static::addGlobalScope(new WithOrderByRankingScope);
+    }
+
+    /**
+     * Eloquent Event Listener is booted
+     *
+     */
+    protected static function booted()
+    {
+        // static::created(function ($category) {
+        //     $category->createTranslation($category->attributes['translations']);
+        // });
     }
 
     /**
@@ -85,25 +95,25 @@ class Category extends ModelRepository
         return $query->where('active', true);
     }
 
-    /**
-     * Get the category's name.
-     *
-     * @return string
-     */
-    public function getNameAttribute($value)
+    // Accessor, um den Namen der Übersetzung als reguläres Attribut anzubieten
+    public function getNameAttribute()
     {
-        return __("shop.$value");
+        // Finde die Übersetzung basierend auf der aktuellen Locale
+        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+
+        // Gib den Namen der Übersetzung zurück, oder einen Fallback (z.B. "name not found")
+        return $translation ? $translation->name : 'Translation not available';
     }
 
     /**
-     * The attributes that should be cast.
+     * Get all translations for the category.
      *
-     * @var array<string, string>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $casts = [
-        'active' => 'boolean',
-        'popular' => 'boolean',
-    ];
+    public function translations()
+    {
+        return $this->hasMany(CategoryTranslation::class);
+    }
 
     /**
      * Get the subcategories for the category.
@@ -143,13 +153,14 @@ class Category extends ModelRepository
     public static function loadActiveCategoriesByLvl($level = 1)
     {
         $makeHiddenAttr = [
-            // 'id',
             'parent_id',
             'ranking',
-            'description',
+            'active',
             'popular',
             'created_at',
             'updated_at',
+            'deleted_at',
+            'translations',
         ];
 
         // Retrieve all active categories at the specified level
@@ -223,44 +234,68 @@ class Category extends ModelRepository
     }
 
     /**
-     * Save id as hash and a string in german column `Translation` model.
-     * 
-     * @param string $str
-     * @param string $hash
-     * @return bool
+     * Create a translation for the category.
+     *
+     * @param array $data The data for the translation, including 'name' and 'description'.
+     * @return bool Returns true if the update was successful, false otherwise.
      */
-    public static function saveTranslation($str, $hash): bool
+    public function createTranslation(array $data): bool
     {
-        try {
-            $result = Translation::insert([
-                'hash' => $hash,
-                'de' => $str,
-            ]);
+        $check = [];
 
-            return $result;
-        } catch (\Throwable $th) {
-            throw $th;
+        foreach ($data as $translation) {
+            // Use $this->translations() to create translations for the current category instance
+            $check[] = $this->translations()->create([
+                'locale' => $translation['locale'],
+                'name' => $translation['name'],
+                'description' => $translation['description'] ?? null,
+            ]);
         }
+
+        // Evaluate whether all translations were created successfully
+        return !in_array(false, $check, true);
     }
 
     /**
-     * Save id as hash and a string in german column `TextTranslation` model.
-     * 
-     * @param string $str
-     * @param string $hash
+     * Update or create a translation for a specific field.
+     *
+     * @param string $locale
+     * @param array $data
      * @return bool
      */
-    public static function saveTextTranslation($str, $hash): bool
+    public function updateTranslation(array $data): bool
     {
-        try {
-            $result = TextTranslation::insert([
-                'hash' => $hash,
-                'de' => $str,
-            ]);
+        $check = [];
 
-            return $result;
-        } catch (\Throwable $th) {
-            throw $th;
+        foreach ($data as $translation) {
+
+            // Check if there is an existing translation for this locale
+            $currTlModel = $this->translations()->where('locale', $translation['locale'])->first();
+
+            if ($currTlModel) {
+                // Check if name exists
+                if ($translation['name']) {
+                    $currTlModel->name = $translation['name'];
+                }
+
+                // Check if description exists
+                if ($translation['description']) {
+                    $currTlModel->description = $translation['description'];
+                }
+
+                // Update the field with the new value
+                $check[] = $currTlModel->save();
+            } else {
+                // Use $this->translations() to create translations for the current category instance
+                $check[] = $this->translations()->create([
+                    'locale' => $translation['locale'],
+                    'name' => $translation['name'],
+                    'description' => $translation['description'] ?? null,
+                ]);
+            }
         }
+
+        // Evaluate whether all translations were updated successfully
+        return !in_array(false, $check, true);
     }
 }

@@ -12,12 +12,7 @@ trait BooleanManager
    */
   public function evaluateBoolByAnd(array $booleans): bool
   {
-    foreach ($booleans as $bool) {
-      if (!$bool) {
-        return false;
-      }
-    }
-    return true;
+    return !in_array(false, $booleans, true);
   }
 
   /**

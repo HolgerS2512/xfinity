@@ -14,11 +14,15 @@ class StoreCategoryRequest extends JsonResponseRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:60|min:3',
             'level' => 'integer|min:0|max:255',
             'ranking' => 'integer',
             'parent_id' => 'integer',
-            'description' => 'string|max:1000',
+            'translations' => 'required|array',
+
+            // inner translations array
+            'translations.*.locale' => 'required|string|in:en,de',
+            'translations.*.name' => 'required|string|max:60|min:3',
+            'translations.*.description' => 'string|max:1000',
         ];
     }
 }
