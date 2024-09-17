@@ -72,18 +72,11 @@ final class CategoryController extends Controller
     public function allActive()
     {
         try {
-            // For dump
-            Cache::forget("categories");
-
             // Custom function returned all active categories | cache time 24 h
             $data = Cache::remember("categories", 60 * 24, function () {
                 return Category::loadActiveCategoriesByLvl();
             });
 
-            // foreach ($data as $m) {
-            //     dump($m);
-            // }
-            // dd($data);
             // Simulate timeout request
             // sleep(11);
 

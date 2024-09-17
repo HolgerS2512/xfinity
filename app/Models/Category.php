@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
-class Category extends ModelRepository
+final class Category extends ModelRepository
 {
     use SoftDeletes;
 
@@ -122,7 +122,17 @@ class Category extends ModelRepository
      */
     public function subcategories()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(Category::class, 'parent_id')->where('active', true);
+    }
+
+    /**
+     * Get the active subcategories for the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allValues()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with(['translations']);
     }
 
     /**
@@ -152,7 +162,7 @@ class Category extends ModelRepository
      */
     public static function loadActiveCategoriesByLvl($level = 1)
     {
-        $makeHiddenAttr = [
+        $shouldHidden = [
             'parent_id',
             'ranking',
             'active',
@@ -164,32 +174,12 @@ class Category extends ModelRepository
         ];
 
         // Retrieve all active categories at the specified level
-        $categories = static::where('level', $level)
-            ->active()
-            ->with(['subcategories' => function ($query) use ($level) {
-                // Load active subcategories recursively
-                $query->active()
-                    ->with(['subcategories' => function ($query) use ($level) {
-                        // Load deeper levels of active subcategories
-                        $query->active();
-                    }]);
-            }])
-            ->get();
+        $categories = static::where('level', $level)->get();
 
-        // Recursively load subcategories for each category
-        foreach ($categories as $category) {
-            $category->subcategories = static::loadSubcategoriesRecursive($category->subcategories);
+        // Filter the collection based on the active status
+        $filtered = $categories->filter(fn ($model) => $model->active);
 
-            // Exclude 'id' and 'created_at' attributes for the category and its subcategories
-            $category->makeHidden($makeHiddenAttr);
-
-            // Also hide attributes for all nested subcategories
-            foreach ($category->subcategories as $subcategory) {
-                $subcategory->makeHidden($makeHiddenAttr);
-            }
-        }
-
-        return $categories;
+        return self::makeRecursiveHidden($shouldHidden, $filtered, 'subcategories');
     }
 
     /**
@@ -199,38 +189,12 @@ class Category extends ModelRepository
      */
     public static function loadAllCategoriesByLvl($level = 1)
     {
-        // Retrieve all active categories at the specified level
-        $categories = static::where('level', $level)
-            ->with(['subcategories' => function ($query) use ($level) {
-                // Load active subcategories recursively
-                $query->with('subcategories');
-            }])
-            ->get();
+        $shouldHidden = [];
 
-        // Recursively load subcategories for each category
-        foreach ($categories as $category) {
-            $category->subcategories = static::loadSubcategoriesRecursive($category->subcategories);
-        }
+        // Retrieve all categories at the specified level
+        $categories = static::where('level', $level)->get();
 
-        return $categories;
-    }
-
-    /**
-     * Recursively load all active subcategories for a given collection of categories.
-     *
-     * @param \Illuminate\Database\Eloquent\Collection $categories
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    private static function loadSubcategoriesRecursive($categories)
-    {
-        // Recursively load all active subcategories for each category
-        return $categories->map(function ($category) {
-            $category->subcategories = $category->subcategories->map(function ($subcategory) {
-                $subcategory->subcategories = static::loadSubcategoriesRecursive($subcategory->subcategories);
-                return $subcategory;
-            });
-            return $category;
-        });
+        return self::makeRecursiveHidden($shouldHidden, $categories, 'allValues');
     }
 
     /**
@@ -297,5 +261,34 @@ class Category extends ModelRepository
 
         // Evaluate whether all translations were updated successfully
         return !in_array(false, $check, true);
+    }
+
+    /**
+     * Recursively load all childs for a given collection and make gived attr hidden.
+     *
+     * @param array $hiddenAttr | contains attributes to be hidden
+     * @param \Illuminate\Database\Eloquent\Collection $collection
+     * @param string $methodName | child function called
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected static function makeRecursiveHidden($hiddenAttr, $collection, $methodName)
+    {
+        foreach ($collection as $model) {
+            // Make the specified attributes hidden
+            $model->makeHidden($hiddenAttr);
+
+            // Check if the method exists and get the children
+            if (method_exists($model, $methodName)) {
+                $children = $model->$methodName;
+
+                // Ensure children are a collection and not empty
+                if ($children instanceof \Illuminate\Database\Eloquent\Collection && !$children->isEmpty()) {
+                    // Recursively apply the hidden attributes to children
+                    self::makeRecursiveHidden($hiddenAttr, $children, $methodName);
+                }
+            }
+        }
+
+        return $collection;
     }
 }
