@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreCategoryRequest;
 use App\Http\Requests\Admin\UpdateCategoryRequest;
 use App\Models\Category;
+use App\Models\CategoryTranslation;
 use App\Models\User;
 use App\Traits\Middleware\PermissionServiceTrait;
 use Carbon\Carbon;
@@ -72,6 +73,7 @@ final class CategoryController extends Controller
     public function allActive()
     {
         try {
+            Cache::forget("categories");
             // Custom function returned all active categories | cache time 24 h
             $data = Cache::remember("categories", 60 * 24, function () {
                 return Category::loadActiveCategoriesByLvl();
@@ -241,7 +243,7 @@ final class CategoryController extends Controller
     public function show($id)
     {
         try {
-            $data = Category::findOrFail($id);
+            $data = Category::loadAllCategoryChilds($id);
 
             return response()->json([
                 'status' => true,
@@ -350,8 +352,10 @@ final class CategoryController extends Controller
 
             $status = $category->delete();
 
+            $statusTranslation = CategoryTranslation::where('category_id', $id)->delete();
+
             // Cache invalid & db saved
-            if ($status) {
+            if ($status && $statusTranslation) {
                 Cache::forget("categories");
                 DB::commit();
 
@@ -359,6 +363,8 @@ final class CategoryController extends Controller
                     'status' => true,
                 ], 200);
             }
+
+            DB::rollBack();
 
             return response()->json([
                 'status' => false,

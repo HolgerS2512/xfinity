@@ -48,7 +48,8 @@ final class Category extends ModelRepository
      * @var array
      */
     protected $appends = [
-        'name'
+        'name',
+        'description',
     ];
 
     /**
@@ -95,14 +96,28 @@ final class Category extends ModelRepository
         return $query->where('active', true);
     }
 
-    // Accessor, um den Namen der Übersetzung als reguläres Attribut anzubieten
+    /**
+     * Get the category name.
+     *
+     * @return string
+     */
     public function getNameAttribute()
     {
-        // Finde die Übersetzung basierend auf der aktuellen Locale
         $translation = $this->translations->firstWhere('locale', app()->getLocale());
 
-        // Gib den Namen der Übersetzung zurück, oder einen Fallback (z.B. "name not found")
         return $translation ? $translation->name : 'Translation not available';
+    }
+
+    /**
+     * Get the category description.
+     *
+     * @return string
+     */
+    public function getDescriptionAttribute()
+    {
+        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+
+        return $translation ? $translation->description : 'Translation not available';
     }
 
     /**
@@ -116,13 +131,23 @@ final class Category extends ModelRepository
     }
 
     /**
-     * Get the subcategories for the category.
+     * Get the active subcategories for the category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function subcategories()
     {
-        return $this->hasMany(Category::class, 'parent_id')->where('active', true);
+        return $this->hasMany(Category::class, 'parent_id')->active();
+    }
+
+    /**
+     * Get the active subcategories for the category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function allSubcategories()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
 
     /**
@@ -180,6 +205,19 @@ final class Category extends ModelRepository
         $filtered = $categories->filter(fn ($model) => $model->active);
 
         return self::makeRecursiveHidden($shouldHidden, $filtered, 'subcategories');
+    }
+
+    /**
+     * Load all category values and children including their subcategories.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function loadAllCategoryChilds($id)
+    {
+        // Retrieve all active categories at the specified level
+        $category = static::findOrFail($id);
+
+        return self::getChildsRecursive($category, 'allSubcategories');
     }
 
     /**
@@ -290,5 +328,30 @@ final class Category extends ModelRepository
         }
 
         return $collection;
+    }
+
+    /**
+     * Recursively load all childs for a given collection and make gived attr hidden.
+     *
+     * @param \App\Models\Model $model
+     * @param string $methodName | child function called
+     * @return \App\Models\Model
+     */
+    protected static function getChildsRecursive($model, $methodName)
+    {
+        if (method_exists($model, $methodName)) {
+            $children = $model->$methodName;
+
+            // Ensure children are a collection and not empty
+            if ($children instanceof \Illuminate\Database\Eloquent\Collection && !$children->isEmpty()) {
+                // Recursively apply the hidden attributes to children
+
+                foreach ($children as $child) {
+                    self::getChildsRecursive($child, $methodName);
+                }
+            }
+        }
+
+        return $model;
     }
 }
