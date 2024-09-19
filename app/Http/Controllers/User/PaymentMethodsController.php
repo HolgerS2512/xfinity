@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class PaymentMethodsController extends Controller
+final class PaymentMethodsController extends Controller
 {
     /**
      * Display a listing of the resource.

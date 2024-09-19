@@ -30,13 +30,6 @@ final class CategoryController extends Controller
     private string $permissionName = 'category';
 
     /**
-     * The name of the custom authentication cookie used in the application.
-     *
-     * @var string
-     */
-    private string $cookieName = 'L_CD';
-
-    /**
      * 
      * Applies middleware to check user permissions before allowing access to
      * specific routes. Users without the appropriate permissions will receive
@@ -48,9 +41,9 @@ final class CategoryController extends Controller
 
         $this->middleware(function ($request, $next) {
             // Exclude routes
-            if ($request->routeIs('all_active_categories')) {
-                return $next($request);
-            }
+            // if ($request->routeIs('all_active_categories')) {
+            //     return $next($request);
+            // }
 
             // Permission
             if ($this->permisssionService($request, $next, $this->permissionName)) {
@@ -62,34 +55,6 @@ final class CategoryController extends Controller
 
             return $next($request);
         });
-    }
-
-    /**
-     * Display a listing of the active resource.
-     *
-     * @param  string  $noCookie
-     * @return \Illuminate\Http\Response
-     */
-    public function allActive()
-    {
-        try {
-            Cache::forget("categories");
-            // Custom function returned all active categories | cache time 24 h
-            $data = Cache::remember("categories", 60 * 24, function () {
-                return Category::loadActiveCategoriesByLvl();
-            });
-
-            // Simulate timeout request
-            // sleep(11);
-
-            return response()->json([
-                'status' => true,
-                'data' => $data,
-            ], 200);
-        } catch (Exception $e) {
-            // Exception handling is managed in the custom handler
-            throw $e; // Rethrow exception to be caught by the handler
-        }
     }
 
     /**
@@ -243,7 +208,7 @@ final class CategoryController extends Controller
     public function show($id)
     {
         try {
-            $data = Category::loadAllCategoryChilds($id);
+            $data = Category::loadAllChildsById($id, []);
 
             return response()->json([
                 'status' => true,
@@ -313,11 +278,12 @@ final class CategoryController extends Controller
             unset($values['new_ranking'], $values['name'], $values['description']);
 
             // Update the category (dont delete Carbon! Should only translation become not an update)
-            $status = $category->update(array_merge(['updated_at' => Carbon::now()], $values));
+            $status = $category->update(array_merge($values, ['updated_at' => Carbon::now()]));
 
             if ($status) {
                 // Clear the cache
                 Cache::forget("categories");
+                Cache::forget("category_$id");
                 DB::commit();
 
                 return response()->json([
@@ -357,6 +323,7 @@ final class CategoryController extends Controller
             // Cache invalid & db saved
             if ($status && $statusTranslation) {
                 Cache::forget("categories");
+                Cache::forget("category_$id");
                 DB::commit();
 
                 return response()->json([

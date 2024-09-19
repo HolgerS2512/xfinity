@@ -9,7 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class WishlistController extends Controller
+final class WishlistController extends Controller
 {
     /**
      * Display a listing of the resource.

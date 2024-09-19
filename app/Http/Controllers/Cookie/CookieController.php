@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-class CookieController extends Controller
+final class CookieController extends Controller
 {
     use BooleanManager;
 

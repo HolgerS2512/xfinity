@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Public\CategoryController as PublicCategoryController;
+use App\Http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
@@ -20,16 +22,15 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API App Routes
+| API Public App Routes
 |--------------------------------------------------------------------------
 */
 
-Route::get('/all/categories', [CategoryController::class, 'allActive'])
-    ->name('all_active_categories');
+Route::middleware(['throttle:60,1'])->group(function () {
 
-Route::get('/all/products', [ProductController::class, 'allActive'])
-    ->name('all_active_products');
-
+    Route::apiResource('/categories', PublicCategoryController::class)
+        ->only(['index', 'show']);
+});
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
 
@@ -52,10 +53,10 @@ Route::middleware(['throttle:5,1'])->group(function () {
     Route::post('/lookup_account', [AuthController::class, 'lookup']);
 
     // Cookie handling
-    Route::apiResource('/settings/cookie', CookieController::class);
+    Route::post('/settings/cookie', [CookieController::class, 'store']);
 
     // Contact Route
-    Route::post('contact', [ContactController::class, 'create']);
+    Route::post('/contact', [PublicContactController::class, 'create']);
 
     // Unauthenticated method
     Route::get('/*', [AuthController::class, 'unauthenticated'])->name('unauthenticated');
@@ -88,7 +89,7 @@ Route::middleware(['throttle:3,1'])->group(function () {
 */
 
 Route::middleware(['auth:sanctum', 'verified', 'throttle:5,1'])->group(function () {
-    
+
     // Logout
     Route::get('/logout', [AuthController::class, 'logout']);
 
@@ -130,7 +131,11 @@ Route::middleware(['auth:sanctum', 'verified', 'throttle:10,1'])->group(function
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['auth:sanctum', 'verified'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'verified', 'throttle:60,1'])->group(function () {
+
+    Route::apiResource('cookies', CookieController::class);
+
+    Route::apiResource('contact', ContactController::class);
 
     Route::apiResource('category', CategoryController::class);
 

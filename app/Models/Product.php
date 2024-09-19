@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * The `Produkt` model represents a product in the application.
  * It automatically includes the associated price through a global scope.
  */
-class Product extends ProductRepository
+final class Product extends ProductRepository
 {
     /**
      * The attributes that should be appended to the model's array form.
@@ -30,13 +30,37 @@ class Product extends ProductRepository
      *
      * @return void
      */
-    protected static function booted()
+    protected static function boot()
     {
         parent::boot();
 
         // Add the global scope to always load the `price` relationship
         static::addGlobalScope(new WithPriceScope);
         static::addGlobalScope(new WithImageScope);
+    }
+
+    /**
+     * Get the category name.
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+
+        return $translation ? $translation->name : 'Translation not available';
+    }
+
+    /**
+     * Get the category description.
+     *
+     * @return string
+     */
+    public function getDescriptionAttribute()
+    {
+        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+
+        return $translation ? $translation->description : 'Translation not available';
     }
 
     /**
@@ -100,6 +124,16 @@ class Product extends ProductRepository
     public function getReviews()
     {
         return $this->reviews; // Retrieve all reviews associated with the product
+    }
+
+    /**
+     * Get all translations for the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function categories()
+    {
+        return $this->hasMany(Category::class);
     }
 
     /**

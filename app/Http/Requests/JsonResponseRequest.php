@@ -40,7 +40,7 @@ class JsonResponseRequest extends FormRequest
     {
         $errors = $validator->errors()->all();
 
-        Log::error('Validation failed', [
+        Log::warning('Validation failed', [
             'errors' => $errors,
             'request_data' => $this->all(),
         ]);

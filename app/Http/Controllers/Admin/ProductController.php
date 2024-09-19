@@ -11,7 +11,7 @@ use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class ProductController extends Controller
+final class ProductController extends Controller
 {
     use PermissionServiceTrait;
 
@@ -60,7 +60,7 @@ class ProductController extends Controller
         try {
             // Custom function returned all active categories | cache time 24 h
             // $data = Cache::remember("products", 60 * 24, function () {
-            // return Product::loadActiveCategoriesByLvl();
+            // return Product::loadActiveByLvl();
             // });
 
             $data = '';
@@ -85,7 +85,7 @@ class ProductController extends Controller
         try {
             // Custom function returned all active categories | cache time 24 h
             // $data = Cache::remember("categories", 60 * 24, function () {
-            //     // return Category::loadActiveCategoriesByLvl();
+            //     // return Category::loadActiveByLvl();
             // });
 
             // return response()->json([

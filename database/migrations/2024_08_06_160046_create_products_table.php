@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('article_number')->unique();
             $table->integer('ranking');
-            $table->string('name')->unique();
-            $table->string('description')->unique();
             $table->foreignId('category_id')
                 ->constrained()
                 ->cascadeOnUpdate()

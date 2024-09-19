@@ -7,7 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class OrderController extends Controller
+final class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.

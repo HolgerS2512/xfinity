@@ -9,6 +9,7 @@ use App\Scopes\WithOrderByRankingScope;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -50,6 +51,8 @@ final class Category extends ModelRepository
     protected $appends = [
         'name',
         'description',
+        'slug',
+        'products',
     ];
 
     /**
@@ -121,6 +124,26 @@ final class Category extends ModelRepository
     }
 
     /**
+     * Get the category slug.
+     *
+     * @return string
+     */
+    public function getSlugAttribute()
+    {
+        return self::makeSlugByName($this->name);
+    }
+
+    /**
+     * Get the category slug.
+     *
+     * @return string
+     */
+    public function getProductsAttribute()
+    {
+        return $this->products();
+    }
+
+    /**
      * Get all translations for the category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -165,7 +188,7 @@ final class Category extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany|null
      */
-    public function products(): HasMany|NULL
+    public function products()
     {
         return $this->hasMany(Product::class);
     }
@@ -173,11 +196,11 @@ final class Category extends ModelRepository
     /**
      * Get the parent category.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo|null
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany|null
      */
-    public function parentCategory(): BelongsTo|NULL
+    public function parentCategory()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsToMany(Category::class, 'parent_id');
     }
 
     /**
@@ -185,24 +208,13 @@ final class Category extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function loadActiveCategoriesByLvl($level = 1)
+    public static function loadActiveByLvl($shouldHidden = [], $level = 1)
     {
-        $shouldHidden = [
-            'parent_id',
-            'ranking',
-            'active',
-            'popular',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'translations',
-        ];
-
         // Retrieve all active categories at the specified level
         $categories = static::where('level', $level)->get();
 
         // Filter the collection based on the active status
-        $filtered = $categories->filter(fn ($model) => $model->active);
+        $filtered = $categories->filter(fn($model) => $model->active);
 
         return self::makeRecursiveHidden($shouldHidden, $filtered, 'subcategories');
     }
@@ -212,12 +224,25 @@ final class Category extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function loadAllCategoryChilds($id)
+    public static function loadActiveChildsById($id, $shouldHidden)
     {
         // Retrieve all active categories at the specified level
         $category = static::findOrFail($id);
 
-        return self::getChildsRecursive($category, 'allSubcategories');
+        return self::makeClassRecursiveHidden($shouldHidden, $category, 'subcategories');
+    }
+
+    /**
+     * Load all category values and children including their subcategories.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function loadAllChildsById($id, $shouldHidden)
+    {
+        // Retrieve all active categories at the specified level
+        $category = static::findOrFail($id);
+
+        return self::makeClassRecursiveHidden($shouldHidden, $category, 'allSubcategories');
     }
 
     /**
@@ -225,14 +250,12 @@ final class Category extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function loadAllCategoriesByLvl($level = 1)
+    public static function loadAllCategoriesByLvl($shouldHidden = [], $level = 1)
     {
-        $shouldHidden = [];
-
         // Retrieve all categories at the specified level
         $categories = static::where('level', $level)->get();
 
-        return self::makeRecursiveHidden($shouldHidden, $categories, 'allValues');
+        return self::makeClassRecursiveHidden($shouldHidden, $categories, 'allValues');
     }
 
     /**
@@ -337,8 +360,11 @@ final class Category extends ModelRepository
      * @param string $methodName | child function called
      * @return \App\Models\Model
      */
-    protected static function getChildsRecursive($model, $methodName)
+    protected static function makeClassRecursiveHidden($hiddenAttr, $model, $methodName)
     {
+        // Make the specified attributes hidden
+        $model->makeHidden($hiddenAttr);
+
         if (method_exists($model, $methodName)) {
             $children = $model->$methodName;
 
@@ -347,11 +373,22 @@ final class Category extends ModelRepository
                 // Recursively apply the hidden attributes to children
 
                 foreach ($children as $child) {
-                    self::getChildsRecursive($child, $methodName);
+                    self::makeClassRecursiveHidden($hiddenAttr, $child, $methodName);
                 }
             }
         }
 
         return $model;
+    }
+
+    /**
+     * Retunred an url slug.
+     *
+     * @param string $name
+     * @return string
+     */
+    public static function makeSlugByName($name): string
+    {
+        return preg_replace('/\s+/', '-', strtolower($name));
     }
 }

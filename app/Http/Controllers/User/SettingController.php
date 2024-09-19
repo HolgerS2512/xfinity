@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class SettingController extends Controller
+final class SettingController extends Controller
 {
     /**
      * The CryptionService instance.
