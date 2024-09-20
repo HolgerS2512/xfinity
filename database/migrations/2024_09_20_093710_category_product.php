@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('category_product', function (Blueprint $table) {
             $table->id();
-            $table->string('article_number')->unique();
-            $table->integer('ranking');
-            $table->integer('stock')->default(0);
-            $table->tinyInteger('active')->default(0);
-            $table->tinyInteger('popular')->default(0);
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('product_id');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('category_product');
     }
 };

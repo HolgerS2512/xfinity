@@ -33,11 +33,6 @@ final class ProductController extends Controller
     {
         $this->middleware(function ($request, $next) {
 
-            // Exclude routes
-            if ($request->routeIs('all_active_products')) {
-                return $next($request);
-            }
-
             if ($this->permisssionService($request, $next, $this->permissionName)) {
 
                 return response()->json([
@@ -50,32 +45,6 @@ final class ProductController extends Controller
     }
 
     /**
-     * Display a listing of the active resource.
-     *
-     * @param  string  $noCookie
-     * @return \Illuminate\Http\Response
-     */
-    public function allActive()
-    {
-        try {
-            // Custom function returned all active categories | cache time 24 h
-            // $data = Cache::remember("products", 60 * 24, function () {
-            // return Product::loadActiveByLvl();
-            // });
-
-            $data = '';
-
-            return response()->json([
-                'status' => true,
-                'data' => $data,
-            ], 200);
-        } catch (Exception $e) {
-            // Exception handling is managed in the custom handler
-            throw $e; // Rethrow exception to be caught by the handler
-        }
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -83,15 +52,15 @@ final class ProductController extends Controller
     public function index()
     {
         try {
-            // Custom function returned all active categories | cache time 24 h
-            // $data = Cache::remember("categories", 60 * 24, function () {
-            //     // return Category::loadActiveByLvl();
-            // });
+            Cache::flush();
+            $data = Cache::remember("admin_products", 60 * 24, function () {
+                return Product::all();
+            });
 
-            // return response()->json([
-            //     'status' => true,
-            //     'data' => $data,
-            // ], 200);
+            return response()->json([
+                'status' => true,
+                'data' => $data,
+            ], 200);
         } catch (Exception $e) {
             // Exception handling is managed in the custom handler
             throw $e; // Rethrow exception to be caught by the handler
@@ -110,13 +79,22 @@ final class ProductController extends Controller
 
         try {
             // Logik
-            dd('STOP');
+            $status = true;
 
-            DB::commit();
+            // Cache invalid & db saved
+            if ($status) {
+                DB::commit();
+
+                return response()->json([
+                    'status' => $status,
+                ], 200);
+            }
+
+            DB::rollBack();
 
             return response()->json([
-                'status' => true,
-            ], 200);
+                'status' => false,
+            ], 500);
         } catch (Exception $e) {
             DB::rollBack();
             // Exception handling is managed in the custom handler
@@ -158,11 +136,23 @@ final class ProductController extends Controller
         try {
             // Logik
 
-            DB::commit();
+            $status = true;
+
+            // Cache invalid & db saved
+            if ($status) {
+                Cache::forget("product_$id");
+                DB::commit();
+
+                return response()->json([
+                    'status' => $status,
+                ], 200);
+            }
+
+            DB::rollBack();
 
             return response()->json([
-                'status' => true,
-            ], 200);
+                'status' => false,
+            ], 500);
         } catch (Exception $e) {
             DB::rollBack();
             // Exception handling is managed in the custom handler
@@ -182,18 +172,23 @@ final class ProductController extends Controller
 
         try {
             $product = Product::findOrFail($id);
-
             $status = $product->delete();
 
             // Cache invalid & db saved
             if ($status) {
-                Cache::forget("product_{$id}");
+                Cache::forget("product_$id");
                 DB::commit();
+
+                return response()->json([
+                    'status' => $status,
+                ], 200);
             }
 
+            DB::rollBack();
+
             return response()->json([
-                'status' => $status,
-            ], 200);
+                'status' => false,
+            ], 500);
         } catch (Exception $e) {
             DB::rollBack();
             // Exception handling is managed in the custom handler

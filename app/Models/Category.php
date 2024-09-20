@@ -186,11 +186,12 @@ final class Category extends ModelRepository
     /**
      * Get all of the products for the category.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany|null
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class, 'category_product', 'category_id', 'product_id')
+            ->whereNull('products.deleted_at');
     }
 
     /**
@@ -224,12 +225,9 @@ final class Category extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public static function loadActiveChildsById($id, $shouldHidden)
+    public function loadActiveChildsHidden($shouldHidden)
     {
-        // Retrieve all active categories at the specified level
-        $category = static::findOrFail($id);
-
-        return self::makeClassRecursiveHidden($shouldHidden, $category, 'subcategories');
+        return self::makeClassRecursiveHidden($shouldHidden, $this, 'subcategories');
     }
 
     /**

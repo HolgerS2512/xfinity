@@ -65,7 +65,9 @@ final class CategoryController extends Controller
     public function index()
     {
         try {
-            $data = Category::loadAllCategoriesByLvl();
+            $data = Cache::remember("admin_categories", 60 * 24, function () {
+                return Category::loadAllCategoriesByLvl();
+            });
 
             return response()->json([
                 'status' => true,
@@ -178,6 +180,7 @@ final class CategoryController extends Controller
 
                 // Cache invalid & db save
                 if ($status) {
+                    Cache::forget("admin_categories");
                     Cache::forget("categories");
                     DB::commit();
 
@@ -282,6 +285,7 @@ final class CategoryController extends Controller
 
             if ($status) {
                 // Clear the cache
+                Cache::forget("admin_categories");
                 Cache::forget("categories");
                 Cache::forget("category_$id");
                 DB::commit();
@@ -322,6 +326,7 @@ final class CategoryController extends Controller
 
             // Cache invalid & db saved
             if ($status && $statusTranslation) {
+                Cache::forget("admin_categories");
                 Cache::forget("categories");
                 Cache::forget("category_$id");
                 DB::commit();

@@ -18,6 +18,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\RelationNotFoundException;
 use Doctrine\DBAL\Exception\ConnectionException as ExceptionConnectionException;
+use ErrorException;
 use Illuminate\Database\DeadlockException;
 // File and storage exceptions
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -130,201 +131,213 @@ class Handler extends ExceptionHandler
         |--------------------------------------------------------------------------
         */
 
-        if ($exception instanceof AccessDeniedHttpException) {
-            return response()->json([
-                'status' => false,
-            ], 403);
-        }
+        // if ($exception instanceof AccessDeniedHttpException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 403);
+        // }
 
-        if (
-            $exception instanceof NotFoundHttpException ||
-            $exception instanceof SymRouteNotFoundException
-        ) {
-            return response()->json([
-                'status' => false,
-            ], 404);
-        }
+        // if (
+        //     $exception instanceof NotFoundHttpException ||
+        //     $exception instanceof SymRouteNotFoundException
+        // ) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 404);
+        // }
 
-        if ($exception instanceof MethodNotAllowedHttpException) {
-            return response()->json([
-                'status' => false,
-            ], 405);
-        }
+        // if ($exception instanceof MethodNotAllowedHttpException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 405);
+        // }
 
-        if (
-            $exception instanceof UrlGenerationException ||
-            $exception instanceof HttpException ||
-            $exception instanceof HttpResponseException
-        ) {
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        // if (
+        //     $exception instanceof UrlGenerationException ||
+        //     $exception instanceof HttpException ||
+        //     $exception instanceof HttpResponseException
+        // ) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Authentication and authorization
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Authentication and authorization
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof AuthenticationException) {
-            return response()->json([
-                'status' => false,
-            ], 401);
-        }
+        // if ($exception instanceof AuthenticationException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 401);
+        // }
 
-        if ($exception instanceof AuthorizationException) {
-            return response()->json([
-                'status' => false,
-            ], 403);
-        }
+        // if ($exception instanceof AuthorizationException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 403);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Database and ORM (Eloquent) Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Database and ORM (Eloquent) Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof ModelNotFoundException) {
-            return response()->json([
-                'status' => false,
-            ], 404);
-        }
+        // if ($exception instanceof ModelNotFoundException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 404);
+        // }
 
-        if (
-            $exception instanceof QueryException ||
-            $exception instanceof RelationNotFoundException ||
-            $exception instanceof ExceptionConnectionException ||
-            $exception instanceof DeadlockException
-        ) {
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        // if (
+        //     $exception instanceof QueryException ||
+        //     $exception instanceof RelationNotFoundException ||
+        //     $exception instanceof ExceptionConnectionException ||
+        //     $exception instanceof DeadlockException
+        // ) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Validation Exceptions ---> \App\Http\Requests\JsonResponseRequest
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Validation Exceptions ---> \App\Http\Requests\JsonResponseRequest
+        // |--------------------------------------------------------------------------
+        // */
 
-        /*
-        |--------------------------------------------------------------------------
-        | File and storage exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | File and storage exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof FileNotFoundException) {
-            return response()->json([
-                'status' => false,
-            ], 404);
-        }
+        // if ($exception instanceof FileNotFoundException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 404);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Session and Cookie Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Session and Cookie Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof TokenMismatchException) {
-            return response()->json([
-                'status' => false,
-                'message' => 'csrf_missmatch',
-            ], 403);
-        }
+        // if ($exception instanceof TokenMismatchException) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'csrf_missmatch',
+        //     ], 403);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Queue Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Queue Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof InvalidPayloadException) {
-            return response()->json([
-                'status' => false,
-            ], 400);
-        }
+        // if ($exception instanceof InvalidPayloadException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 400);
+        // }
 
-        if ($exception instanceof MaxAttemptsExceededException) {
-            return response()->json([
-                'status' => false,
-            ], 429);
-        }
+        // if ($exception instanceof MaxAttemptsExceededException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 429);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Mail & Notification Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Mail & Notification Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof TransportException) {
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        // if ($exception instanceof TransportException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Broadcasting Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Broadcasting Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof BroadcastException) {
-            return response()->json([
-                'status' => false,
-            ], 404);
-        }
+        // if ($exception instanceof BroadcastException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 404);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Cache Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Cache Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof LockTimeoutException) {
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        // if ($exception instanceof LockTimeoutException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Encryption and hashing exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Encryption and hashing exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if (
-            $exception instanceof EncryptException ||
-            $exception instanceof DecryptException
-        ) {
-            return response()->json([
-                'status' => false,
-            ], 500);
-        }
+        // if (
+        //     $exception instanceof EncryptException ||
+        //     $exception instanceof DecryptException
+        // ) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
-        /*
-        |--------------------------------------------------------------------------
-        | More Symfony Exceptions
-        |--------------------------------------------------------------------------
-        */
+        // /*
+        // |--------------------------------------------------------------------------
+        // | More Symfony Exceptions
+        // |--------------------------------------------------------------------------
+        // */
 
-        if ($exception instanceof BadRequestHttpException) {
-            return response()->json([
-                'status' => false,
-            ], 400);
-        }
+        // if ($exception instanceof BadRequestHttpException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 400);
+        // }
 
-        if ($exception instanceof UnauthorizedHttpException) {
-            return response()->json([
-                'status' => false,
-            ], 403);
-        }
+        // if ($exception instanceof UnauthorizedHttpException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 403);
+        // }
 
-        if ($exception instanceof ConflictHttpException) {
-            return response()->json([
-                'status' => false,
-            ], 409);
-        }
+        // if ($exception instanceof ConflictHttpException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 409);
+        // }
+
+        // /*
+        // |--------------------------------------------------------------------------
+        // | Generally Exceptions
+        // |--------------------------------------------------------------------------
+        // */
+
+        // if ($exception instanceof ErrorException) {
+        //     return response()->json([
+        //         'status' => false,
+        //     ], 500);
+        // }
 
         return parent::render($request, $exception);
     }

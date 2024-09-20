@@ -16,10 +16,14 @@ class StoreProductRequest extends JsonResponseRequest
         return [
             'article_number' => 'required|string|min:0|max:255',
             'ranking' => 'integer',
-            'name' => 'required|string|max:60|min:3',
-            'description' => 'string|max:1000',
             'stock' => 'integer',
-            'category_id' => 'required|integer',
+
+            'translations' => 'required|array',
+
+            // inner translations array
+            'translations.*.locale' => 'required|string|in:en,de',
+            'translations.*.name' => 'required|string|max:60|min:3',
+            'translations.*.description' => 'string|max:1000',
         ];
     }
 }

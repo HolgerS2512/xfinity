@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Repos\ProductRepository;
 use App\Scopes\WithImageScope;
 use App\Scopes\WithPriceScope;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
@@ -19,9 +20,33 @@ final class Product extends ProductRepository
      * @var array
      */
     protected $appends = [
-        'prices',
-        'primary_image',
-        'images',
+        // 'prices',
+        // 'primaryImage',
+        // 'images',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        // 'active',
+        // 'popular',
+        // 'pivot',
+        // 'updated_at',
+        // 'created_at',
+        // 'deleted_at',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'active' => 'boolean',
+        'popular' => 'boolean',
     ];
 
     /**
@@ -35,8 +60,19 @@ final class Product extends ProductRepository
         parent::boot();
 
         // Add the global scope to always load the `price` relationship
-        static::addGlobalScope(new WithPriceScope);
-        static::addGlobalScope(new WithImageScope);
+        // static::addGlobalScope(new WithPriceScope);
+        // static::addGlobalScope(new WithImageScope);
+    }
+
+    /**
+     * Scope a query to only include active products.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
     }
 
     /**
@@ -127,13 +163,14 @@ final class Product extends ProductRepository
     }
 
     /**
-     * Get all translations for the product.
+     * Get all categories for the product.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongstoMany
      */
     public function categories()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id')
+            ->whereNull('categories.deleted_at');
     }
 
     /**

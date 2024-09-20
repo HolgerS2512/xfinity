@@ -25,6 +25,7 @@ return new class extends Migration
             $table->tinyInteger('is_primary')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

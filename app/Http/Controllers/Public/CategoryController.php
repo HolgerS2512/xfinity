@@ -7,6 +7,7 @@ use App\Models\Category;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 final class CategoryController extends Controller
 {
@@ -68,9 +69,9 @@ final class CategoryController extends Controller
             $category = Category::findOrFail($id);
             $hasSubs = $category->subcategories()->get()->isNotEmpty();
 
-            $data = Cache::remember("category_$id", 60 * 24, function () use ($id, $category, $hasSubs) {
+            $data = Cache::remember("category_$id", 60 * 24, function () use ($category, $hasSubs) {
                 if ($hasSubs) {
-                    return Category::loadActiveChildsById($id, [
+                    return $category->loadActiveChildsHidden([
                         'parent_id',
                         'ranking',
                         'active',
@@ -82,7 +83,20 @@ final class CategoryController extends Controller
                         'translations',
                     ]);
                 } else {
-                    return $category->products()->get();
+                    $products = $category->products()->active()->get();
+
+                    $products->each(function ($product) {
+                        $product->setHidden([
+                            'active',
+                            'popular',
+                            'pivot',
+                            'updated_at',
+                            'created_at',
+                            'deleted_at',
+                        ]);
+                    });
+                    
+                    return $products;
                 }
             });
 

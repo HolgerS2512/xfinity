@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Public\ProductController as PublicProductController;
 use App\Http\Controllers\Public\CategoryController as PublicCategoryController;
 use App\Http\Controllers\Public\ContactController as PublicContactController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ChangeEmailController;
 use App\Http\Controllers\Auth\ForgetPasswordController;
@@ -29,6 +30,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['throttle:60,1'])->group(function () {
 
     Route::apiResource('/categories', PublicCategoryController::class)
+        ->only(['index', 'show']);
+
+    Route::apiResource('/products', PublicProductController::class)
         ->only(['index', 'show']);
 });
 
