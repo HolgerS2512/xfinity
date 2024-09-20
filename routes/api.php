@@ -19,6 +19,7 @@ use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\PaymentMethodsController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\User\SettingController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,14 +28,11 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['throttle:60,1'])->group(function () {
+Route::apiResource('/categories', PublicCategoryController::class)
+    ->only(['index', 'show']);
 
-    Route::apiResource('/categories', PublicCategoryController::class)
-        ->only(['index', 'show']);
-
-    Route::apiResource('/products', PublicProductController::class)
-        ->only(['index', 'show']);
-});
+Route::apiResource('/products', PublicProductController::class)
+    ->only(['index', 'show']);
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
 
@@ -135,7 +133,7 @@ Route::middleware(['auth:sanctum', 'verified', 'throttle:10,1'])->group(function
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->middleware(['auth:sanctum', 'verified', 'throttle:60,1'])->group(function () {
+Route::prefix('admin')->middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::apiResource('cookies', CookieController::class);
 
