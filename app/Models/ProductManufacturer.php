@@ -5,10 +5,10 @@ namespace App\Models;
 use App\Models\Repos\ProductRepository;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ProductDetails extends ProductRepository
+class ProductManufacturer extends ProductRepository
 {
     /**
-     * Get the product associated with the image.
+     * Get the product associated.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

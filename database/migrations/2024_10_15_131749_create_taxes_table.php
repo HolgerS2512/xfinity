@@ -13,18 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->decimal('price', 8, 2);
-            $table->tinyInteger('tax')->default(19);
-            $table->string('currency', 3)->default('EUR');
-            $table->date('start_date');
-            $table->date('end_date')->nullable();
-            $table->string('price_type')->default('Regular');
+            $table->string('country', 60)->unique();
+            $table->tinyInteger('vat')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -38,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('taxes');
     }
 };

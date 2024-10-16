@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductInfos extends ProductRepository
 {
     /**
-     * Get the product associated with the image.
+     * Get the product associated.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

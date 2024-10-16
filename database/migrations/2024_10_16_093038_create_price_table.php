@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('prices', function (Blueprint $table) {
             $table->id();
-            $table->string('sku', 40)->unique();
-            $table->string('brand', 80)->nullable();
-            $table->integer('ranking');
-            $table->tinyInteger('active')->default(0);
-            $table->tinyInteger('popular')->default(0);
+            $table->foreignId('product_variants_id')
+                ->constrained()
+                ->cascadeOnDelete();
+            $table->decimal('price', 8, 2);
+            $table->char('locale', 2)->default('de');
+            $table->char('currency', 3)->default('EUR');
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
+            $table->string('price_type')->default('Regular');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -33,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('prices');
     }
 };

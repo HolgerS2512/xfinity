@@ -164,6 +164,16 @@ final class Category extends ModelRepository
     }
 
     /**
+     * Returns a bool - does this category have products (using database query if not loaded).
+     *
+     * @return bool
+     */
+    public function hasProducts()
+    {
+        return $this->products->count() > 0;
+    }
+
+    /**
      * Get the active subcategories for the category.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -21,18 +21,8 @@ class Price extends ModelRepository
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product(): BelongsTo
+    public function ProductVariants(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
-    }
-
-    /**
-     * Get the product associated with the price.
-     *
-     * @return \App\Models\Product
-     */
-    public function getProduct()
-    {
-        return $this->product; // Retrieve the product that this price is associated with
+        return $this->belongsTo(ProductVariants::class);
     }
 }

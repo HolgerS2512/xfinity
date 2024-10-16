@@ -19,6 +19,10 @@ class DatabaseSeeder extends Seeder
             RolePermissionSeeder::class,
             CategorySeeder::class,
             CookieSeeder::class,
+            TaxSeeder::class,
+
+            // TEST DATA !!!
+            // TestProductImageSeeder::class,
         ]);
     }
 }

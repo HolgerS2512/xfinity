@@ -21,8 +21,8 @@ class ProductImage extends ProductRepository
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product(): BelongsTo
+    public function productVariants(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(ProductVariants::class);
     }
 }

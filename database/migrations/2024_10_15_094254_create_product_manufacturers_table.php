@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_details', function (Blueprint $table) {
+        Schema::create('product_manufacturers', function (Blueprint $table) {
             $table->id();
-            $table->string('locale', 5)->default('de');
             $table->foreignId('product_id')
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->text('producer');
-            $table->text('notice');
+            $table->string('name', 100);
+            $table->text('address');
+            $table->string('url');
+            $table->string('email', 50);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->nullable();
             $table->timestamp('deleted_at')->nullable();
@@ -35,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_details');
+        Schema::dropIfExists('product_manufacturers');
     }
 };

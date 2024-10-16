@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\Public\ProductController as PublicProductController;
-use App\Http\Controllers\Public\CategoryController as PublicCategoryController;
+use App\Http\Controllers\Public\ProductCatalogController;
+use App\Http\Controllers\Public\CategoryCatalogController;
 use App\Http\Controllers\Public\ContactController as PublicContactController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ContactController;
@@ -28,10 +28,10 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::apiResource('/categories', PublicCategoryController::class)
+Route::apiResource('/categories', CategoryCatalogController::class)
     ->only(['index', 'show']);
 
-Route::apiResource('/products', PublicProductController::class)
+Route::apiResource('/products', ProductCatalogController::class)
     ->only(['index', 'show']);
 
 // Route::get('imprint', fn() => view('welcome'))->name('imprint');
