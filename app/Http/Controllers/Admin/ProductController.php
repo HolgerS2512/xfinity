@@ -78,16 +78,26 @@ final class ProductController extends Controller
         DB::beginTransaction();
 
         try {
-            // Logik
-            $status = true;
+            // Get translations and remove on request
+            $translations = $request->input('translations', []);
+            $data = $request->validated();
+            unset($data['translations']);
 
-            // Cache invalid & db saved
-            if ($status) {
-                DB::commit();
+            $product = Product::create($data);
 
-                return response()->json([
-                    'status' => $status,
-                ], 200);
+            // Check if product created
+            if (isset($product->id) && !empty($product->id)) {
+                // Save translations
+                $status = $product->createTranslation($translations);
+
+                // Cache invalid & db saved
+                if ($status) {
+                    DB::commit();
+
+                    return response()->json([
+                        'status' => $status,
+                    ], 201);
+                }
             }
 
             DB::rollBack();

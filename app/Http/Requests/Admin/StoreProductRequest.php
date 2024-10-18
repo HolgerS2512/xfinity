@@ -14,9 +14,9 @@ class StoreProductRequest extends JsonResponseRequest
     public function rules()
     {
         return [
-            'article_number' => 'required|string|min:0|max:255',
-            'ranking' => 'integer',
-            'stock' => 'integer',
+            'sku' => 'required|min:0|max:40',
+            'brand' => 'string|min:0|max:80',
+            'manufacturer_id' => 'integer',
 
             'translations' => 'required|array',
 

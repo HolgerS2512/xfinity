@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Repos\ProductRepository;
+use App\Traits\Helpers\TranslationManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 final class Product extends ProductRepository
 {
+    use TranslationManager;
+
     /**
      * The attributes that should be appended to the model's array form.
      *
@@ -25,15 +28,6 @@ final class Product extends ProductRepository
     ];
 
     /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        // 
-    ];
-
-    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -42,17 +36,6 @@ final class Product extends ProductRepository
         'active' => 'boolean',
         'popular' => 'boolean',
     ];
-
-    /**
-     * The "booted" method of the model.
-     * This method is called after the model is instantiated.
-     *
-     * @return void
-     */
-    protected static function boot()
-    {
-        parent::boot();
-    }
 
     /**
      * Scope a query to only include active products.

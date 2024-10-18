@@ -9,6 +9,13 @@ class ProductRepository extends ModelRepository
     use SoftDeletes;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [];
+
+    /**
      * The attributes that should be mutated to dates.
      * 
      * This is required for the SoftDeletes trait, as it relies on 
