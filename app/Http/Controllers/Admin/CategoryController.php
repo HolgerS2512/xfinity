@@ -123,20 +123,30 @@ final class CategoryController extends Controller
             // Add Ranking only request ranking does not exist
             if (!$request->has('ranking')) {
 
-                // if have datasets
-                if ($categories?->count() >= 1) {
+                if (!$request->has('parent_id')) {
 
-                    $testRank = 1;
+                    // if have datasets
+                    if ($categories?->count() >= 1) {
 
-                    // looks for gaps and korrection
-                    for ($i = 0; $i < $categories->last()->ranking; $i++) {
+                        $testRank = 1;
 
-                        if (isset($categories[$i]) && $categories[$i]?->ranking !== $testRank) {
-                            $resRank = $testRank;
-                            break;
+                        // looks for gaps and korrection
+                        for ($i = 0; $i < $categories->last()->ranking; $i++) {
+
+                            if (isset($categories[$i]) && $categories[$i]?->ranking !== $testRank) {
+                                $resRank = $testRank;
+                                break;
+                            }
+                            ++$testRank;
                         }
-                        ++$testRank;
+
+                        // if no gaps present
+                        if ($resRank === 1) {
+                            $resRank = $categories?->count() + 1;
+                        }
                     }
+                } else {
+                    $categories = Category::where('parent_id', $request->input('parent_id'))->where('level', $levelCheck)->orderBy('ranking')->get();
 
                     // if no gaps present
                     if ($resRank === 1) {

@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use App\Models\Repos\ProductRepository;
-use App\Scopes\WithImageScope;
-use App\Scopes\WithPriceScope;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,7 +19,9 @@ final class Product extends ProductRepository
      * @var array
      */
     protected $appends = [
-        // 
+        'name', 
+        'description',
+        'manufacturer',
     ];
 
     /**
@@ -52,10 +52,6 @@ final class Product extends ProductRepository
     protected static function boot()
     {
         parent::boot();
-
-        // Add the global scope to always load the `price` relationship
-        // static::addGlobalScope(new WithPriceScope);
-        // static::addGlobalScope(new WithImageScope);
     }
 
     /**
@@ -76,9 +72,10 @@ final class Product extends ProductRepository
      */
     public function getNameAttribute()
     {
-        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+        $translation = $this->translations()->firstWhere('locale', app()->getLocale());
+        $deTrans = $this->translations()->firstWhere('locale', 'de');
 
-        return $translation ? $translation->name : 'Translation not available';
+        return $translation ? $translation->name : $deTrans;
     }
 
     /**
@@ -88,19 +85,26 @@ final class Product extends ProductRepository
      */
     public function getDescriptionAttribute()
     {
-        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+        $translation = $this->translations()->firstWhere('locale', app()->getLocale());
+        $deTrans = $this->translations()->firstWhere('locale', 'de');
 
-        return $translation ? $translation->description : 'Translation not available';
+        return $translation ? $translation->description : $deTrans;
     }
 
     /**
-     * Get the translation.
+     * Get the category description.
      *
      * @return string
      */
-    public function getTranslationAttribute()
+    public function getManufacturerAttribute()
     {
-        return $this->translations()->where('locale', app()->getLocale())->first();
+        $rekord = $this->manufacturer()->firstWhere('id', $this->manufacturer_id)->only(['name', 'address', 'email', 'phone', 'url']);
+
+        foreach ($rekord as $key => $value) {
+            if (empty($value)) unset($rekord[$key]);
+        }
+
+        return $rekord;
     }
 
     /**
@@ -131,7 +135,7 @@ final class Product extends ProductRepository
      */
     public function translations()
     {
-        return $this->hasMany(CategoryTranslation::class);
+        return $this->hasMany(ProductTranslation::class);
     }
 
     /**
@@ -187,11 +191,11 @@ final class Product extends ProductRepository
     /**
      * Get all reviews for the product.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function manufacturer()
     {
-        return $this->hasOne(ProductManufacturer::class);
+        return $this->belongsTo(ProductManufacturer::class);
     }
 
 }

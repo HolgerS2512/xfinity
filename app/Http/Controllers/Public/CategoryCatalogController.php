@@ -46,6 +46,7 @@ final class CategoryCatalogController extends Controller
         'active',
         // 'popular',
         'pivot',
+        'manufacturer_id',
         'updated_at',
         'created_at',
         'deleted_at',
@@ -97,9 +98,12 @@ final class CategoryCatalogController extends Controller
 
             Cache::flush();
             $data = Cache::remember("category_$id", 60 * 24, function () use ($category, $hasSubs) {
+
                 if ($hasSubs) {
+                    // Load category with child categories.
                     return $category->loadActiveChildsHidden($this->categoryHiddenAttr);
                 } else {
+                    // Load products with childs.
                     $products = $category->products()->active()
                         ->with(['variants' => function ($q) {
                             $q->select('id', 'is_primary', 'product_id', 'sku', 'color')
@@ -117,7 +121,7 @@ final class CategoryCatalogController extends Controller
                         }])
                         ->get();
 
-                    // Attaches the primary variant to the main model and deletes the variant from the collection.
+                    // Attaches the primary variant to the main model and delete this variant from collection.
                     $deleteObj = (object) [];
 
                     $products->each(function ($product) use (&$deleteObj) {
@@ -138,7 +142,6 @@ final class CategoryCatalogController extends Controller
                                 $deleteObj->productId = $product->id;
                             }
 
-
                             $variant->fullPrice = number_format($variant->fullPrice() * (1 + $this->tax / 100), 2);
                             $variant->currentPrice = number_format($variant->currentPrice() * (1 + $this->tax / 100), 2);
                             $variant->currency = $variant->fullPriceCurrency();
@@ -146,7 +149,8 @@ final class CategoryCatalogController extends Controller
                             unset($variant->prices);
                             ++$i;
                         });
-                        
+
+                        // Set attributes hidden which not need.
                         $product->setHidden($this->productHiddenAttr);
                     });
 

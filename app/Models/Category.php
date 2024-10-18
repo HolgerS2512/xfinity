@@ -106,9 +106,10 @@ final class Category extends ModelRepository
      */
     public function getNameAttribute()
     {
-        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+        $translation = $this->translations()->firstWhere('locale', app()->getLocale());
+        $deTrans = $this->translations()->firstWhere('locale', 'de');
 
-        return $translation ? $translation->name : 'Translation not available';
+        return $translation ? $translation->name : $deTrans;
     }
 
     /**
@@ -118,9 +119,10 @@ final class Category extends ModelRepository
      */
     public function getDescriptionAttribute()
     {
-        $translation = $this->translations->firstWhere('locale', app()->getLocale());
+        $translation = $this->translations()->firstWhere('locale', app()->getLocale());
+        $deTrans = $this->translations()->firstWhere('locale', 'de');
 
-        return $translation ? $translation->description : 'Translation not available';
+        return $translation ? $translation->description : $deTrans;
     }
 
     /**

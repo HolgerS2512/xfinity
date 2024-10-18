@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('sku', 40)->unique();
             $table->string('brand', 80)->nullable();
+            $table->unsignedBigInteger('manufacturer_id');
             $table->integer('ranking');
             $table->tinyInteger('active')->default(0);
             $table->tinyInteger('popular')->default(0);
